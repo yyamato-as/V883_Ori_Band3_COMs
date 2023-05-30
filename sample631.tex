@@ -92,13 +92,16 @@
 %% using \newcommand. Your macros should appear before
 %% the \begin{document} command.
 %%
+\usepackage{xspace}
 \newcommand{\vdag}{(v)^\dagger}
 \newcommand\aastex{AAS\TeX}
 \newcommand\latex{La\TeX}
 \newcommand{\hcotp}{HCO$_2^+$}
-\newcommand{\methanol}{CH$_3$OH}
-\newcommand{\acetaldehyde}{CH$_3$CHO}
-\newcommand{\methylformate}{CH$_3$OCHO}
+\newcommand{\methanol}{CH$_3$OH\xspace}
+\newcommand{\acetaldehyde}{CH$_3$CHO\xspace}
+\newcommand{\methylformate}{CH$_3$OCHO\xspace}
+\newcommand{\dimethylether}{CH$_3$OCH$_3$\xspace}
+\newcommand{\acetone}{CH$_3$COCH$_3$\xspace}
 
 %% Reintroduced the \received and \accepted commands from AASTeX v5.2
 %\received{March 1, 2021}
@@ -341,10 +344,24 @@ Each of the SPWs was imaged with the CASA task \texttt{tclean} \citep{Hogbom1974
 
 
 \section{Data Analysis and Results}
-\subsection{Spectra Extraction and Line Identification}
-Figure \ref{} shows the spectra which are integrated over 1\farcs2 aperture and corrected for the line broadening due to the Keplerian rotation of the disk. The original disk-integrated spectra are shown in Figure \ref{} in Appendix \ref{}. To obtain the spectra corrected for the Keplerian line broadening, we used \texttt{integrated\_spectrum()} function implemented in \texttt{GoFish} package \citep{GoFish}. This method aligns the Dopper-shifted spectra at each position within the disk to a common velocity (systemic velocity of the source) to recover the single-peak spectra for each transitions, facilitating the identification of the heavily blended transitions. In this procedure, we assumed a position angle (32\arcdeg) and inclination angle (38.3\arcdeg) of the disk, a central stellar mass of $1.29\,M_\odot$, and a distance of 400\,pc, based on previous works \citep{Cieza2016, Tobin2023}. We also assumed that the emission is originating from the midplane of the disk and did not consider the vertical extent of the emission. The uncertainties of the spectra were calculated within the \texttt{integrated\_spectrum()} function taking the spectral decorrelation \citep{Yen2016} into account.
+\subsection{Spectrum Extraction and Line Identification}
+Figure \ref{} shows the spectra which are integrated over 1\farcs2 aperture and corrected for the line broadening due to the Keplerian rotation of the disk. The original disk-integrated spectra are shown in Figure \ref{} in Appendix \ref{}. To obtain the spectra corrected for the Keplerian line broadening, we used \texttt{integrated\_spectrum()} function implemented in \texttt{GoFish} package \citep{GoFish}. This method aligns the Dopper-shifted spectra at each position within the disk to a common velocity (systemic velocity of the source) to recover the single-peak spectra for each transitions, facilitating the identification of the blended transitions. In this procedure, we assumed a position angle (32\arcdeg) and inclination angle (38.3\arcdeg) of the disk, a central stellar mass of $1.29\,M_\odot$, and a distance of 400\,pc, based on previous works \citep{Cieza2016, Tobin2023}. We also assumed that the emission is originating from the midplane of the disk and did not consider the vertical extent of the emission. The uncertainties of the spectra were calculated within the \texttt{integrated\_spectrum()} function taking the spectral decorrelation \citep{Yen2016} into account.
 
-As shown in Figure \ref{}, many spectral features are detected in the disk-integrated spectra. To identify each of these features, we fitted a synthetic spectra assuming local thermodynamical equilibrium to the observed spectra, taking the line blending into account. The details of the synthetic spectral model is described in Appendix \ref{}. 
+As shown in Figure \ref{}, numerous spectral features are detected in the disk-integrated spectra. As many COMs transitions exists in narrow frequency ranges and they are usually overlapped between different species, a visual identification of the lines is challenging. Alternatively, we fitted a synthetic spectra to the observed spectra to identify each of these features. The details of the synthetic spectral model is described in Appendix \ref{}. Briefly, the model assumed a common emitting region size, a common excitation temperature, and a common line width under the local thermodynamic equilibrium (LTE) conditions, and the emitting region size, excitation temperature, line width, and the column density of each species are varied to fit the observed spectra and test if they can be reproduced with the model. 
+
+The identified transitions are listed in Table \ref{} in Appendix \ref{}. In summary, we firmly identified xx species: \methanol, \methylformate, \dimethylether, \acetaldehyde, ... We also tentatively identified yy species: ... The identification of species is based on the number of transitions detected; if multiple transitions of the species are detected at $>3\sigma$ in the stacked spectra, we regard that species as a firm identification. If only one transition is detected at $>3\sigma$ in the stacked spectra, it is considered as a tentative identification.
+
+Figure \ref{} shows the velocity-integrated intensity map (zeroth moment map) of the selected transitions without significant blending with other species. The molecular line emission are all confined to the disk region and marginally spatially resolved. While the spatial extent of the emission is consistent with the previous observations in Bands 6 and 7 \citep{vantHoff2018, Lee2019, Tobin2023} considering the difference in the beam size, the central emission cavities seen in the Band 6 and 7 data are not detected in the present Band 3 data. 
+
+\begin{figure*}
+\plotone{V883_Ori_original_spectra.pdf}
+\caption{}
+\end{figure*}
+
+\begin{figure*}
+\plotone{V883_Ori_mom0_gallery.pdf}
+\caption{Velocity-integrated intensity maps of the molecular line emission in the V883 Ori disk. The velocity range for integration are $\pm3.5$ km s$^{-1}$ with respect to the source systemic velocity $v_\mathrm{sys}=4.25$ km s$^{-1}$ \citep{Tobin2023} including \dimethylether and \acetone, where multiple blended transitions are integrated together. The molecular species, transitions, and upper state energy levels are indicated in the upper-left corner of each panel. The black contours start from 5$\sigma$ with steps of 2.5$\sigma$, where $\sigma$ are the noise level of each map measured on the emission-free region. The synthesized beam and a scale bar of 80 au are shown in the lower left and right corner of each panel, respectively.}
+\end{figure*}
 
 % The uncertainties of the original spectra were calculated in each channel as $\sqrt{\mathrm{\Omega_\mathrm{aperture}/\Omega_\mathrm{beam}}} \times \sigma$, where $\Omega_\mathrm{aperture}$, $\Omega_\mathrm{beam}$ and $\sigma$ are the aperture area, the beam area, and the image RMS, respectively. 
 
@@ -355,397 +372,397 @@ As shown in Figure \ref{}, many spectral features are detected in the disk-integ
 % Figure \ref{fig:} shows the disk-averaged spectra toward the V883 Ori disk. These spectra were extracted from the central   
 
 
-\subsection{Spectral fit}
+\subsection{Column Density Retrieval}
 
 
 
-\startlongtable
-\begin{deluxetable*}{ccccccc}
-\tablehead{\colhead{Specie} & \colhead{Transition} & \colhead{nu0 [GHz]} & \colhead{logA [s-1]} & \colhead{gu} & \colhead{Eu [K]} & \colhead{blend} 
-}
-\startdata
-\hline 
-\multicolumn{7}{c}{spw 0} \\
-\hline 
-CH3OCHOv=0 & 7(6,1)-6(6,0)E & 85.919209 & -5.61387 & 30.0 & 40.43552 & False \\
-NH2D & 1(1,1)0s-1(0,1)0a,F=0-1 & 85.9247829 & -4.62958 & 1.0 & 20.67862 & True \\
-NH2D & 1(1,1)0s-1(0,1)0a,F=2-1 & 85.9257031 & -5.23165 & 5.0 & 20.67866 & True \\
-NH2D & 1(1,1)0s-1(0,1)0a,F=2-2 & 85.9262703 & -4.75455 & 5.0 & 20.67869 & True \\
-NH2D & 1(1,1)0s-1(0,1)0a,F=1-1 & 85.9263165 & -5.2317 & 3.0 & 20.67869 & True \\
-CH3OCHOv=0 & 7(6,2)-6(6,1)E & 85.926553 & -5.61375 & 30.0 & 40.41775 & True \\
-NH2D & 1(1,1)0s-1(0,1)0a,F=1-2 & 85.9268837 & -5.00979 & 3.0 & 20.67872 & True \\
-CH3OCHOv=0 & 7(6,2)-6(6,1)A & 85.927227 & -5.61365 & 30.0 & 40.41591 & True \\
-CH3OCHOv=0 & 7(6,2)-6(6,1)A & 85.927227 & -5.61365 & 30.0 & 40.41591 & True \\
-NH2D & 1(1,1)0s-1(0,1)0a,F=1-0 & 85.9277345 & -5.10669 & 3.0 & 20.67876 & True \\
-CH3CHOv=0,1\&2 & 9(1,8)-9(0,9)E,vt=1 & 85.9476243 & -5.54243 & 38.0 & 249.80506 & False \\
-\hline 
-\multicolumn{7}{c}{spw 1} \\
-\hline 
-CH3OCHOv=1 & 7(4,3)-6(4,2)E & 85.506219 & -5.21427 & 30.0 & 214.55908 & False \\
-CH3OCHOv=1 & 7(5,3)-6(5,2)E & 85.55338 & -5.35271 & 30.0 & 220.03471 & False \\
-\hline 
-\multicolumn{7}{c}{spw 2} \\
-\hline 
-OCSv=0 & 7-6 & 85.139121 & -5.76601 & 15.0 & 16.34418 & False \\
-CH3OCHOv=1 & 7(6,1)-6(6,0)E & 85.157135 & -5.62487 & 30.0 & 228.14704 & False \\
-CH3OCHOv=1 & 7(5,3)-6(5,2)A & 85.185466 & -5.36022 & 30.0 & 220.89672 & True \\
-CH3OCHOv=1 & 7(5,2)-6(5,1)A & 85.186063 & -5.36022 & 30.0 & 220.89674 & True \\
-\hline 
-\multicolumn{7}{c}{spw 3} \\
-\hline 
-\hline 
-\multicolumn{7}{c}{spw 4} \\
-\hline
-H13CO+ & 1-0 & 86.7542884 & -4.41685 & 3.0 & 4.16353 & False \\
-\hline
-\multicolumn{7}{c}{spw 5} \\
-\hline
-CH2DOH & 2(1,1)-2(0,2),e0 & 86.6687511 & -5.33219 & 5.0 & 10.59631 & False \\
-\hline
-\multicolumn{7}{c}{spw 6} \\
-\hline 
-CCHv=0 & N=1-0,J=3/2-1/2,F=2-1 & 87.316925 & -5.65605 & 5.0 & 4.19269 & False \\
-CCHv=0 & N=1-0,J=3/2-1/2,F=1-0 & 87.328624 & -5.73675 & 3.0 & 4.19109 & False \\
-\hline
-\multicolumn{7}{c}{spw 7} \\
-\hline 
-CH3CHOv=0,1\&2 & 5(2,3)-4(2,2)E,vt=0 & 96.4755237 & -4.60025 & 22.0 & 23.02545 & False \\
-CH3CHOv=0,1\&2 & 11(4,8)-12(3,10)E,vt=0 & 96.48895 & -6.13753 & 46.0 & 97.14095 & False \\
-CH3OHvt=0-2 & 2(1)-1(1)E1vt=1 & 96.492163 & -5.59639 & 5.0 & 298.41879 & True \\
-CH2DOH & 10(3,7)-9(4,5),o1 & 96.4934197 & -6.30869 & 21.0 & 173.10984 & True \\
-CH3OHvt=0-2 & 2(0)-1(0)E1vt=1 & 96.493551 & -5.4706 & 5.0 & 307.52339 & True \\
-CH3OCHOv=1 & 38(8,30)-37(10,27)A & 96.4944086 & -7.41255 & 154.0 & 673.92731 & True \\
-c-H2COCH2 & 11(9,3)-11(8,4) & 96.5010246 & -5.08298 & 115.0 & 146.7461 & True \\
-CH3OHvt=0-2 & 2(-1)-1(-1)E2vt=1 & 96.501713 & -5.59667 & 5.0 & 420.32181 & True \\
-CH3CHOv=0,1\&2 & 31(5,26)-30(6,24)E,vt=1 & 96.5076644 & -6.03046 & 126.0 & 721.87807 & True \\
-CH3OCHOv=0 & 7(4,4)-7(3,5)E & 96.507882 & -6.15428 & 30.0 & 27.15885 & True \\
-CH3OCHOv=1 & 22(14,9)-23(13,11)E & 96.508005 & -6.96749 & 90.0 & 466.84743 & True \\
-(CH3)2COv=0 & 19(9,11)-19(8,12)AE & 96.5134586 & -4.71844 & 78.0 & 143.23696 & True \\
-(CH3)2COv=0 & 19(9,11)-19(8,12)EA & 96.5136227 & -4.71847 & 156.0 & 143.23711 & True \\
-CH3OHvt=0-2 & 2(0)+-1(0)+vt=1 & 96.513686 & -5.47055 & 5.0 & 430.59375 & True \\
-\hline
-\multicolumn{7}{c}{spw 8} \\
-\hline 
-CH3CHOv=0,1\&2 & 5(3,3)-4(3,2)A,vt=2 & 96.7161135 & -4.72086 & 22.0 & 420.57942 & True \\
-CH3CHOv=0,1\&2 & 5(3,2)-4(3,1)A,vt=2 & 96.7174728 & -4.72086 & 22.0 & 420.57948 & True \\
-CH3CHOv=0,1\&2 & 5(2,3)-4(2,2)A,vt=1 & 96.7184092 & -4.59281 & 22.0 & 228.29759 & True \\
-CH3OHvt=0-2 & 2(-1)-1(-1)E2vt=0 & 96.739358 & -5.59213 & 5.0 & 12.54157 & True \\
-CH3OHvt=0-2 & 2(0)+-1(0)+vt=0 & 96.741371 & -5.4675 & 5.0 & 6.965 & True \\
-CH3OHvt=0-2 & 2(0)-1(0)E1vt=0 & 96.744545 & -5.46758 & 5.0 & 20.0896 & False \\
-CH3OHvt=0-2 & 2(1)-1(1)E1vt=0 & 96.755501 & -5.58097 & 5.0 & 28.01055 & False \\
-CH3CHOv=0,1\&2 & 7(0,7)-6(1,6)A,vt=0 & 96.7653706 & -5.53907 & 30.0 & 25.77791 & False \\
-\hline
-\multicolumn{7}{c}{spw 9} \\
-\hline 
-CH3OCHOv=0 & 8(4,5)-8(3,6)A & 96.709259 & -5.9454 & 34.0 & 31.88523 & False \\
-CH3CHOv=0,1\&2 & 5(3,3)-4(3,2)A,vt=2 & 96.7161135 & -4.72086 & 22.0 & 420.57942 & True \\
-CH3CHOv=0,1\&2 & 5(3,2)-4(3,1)A,vt=2 & 96.7174728 & -4.72086 & 22.0 & 420.57948 & True \\
-CH3CHOv=0,1\&2 & 5(2,3)-4(2,2)A,vt=1 & 96.7184092 & -4.59281 & 22.0 & 228.29759 & True \\
-CH3OHvt=0-2 & 2(-1)-1(-1)E2vt=0 & 96.739358 & -5.59213 & 5.0 & 12.54157 & True \\
-CH3OHvt=0-2 & 2(0)+-1(0)+vt=0 & 96.741371 & -5.4675 & 5.0 & 6.965 & True \\
-CH3OHvt=0-2 & 2(0)-1(0)E1vt=0 & 96.744545 & -5.46758 & 5.0 & 20.0896 & True \\
-CH3OHvt=0-2 & 2(1)-1(1)E1vt=0 & 96.755501 & -5.58097 & 5.0 & 28.01055 & True \\
-CH3CHOv=0,1\&2 & 7(0,7)-6(1,6)A,vt=0 & 96.7653706 & -5.53907 & 30.0 & 25.77791 & False \\
-CH3OCHOv=0 & 7(4,3)-7(3,5)E & 96.776715 & -6.45236 & 30.0 & 27.17176 & False \\
-CH3OCHOv=0 & 5(4,2)-5(3,3)A & 96.794121 & -6.10264 & 22.0 & 19.47072 & False \\
-CH3CHOv=0,1\&2 & 5(2,4)-4(2,3)E,vt=1 & 96.8002908 & -4.59642 & 22.0 & 226.4481 & True \\
-CH3OCHOv=0 & 4(4,1)-4(3,2)E & 96.800837 & -6.28901 & 18.0 & 16.53264 & True \\
-\hline
-\multicolumn{7}{c}{spw 10} \\
-\hline 
-CH3OCHOv=0 & 26(8,19)-25(9,17)E & 97.574702 & -7.00164 & 106.0 & 250.89139 & True \\
-CH3OCHOv=1 & 8(5,3)-7(5,2)E & 97.577303 & -5.08237 & 34.0 & 225.35927 & True \\
-(CH3)2COv=0 & 4(3,2)-3(0,3)EE & 97.5823375 & -5.87199 & 144.0 & 8.2427 & True \\
-CH3OHvt=0-2 & 2(1)--1(1)-vt=0 & 97.582798 & -5.58063 & 5.0 & 21.56428 & True \\
-CH3OCHOv=1 & 8(3,6)-7(3,5)A & 97.597161 & -4.93596 & 34.0 & 214.94253 & False \\
-CH3CHOv=0,1\&2 & 5(3,2)-4(3,1)E,vt=2 & 97.6121311 & -4.96427 & 22.0 & 419.00323 & False \\
-(CH3)2COv=0 & 24(19,6)-24(18,7)EA & 97.6509022 & -4.71167 & 196.0 & 259.89613 & True \\
-CH3OCHOv=1 & 8(7,2)-7(7,1)E & 97.65127 & -5.49626 & 34.0 & 240.82138 & True \\
-CH3OCHOv=0 & 10(4,7)-10(3,8)E & 97.65127 & -5.90155 & 42.0 & 43.17298 & True \\
-CH3OCHOv=1 & 8(4,5)-7(4,4)A & 97.661401 & -4.99374 & 34.0 & 219.5983 & True \\
-CH3OHvt=0-2 & 21(6)--22(5)-vt=0 & 97.677684 & -5.8404 & 43.0 & 729.27324 & True \\
-CH3OHvt=0-2 & 21(6)+-22(5)+vt=0 & 97.678803 & -5.84029 & 43.0 & 729.2733 & True \\
-CH3OCHOv=0 & 10(4,7)-10(3,8)A & 97.69426 & -5.89578 & 42.0 & 43.16008 & False \\
-CH3CHOv=0,1\&2 & 21(3,18)-20(4,16)E,vt=0 & 97.7032783 & -7.2856 & 86.0 & 235.35569 & False \\
-CH3OCHOv=1 & 12(1,11)-12(0,12)A & 97.727054 & -6.2029 & 50.0 & 234.75313 & True \\
-(CH3)2COv=0 & 27(20,8)-27(19,9)AE & 97.7282777 & -4.63499 & 110.0 & 320.53358 & True \\
-CH3OCHOv=0 & 28(17,12)-29(16,14)E & 97.728721 & -6.91841 & 114.0 & 431.08182 & True \\
-c-H2COCH2 & 12(9,4)-12(8,5) & 97.7287339 & -5.00013 & 75.0 & 169.44951 & True \\
-CH3OCHOv=1 & 38(13,26)-37(14,23)A & 97.7384514 & -6.60823 & 154.0 & 735.89104 & True \\
-CH3OCHOv=1 & 8(6,3)-7(6,2)E & 97.738738 & -5.2243 & 34.0 & 232.09484 & True \\
-CH3OCHOv=1 & 8(4,4)-7(4,3)A & 97.752885 & -4.99242 & 34.0 & 219.60485 & False \\
-(CH3)2COv=0 & 6(5,2)-6(2,5)EE & 97.789851 & -7.4483 & 208.0 & 18.23973 & False \\
-(CH3)2COv=0 & 27(14,14)-26(17,9)EE & 97.8301673 & -7.8004 & 880.0 & 293.54472 & False \\
-CH2DOH & 4(1,3)-4(0,4),o1 & 97.8701924 & -5.33623 & 9.0 & 44.47072 & True \\
-CH3OCHOv=1 & 8(4,4)-8(3,5)E & 97.871147 & -5.967 & 34.0 & 219.25731 & True \\
-CH3OCHOv=1 & 10(4,7)-10(3,8)A & 97.878933 & -5.8854 & 42.0 & 230.75517 & False \\
-CH3OCHOv=1 & 8(5,4)-7(5,3)E & 97.885663 & -5.07871 & 34.0 & 224.73238 & False \\
-CH3OCHOv=1 & 8(4,4)-7(4,3)E & 97.897118 & -4.98749 & 34.0 & 219.25726 & False \\
-(CH3)2COv=0 & 37(22,15)-37(21,16)EA & 98.0520228 & -4.52388 & 300.0 & 570.25389 & True \\
-CH3OCHOv=0 & 25(9,17)-26(7,20)A & 98.0523585 & -7.81321 & 102.0 & 246.21155 & True \\
-(CH3)2COv=0 & 17(6,11)-17(5,12)EE & 98.0523987 & -4.76738 & 560.0 & 110.58732 & True \\
-(CH3)2COv=0 & 17(7,11)-17(6,12)EE & 98.0535346 & -4.76738 & 560.0 & 110.58738 & True \\
-CH2DOH & 3(1,2)-2(0,2),e1 & 98.0632819 & -5.55243 & 7.0 & 29.48884 & True \\
-(CH3)2COv=0 & 24(19,5)-24(18,6)AA & 98.0640513 & -4.70704 & 294.0 & 260.03595 & True \\
-CH3OCHOv=1 & 21(4,17)-21(3,18)A & 98.066305 & -5.78329 & 86.0 & 337.98379 & True \\
-(CH3)2COv=0 & 17(6,11)-17(5,12)AA & 98.1754362 & -4.76529 & 350.0 & 110.53956 & True \\
-CH3OCHOv=1 & 8(4,5)-7(4,4)E & 98.176293 & -4.98531 & 34.0 & 218.74378 & True \\
-(CH3)2COv=0 & 5(5,1)-4(4,0)AE & 98.1763437 & -4.46009 & 22.0 & 14.14584 & True \\
-(CH3)2COv=0 & 17(7,11)-17(6,12)AA & 98.1766038 & -4.76524 & 210.0 & 110.53962 & True \\
-CH3OCHOv=0 & 8(7,1)-7(7,0)E & 98.182336 & -5.49019 & 34.0 & 53.78191 & False \\
-CH3OCHOv=0 & 8(7,2)-7(7,1)A & 98.190658 & -5.48998 & 34.0 & 53.76403 & True \\
-CH3OCHOv=0 & 8(7,2)-7(7,1)A & 98.190658 & -5.48998 & 34.0 & 53.76403 & True \\
-CH3OCHOv=0 & 8(7,2)-7(7,1)E & 98.19146 & -5.49007 & 34.0 & 53.76249 & True \\
-CH3CHOv=0,1\&2 & 21(3,18)-20(4,17)A,vt=0 & 98.2016901 & -5.99346 & 86.0 & 235.38508 & False \\
-CH3OCHOv=0 & 8(6,2)-7(6,1)E & 98.270501 & -5.21799 & 34.0 & 45.15166 & False \\
-CH3OCHOv=0 & 8(6,3)-7(6,2)E & 98.278921 & -5.21788 & 34.0 & 45.13436 & True \\
-CH3OCHOv=0 & 8(6,3)-7(6,2)A & 98.279762 & -5.21778 & 34.0 & 45.13253 & True \\
-CH3OCHOv=0 & 8(6,3)-7(6,2)A & 98.279762 & -5.21778 & 34.0 & 45.13253 & True \\
-CH3CHOv=0,1\&2 & 6(3,3)-7(2,5)E,vt=0 & 98.3686305 & -6.22843 & 26.0 & 39.81105 & True \\
-CH3CHOv=0,1\&2 & 35(9,27)-36(8,29)E,vt=0 & 98.3688332 & -6.02796 & 142.0 & 765.04873 & True \\
-CH3OCHOv=1 & 9(0,9)-8(1,8)A & 98.423165 & -5.70107 & 38.0 & 212.63468 & True \\
-CH3OCHOv=0 & 8(5,3)-7(5,2)E & 98.424207 & -5.07218 & 34.0 & 37.85757 & True \\
-CH3OCHOv=0 & 8(5,4)-7(5,3)E & 98.431803 & -5.07207 & 34.0 & 37.84254 & True \\
-CH3OCHOv=0 & 8(5,4)-7(5,3)A & 98.43276 & -5.07197 & 34.0 & 37.83741 & True \\
-CH3OCHOv=0 & 8(5,3)-7(5,2)A & 98.435802 & -5.07196 & 34.0 & 37.83755 & True \\
-CH2DOH & 12(1,12)-11(2,10),e1 & 98.435839 & -6.14274 & 25.0 & 181.5263 & True \\
-CH3OCHOv=0 & 8(4,5)-7(4,3)E & 98.443186 & -6.46573 & 34.0 & 31.89622 & False
-\enddata
-\end{deluxetable*}
+% \startlongtable
+% \begin{deluxetable*}{ccccccc}
+% \tablehead{\colhead{Specie} & \colhead{Transition} & \colhead{nu0 [GHz]} & \colhead{logA [s-1]} & \colhead{gu} & \colhead{Eu [K]} & \colhead{blend} 
+% }
+% \startdata
+% \hline 
+% \multicolumn{7}{c}{spw 0} \\
+% \hline 
+% CH3OCHOv=0 & 7(6,1)-6(6,0)E & 85.919209 & -5.61387 & 30.0 & 40.43552 & False \\
+% NH2D & 1(1,1)0s-1(0,1)0a,F=0-1 & 85.9247829 & -4.62958 & 1.0 & 20.67862 & True \\
+% NH2D & 1(1,1)0s-1(0,1)0a,F=2-1 & 85.9257031 & -5.23165 & 5.0 & 20.67866 & True \\
+% NH2D & 1(1,1)0s-1(0,1)0a,F=2-2 & 85.9262703 & -4.75455 & 5.0 & 20.67869 & True \\
+% NH2D & 1(1,1)0s-1(0,1)0a,F=1-1 & 85.9263165 & -5.2317 & 3.0 & 20.67869 & True \\
+% CH3OCHOv=0 & 7(6,2)-6(6,1)E & 85.926553 & -5.61375 & 30.0 & 40.41775 & True \\
+% NH2D & 1(1,1)0s-1(0,1)0a,F=1-2 & 85.9268837 & -5.00979 & 3.0 & 20.67872 & True \\
+% CH3OCHOv=0 & 7(6,2)-6(6,1)A & 85.927227 & -5.61365 & 30.0 & 40.41591 & True \\
+% CH3OCHOv=0 & 7(6,2)-6(6,1)A & 85.927227 & -5.61365 & 30.0 & 40.41591 & True \\
+% NH2D & 1(1,1)0s-1(0,1)0a,F=1-0 & 85.9277345 & -5.10669 & 3.0 & 20.67876 & True \\
+% CH3CHOv=0,1\&2 & 9(1,8)-9(0,9)E,vt=1 & 85.9476243 & -5.54243 & 38.0 & 249.80506 & False \\
+% \hline 
+% \multicolumn{7}{c}{spw 1} \\
+% \hline 
+% CH3OCHOv=1 & 7(4,3)-6(4,2)E & 85.506219 & -5.21427 & 30.0 & 214.55908 & False \\
+% CH3OCHOv=1 & 7(5,3)-6(5,2)E & 85.55338 & -5.35271 & 30.0 & 220.03471 & False \\
+% \hline 
+% \multicolumn{7}{c}{spw 2} \\
+% \hline 
+% OCSv=0 & 7-6 & 85.139121 & -5.76601 & 15.0 & 16.34418 & False \\
+% CH3OCHOv=1 & 7(6,1)-6(6,0)E & 85.157135 & -5.62487 & 30.0 & 228.14704 & False \\
+% CH3OCHOv=1 & 7(5,3)-6(5,2)A & 85.185466 & -5.36022 & 30.0 & 220.89672 & True \\
+% CH3OCHOv=1 & 7(5,2)-6(5,1)A & 85.186063 & -5.36022 & 30.0 & 220.89674 & True \\
+% \hline 
+% \multicolumn{7}{c}{spw 3} \\
+% \hline 
+% \hline 
+% \multicolumn{7}{c}{spw 4} \\
+% \hline
+% H13CO+ & 1-0 & 86.7542884 & -4.41685 & 3.0 & 4.16353 & False \\
+% \hline
+% \multicolumn{7}{c}{spw 5} \\
+% \hline
+% CH2DOH & 2(1,1)-2(0,2),e0 & 86.6687511 & -5.33219 & 5.0 & 10.59631 & False \\
+% \hline
+% \multicolumn{7}{c}{spw 6} \\
+% \hline 
+% CCHv=0 & N=1-0,J=3/2-1/2,F=2-1 & 87.316925 & -5.65605 & 5.0 & 4.19269 & False \\
+% CCHv=0 & N=1-0,J=3/2-1/2,F=1-0 & 87.328624 & -5.73675 & 3.0 & 4.19109 & False \\
+% \hline
+% \multicolumn{7}{c}{spw 7} \\
+% \hline 
+% CH3CHOv=0,1\&2 & 5(2,3)-4(2,2)E,vt=0 & 96.4755237 & -4.60025 & 22.0 & 23.02545 & False \\
+% CH3CHOv=0,1\&2 & 11(4,8)-12(3,10)E,vt=0 & 96.48895 & -6.13753 & 46.0 & 97.14095 & False \\
+% CH3OHvt=0-2 & 2(1)-1(1)E1vt=1 & 96.492163 & -5.59639 & 5.0 & 298.41879 & True \\
+% CH2DOH & 10(3,7)-9(4,5),o1 & 96.4934197 & -6.30869 & 21.0 & 173.10984 & True \\
+% CH3OHvt=0-2 & 2(0)-1(0)E1vt=1 & 96.493551 & -5.4706 & 5.0 & 307.52339 & True \\
+% CH3OCHOv=1 & 38(8,30)-37(10,27)A & 96.4944086 & -7.41255 & 154.0 & 673.92731 & True \\
+% c-H2COCH2 & 11(9,3)-11(8,4) & 96.5010246 & -5.08298 & 115.0 & 146.7461 & True \\
+% CH3OHvt=0-2 & 2(-1)-1(-1)E2vt=1 & 96.501713 & -5.59667 & 5.0 & 420.32181 & True \\
+% CH3CHOv=0,1\&2 & 31(5,26)-30(6,24)E,vt=1 & 96.5076644 & -6.03046 & 126.0 & 721.87807 & True \\
+% CH3OCHOv=0 & 7(4,4)-7(3,5)E & 96.507882 & -6.15428 & 30.0 & 27.15885 & True \\
+% CH3OCHOv=1 & 22(14,9)-23(13,11)E & 96.508005 & -6.96749 & 90.0 & 466.84743 & True \\
+% (CH3)2COv=0 & 19(9,11)-19(8,12)AE & 96.5134586 & -4.71844 & 78.0 & 143.23696 & True \\
+% (CH3)2COv=0 & 19(9,11)-19(8,12)EA & 96.5136227 & -4.71847 & 156.0 & 143.23711 & True \\
+% CH3OHvt=0-2 & 2(0)+-1(0)+vt=1 & 96.513686 & -5.47055 & 5.0 & 430.59375 & True \\
+% \hline
+% \multicolumn{7}{c}{spw 8} \\
+% \hline 
+% CH3CHOv=0,1\&2 & 5(3,3)-4(3,2)A,vt=2 & 96.7161135 & -4.72086 & 22.0 & 420.57942 & True \\
+% CH3CHOv=0,1\&2 & 5(3,2)-4(3,1)A,vt=2 & 96.7174728 & -4.72086 & 22.0 & 420.57948 & True \\
+% CH3CHOv=0,1\&2 & 5(2,3)-4(2,2)A,vt=1 & 96.7184092 & -4.59281 & 22.0 & 228.29759 & True \\
+% CH3OHvt=0-2 & 2(-1)-1(-1)E2vt=0 & 96.739358 & -5.59213 & 5.0 & 12.54157 & True \\
+% CH3OHvt=0-2 & 2(0)+-1(0)+vt=0 & 96.741371 & -5.4675 & 5.0 & 6.965 & True \\
+% CH3OHvt=0-2 & 2(0)-1(0)E1vt=0 & 96.744545 & -5.46758 & 5.0 & 20.0896 & False \\
+% CH3OHvt=0-2 & 2(1)-1(1)E1vt=0 & 96.755501 & -5.58097 & 5.0 & 28.01055 & False \\
+% CH3CHOv=0,1\&2 & 7(0,7)-6(1,6)A,vt=0 & 96.7653706 & -5.53907 & 30.0 & 25.77791 & False \\
+% \hline
+% \multicolumn{7}{c}{spw 9} \\
+% \hline 
+% CH3OCHOv=0 & 8(4,5)-8(3,6)A & 96.709259 & -5.9454 & 34.0 & 31.88523 & False \\
+% CH3CHOv=0,1\&2 & 5(3,3)-4(3,2)A,vt=2 & 96.7161135 & -4.72086 & 22.0 & 420.57942 & True \\
+% CH3CHOv=0,1\&2 & 5(3,2)-4(3,1)A,vt=2 & 96.7174728 & -4.72086 & 22.0 & 420.57948 & True \\
+% CH3CHOv=0,1\&2 & 5(2,3)-4(2,2)A,vt=1 & 96.7184092 & -4.59281 & 22.0 & 228.29759 & True \\
+% CH3OHvt=0-2 & 2(-1)-1(-1)E2vt=0 & 96.739358 & -5.59213 & 5.0 & 12.54157 & True \\
+% CH3OHvt=0-2 & 2(0)+-1(0)+vt=0 & 96.741371 & -5.4675 & 5.0 & 6.965 & True \\
+% CH3OHvt=0-2 & 2(0)-1(0)E1vt=0 & 96.744545 & -5.46758 & 5.0 & 20.0896 & True \\
+% CH3OHvt=0-2 & 2(1)-1(1)E1vt=0 & 96.755501 & -5.58097 & 5.0 & 28.01055 & True \\
+% CH3CHOv=0,1\&2 & 7(0,7)-6(1,6)A,vt=0 & 96.7653706 & -5.53907 & 30.0 & 25.77791 & False \\
+% CH3OCHOv=0 & 7(4,3)-7(3,5)E & 96.776715 & -6.45236 & 30.0 & 27.17176 & False \\
+% CH3OCHOv=0 & 5(4,2)-5(3,3)A & 96.794121 & -6.10264 & 22.0 & 19.47072 & False \\
+% CH3CHOv=0,1\&2 & 5(2,4)-4(2,3)E,vt=1 & 96.8002908 & -4.59642 & 22.0 & 226.4481 & True \\
+% CH3OCHOv=0 & 4(4,1)-4(3,2)E & 96.800837 & -6.28901 & 18.0 & 16.53264 & True \\
+% \hline
+% \multicolumn{7}{c}{spw 10} \\
+% \hline 
+% CH3OCHOv=0 & 26(8,19)-25(9,17)E & 97.574702 & -7.00164 & 106.0 & 250.89139 & True \\
+% CH3OCHOv=1 & 8(5,3)-7(5,2)E & 97.577303 & -5.08237 & 34.0 & 225.35927 & True \\
+% (CH3)2COv=0 & 4(3,2)-3(0,3)EE & 97.5823375 & -5.87199 & 144.0 & 8.2427 & True \\
+% CH3OHvt=0-2 & 2(1)--1(1)-vt=0 & 97.582798 & -5.58063 & 5.0 & 21.56428 & True \\
+% CH3OCHOv=1 & 8(3,6)-7(3,5)A & 97.597161 & -4.93596 & 34.0 & 214.94253 & False \\
+% CH3CHOv=0,1\&2 & 5(3,2)-4(3,1)E,vt=2 & 97.6121311 & -4.96427 & 22.0 & 419.00323 & False \\
+% (CH3)2COv=0 & 24(19,6)-24(18,7)EA & 97.6509022 & -4.71167 & 196.0 & 259.89613 & True \\
+% CH3OCHOv=1 & 8(7,2)-7(7,1)E & 97.65127 & -5.49626 & 34.0 & 240.82138 & True \\
+% CH3OCHOv=0 & 10(4,7)-10(3,8)E & 97.65127 & -5.90155 & 42.0 & 43.17298 & True \\
+% CH3OCHOv=1 & 8(4,5)-7(4,4)A & 97.661401 & -4.99374 & 34.0 & 219.5983 & True \\
+% CH3OHvt=0-2 & 21(6)--22(5)-vt=0 & 97.677684 & -5.8404 & 43.0 & 729.27324 & True \\
+% CH3OHvt=0-2 & 21(6)+-22(5)+vt=0 & 97.678803 & -5.84029 & 43.0 & 729.2733 & True \\
+% CH3OCHOv=0 & 10(4,7)-10(3,8)A & 97.69426 & -5.89578 & 42.0 & 43.16008 & False \\
+% CH3CHOv=0,1\&2 & 21(3,18)-20(4,16)E,vt=0 & 97.7032783 & -7.2856 & 86.0 & 235.35569 & False \\
+% CH3OCHOv=1 & 12(1,11)-12(0,12)A & 97.727054 & -6.2029 & 50.0 & 234.75313 & True \\
+% (CH3)2COv=0 & 27(20,8)-27(19,9)AE & 97.7282777 & -4.63499 & 110.0 & 320.53358 & True \\
+% CH3OCHOv=0 & 28(17,12)-29(16,14)E & 97.728721 & -6.91841 & 114.0 & 431.08182 & True \\
+% c-H2COCH2 & 12(9,4)-12(8,5) & 97.7287339 & -5.00013 & 75.0 & 169.44951 & True \\
+% CH3OCHOv=1 & 38(13,26)-37(14,23)A & 97.7384514 & -6.60823 & 154.0 & 735.89104 & True \\
+% CH3OCHOv=1 & 8(6,3)-7(6,2)E & 97.738738 & -5.2243 & 34.0 & 232.09484 & True \\
+% CH3OCHOv=1 & 8(4,4)-7(4,3)A & 97.752885 & -4.99242 & 34.0 & 219.60485 & False \\
+% (CH3)2COv=0 & 6(5,2)-6(2,5)EE & 97.789851 & -7.4483 & 208.0 & 18.23973 & False \\
+% (CH3)2COv=0 & 27(14,14)-26(17,9)EE & 97.8301673 & -7.8004 & 880.0 & 293.54472 & False \\
+% CH2DOH & 4(1,3)-4(0,4),o1 & 97.8701924 & -5.33623 & 9.0 & 44.47072 & True \\
+% CH3OCHOv=1 & 8(4,4)-8(3,5)E & 97.871147 & -5.967 & 34.0 & 219.25731 & True \\
+% CH3OCHOv=1 & 10(4,7)-10(3,8)A & 97.878933 & -5.8854 & 42.0 & 230.75517 & False \\
+% CH3OCHOv=1 & 8(5,4)-7(5,3)E & 97.885663 & -5.07871 & 34.0 & 224.73238 & False \\
+% CH3OCHOv=1 & 8(4,4)-7(4,3)E & 97.897118 & -4.98749 & 34.0 & 219.25726 & False \\
+% (CH3)2COv=0 & 37(22,15)-37(21,16)EA & 98.0520228 & -4.52388 & 300.0 & 570.25389 & True \\
+% CH3OCHOv=0 & 25(9,17)-26(7,20)A & 98.0523585 & -7.81321 & 102.0 & 246.21155 & True \\
+% (CH3)2COv=0 & 17(6,11)-17(5,12)EE & 98.0523987 & -4.76738 & 560.0 & 110.58732 & True \\
+% (CH3)2COv=0 & 17(7,11)-17(6,12)EE & 98.0535346 & -4.76738 & 560.0 & 110.58738 & True \\
+% CH2DOH & 3(1,2)-2(0,2),e1 & 98.0632819 & -5.55243 & 7.0 & 29.48884 & True \\
+% (CH3)2COv=0 & 24(19,5)-24(18,6)AA & 98.0640513 & -4.70704 & 294.0 & 260.03595 & True \\
+% CH3OCHOv=1 & 21(4,17)-21(3,18)A & 98.066305 & -5.78329 & 86.0 & 337.98379 & True \\
+% (CH3)2COv=0 & 17(6,11)-17(5,12)AA & 98.1754362 & -4.76529 & 350.0 & 110.53956 & True \\
+% CH3OCHOv=1 & 8(4,5)-7(4,4)E & 98.176293 & -4.98531 & 34.0 & 218.74378 & True \\
+% (CH3)2COv=0 & 5(5,1)-4(4,0)AE & 98.1763437 & -4.46009 & 22.0 & 14.14584 & True \\
+% (CH3)2COv=0 & 17(7,11)-17(6,12)AA & 98.1766038 & -4.76524 & 210.0 & 110.53962 & True \\
+% CH3OCHOv=0 & 8(7,1)-7(7,0)E & 98.182336 & -5.49019 & 34.0 & 53.78191 & False \\
+% CH3OCHOv=0 & 8(7,2)-7(7,1)A & 98.190658 & -5.48998 & 34.0 & 53.76403 & True \\
+% CH3OCHOv=0 & 8(7,2)-7(7,1)A & 98.190658 & -5.48998 & 34.0 & 53.76403 & True \\
+% CH3OCHOv=0 & 8(7,2)-7(7,1)E & 98.19146 & -5.49007 & 34.0 & 53.76249 & True \\
+% CH3CHOv=0,1\&2 & 21(3,18)-20(4,17)A,vt=0 & 98.2016901 & -5.99346 & 86.0 & 235.38508 & False \\
+% CH3OCHOv=0 & 8(6,2)-7(6,1)E & 98.270501 & -5.21799 & 34.0 & 45.15166 & False \\
+% CH3OCHOv=0 & 8(6,3)-7(6,2)E & 98.278921 & -5.21788 & 34.0 & 45.13436 & True \\
+% CH3OCHOv=0 & 8(6,3)-7(6,2)A & 98.279762 & -5.21778 & 34.0 & 45.13253 & True \\
+% CH3OCHOv=0 & 8(6,3)-7(6,2)A & 98.279762 & -5.21778 & 34.0 & 45.13253 & True \\
+% CH3CHOv=0,1\&2 & 6(3,3)-7(2,5)E,vt=0 & 98.3686305 & -6.22843 & 26.0 & 39.81105 & True \\
+% CH3CHOv=0,1\&2 & 35(9,27)-36(8,29)E,vt=0 & 98.3688332 & -6.02796 & 142.0 & 765.04873 & True \\
+% CH3OCHOv=1 & 9(0,9)-8(1,8)A & 98.423165 & -5.70107 & 38.0 & 212.63468 & True \\
+% CH3OCHOv=0 & 8(5,3)-7(5,2)E & 98.424207 & -5.07218 & 34.0 & 37.85757 & True \\
+% CH3OCHOv=0 & 8(5,4)-7(5,3)E & 98.431803 & -5.07207 & 34.0 & 37.84254 & True \\
+% CH3OCHOv=0 & 8(5,4)-7(5,3)A & 98.43276 & -5.07197 & 34.0 & 37.83741 & True \\
+% CH3OCHOv=0 & 8(5,3)-7(5,2)A & 98.435802 & -5.07196 & 34.0 & 37.83755 & True \\
+% CH2DOH & 12(1,12)-11(2,10),e1 & 98.435839 & -6.14274 & 25.0 & 181.5263 & True \\
+% CH3OCHOv=0 & 8(4,5)-7(4,3)E & 98.443186 & -6.46573 & 34.0 & 31.89622 & False
+% \enddata
+% \end{deluxetable*}
 
-% for each molecule
-\begin{deluxetable*}{ccccccc}
-\tablehead{\colhead{Specie} & \colhead{Transition} & \colhead{nu0 [GHz]} & \colhead{logA [s$^{-1}$]} & \colhead{$g_u$} & \colhead{$E_u$ [K]} & \colhead{blend}}
-\startdata
-CH3OHvt=0-2 & 2(1)-1(1)E1vt=1 & 96.492163 & -5.59639 & 5.0 & 298.41879 & True \\
-CH3OHvt=0-2 & 2(0)-1(0)E1vt=1 & 96.493551 & -5.4706 & 5.0 & 307.52339 & True \\
-CH3OHvt=0-2 & 2(-1)-1(-1)E2vt=1 & 96.501713 & -5.59667 & 5.0 & 420.32181 & True \\
-CH3OHvt=0-2 & 2(0)+-1(0)+vt=1 & 96.513686 & -5.47055 & 5.0 & 430.59375 & True \\
-CH3OHvt=0-2 & 2(-1)-1(-1)E2vt=0 & 96.739358 & -5.59213 & 5.0 & 12.54157 & True \\
-CH3OHvt=0-2 & 2(0)+-1(0)+vt=0 & 96.741371 & -5.4675 & 5.0 & 6.965 & True \\
-CH3OHvt=0-2 & 2(0)-1(0)E1vt=0 & 96.744545 & -5.46758 & 5.0 & 20.0896 & False \\
-CH3OHvt=0-2 & 2(1)-1(1)E1vt=0 & 96.755501 & -5.58097 & 5.0 & 28.01055 & False \\
-CH3OHvt=0-2 & 2(-1)-1(-1)E2vt=0 & 96.739358 & -5.59213 & 5.0 & 12.54157 & True \\
-CH3OHvt=0-2 & 2(0)+-1(0)+vt=0 & 96.741371 & -5.4675 & 5.0 & 6.965 & True \\
-CH3OHvt=0-2 & 2(0)-1(0)E1vt=0 & 96.744545 & -5.46758 & 5.0 & 20.0896 & False \\
-CH3OHvt=0-2 & 2(1)-1(1)E1vt=0 & 96.755501 & -5.58097 & 5.0 & 28.01055 & False \\
-CH3OHvt=0-2 & 2(1)--1(1)-vt=0 & 97.582798 & -5.58063 & 5.0 & 21.56428 & True \\
-CH3OHvt=0-2 & 21(6)--22(5)-vt=0 & 97.677684 & -5.8404 & 43.0 & 729.27324 & True \\
-CH3OHvt=0-2 & 21(6)+-22(5)+vt=0 & 97.678803 & -5.84029 & 43.0 & 729.2733 & True
-\enddata
-\end{deluxetable*}
+% % for each molecule
+% \begin{deluxetable*}{ccccccc}
+% \tablehead{\colhead{Specie} & \colhead{Transition} & \colhead{nu0 [GHz]} & \colhead{logA [s$^{-1}$]} & \colhead{$g_u$} & \colhead{$E_u$ [K]} & \colhead{blend}}
+% \startdata
+% CH3OHvt=0-2 & 2(1)-1(1)E1vt=1 & 96.492163 & -5.59639 & 5.0 & 298.41879 & True \\
+% CH3OHvt=0-2 & 2(0)-1(0)E1vt=1 & 96.493551 & -5.4706 & 5.0 & 307.52339 & True \\
+% CH3OHvt=0-2 & 2(-1)-1(-1)E2vt=1 & 96.501713 & -5.59667 & 5.0 & 420.32181 & True \\
+% CH3OHvt=0-2 & 2(0)+-1(0)+vt=1 & 96.513686 & -5.47055 & 5.0 & 430.59375 & True \\
+% CH3OHvt=0-2 & 2(-1)-1(-1)E2vt=0 & 96.739358 & -5.59213 & 5.0 & 12.54157 & True \\
+% CH3OHvt=0-2 & 2(0)+-1(0)+vt=0 & 96.741371 & -5.4675 & 5.0 & 6.965 & True \\
+% CH3OHvt=0-2 & 2(0)-1(0)E1vt=0 & 96.744545 & -5.46758 & 5.0 & 20.0896 & False \\
+% CH3OHvt=0-2 & 2(1)-1(1)E1vt=0 & 96.755501 & -5.58097 & 5.0 & 28.01055 & False \\
+% CH3OHvt=0-2 & 2(-1)-1(-1)E2vt=0 & 96.739358 & -5.59213 & 5.0 & 12.54157 & True \\
+% CH3OHvt=0-2 & 2(0)+-1(0)+vt=0 & 96.741371 & -5.4675 & 5.0 & 6.965 & True \\
+% CH3OHvt=0-2 & 2(0)-1(0)E1vt=0 & 96.744545 & -5.46758 & 5.0 & 20.0896 & False \\
+% CH3OHvt=0-2 & 2(1)-1(1)E1vt=0 & 96.755501 & -5.58097 & 5.0 & 28.01055 & False \\
+% CH3OHvt=0-2 & 2(1)--1(1)-vt=0 & 97.582798 & -5.58063 & 5.0 & 21.56428 & True \\
+% CH3OHvt=0-2 & 21(6)--22(5)-vt=0 & 97.677684 & -5.8404 & 43.0 & 729.27324 & True \\
+% CH3OHvt=0-2 & 21(6)+-22(5)+vt=0 & 97.678803 & -5.84029 & 43.0 & 729.2733 & True
+% \enddata
+% \end{deluxetable*}
 
-\begin{deluxetable*}{ccccccc}
-\tablehead{\colhead{Specie} & \colhead{Transition} & \colhead{nu0 [GHz]} & \colhead{logA [s$^{-1}$]} & \colhead{g$_u$} & \colhead{$E_u$ [K]} & \colhead{blend}}
-\startdata
-CH2DOH & 14(2,13)-15(0,15),o1 & 97.8117417 & -8.98345 & 29.0 & 260.26212 & True \\
-CH2DOH & 4(1,3)-4(0,4),o1 & 97.8701924 & -5.33623 & 9.0 & 44.47072 & True \\
-CH2DOH & 12(1,12)-11(2,10),e1 & 98.435839 & -6.14274 & 25.0 & 181.5263 & True
-\enddata
-\end{deluxetable*}
+% \begin{deluxetable*}{ccccccc}
+% \tablehead{\colhead{Specie} & \colhead{Transition} & \colhead{nu0 [GHz]} & \colhead{logA [s$^{-1}$]} & \colhead{g$_u$} & \colhead{$E_u$ [K]} & \colhead{blend}}
+% \startdata
+% CH2DOH & 14(2,13)-15(0,15),o1 & 97.8117417 & -8.98345 & 29.0 & 260.26212 & True \\
+% CH2DOH & 4(1,3)-4(0,4),o1 & 97.8701924 & -5.33623 & 9.0 & 44.47072 & True \\
+% CH2DOH & 12(1,12)-11(2,10),e1 & 98.435839 & -6.14274 & 25.0 & 181.5263 & True
+% \enddata
+% \end{deluxetable*}
 
-\begin{deluxetable*}{ccccccc}
-\tablehead{\colhead{Specie} & \colhead{Transition} & \colhead{nu0 [GHz]} & \colhead{logA [s$^{-1}$]} & \colhead{$g_u$} & \colhead{$E_u$ [K]} & \colhead{blend}}
-\startdata
-CH3CHOv=0,1\&2 & 9(1,8)-9(0,9)E,vt=1 & 85.9476243 & -5.54243 & 38.0 & 249.80506 & False \\
-CH3CHOv=0,1\&2 & 5(2,3)-4(2,2)E,vt=0 & 96.4755237 & -4.60025 & 22.0 & 23.02545 & False \\
-CH3CHOv=0,1\&2 & 11(4,8)-12(3,10)E,vt=0 & 96.48895 & -6.13753 & 46.0 & 97.14095 & False \\
-CH3CHOv=0,1\&2 & 5(3,3)-4(3,2)A,vt=2 & 96.7161135 & -4.72086 & 22.0 & 420.57942 & True \\
-CH3CHOv=0,1\&2 & 5(3,2)-4(3,1)A,vt=2 & 96.7174728 & -4.72086 & 22.0 & 420.57948 & True \\
-CH3CHOv=0,1\&2 & 5(2,3)-4(2,2)A,vt=1 & 96.7184092 & -4.59281 & 22.0 & 228.29759 & True \\
-CH3CHOv=0,1\&2 & 7(0,7)-6(1,6)A,vt=0 & 96.7653706 & -5.53907 & 30.0 & 25.77791 & False \\
-CH3CHOv=0,1\&2 & 5(3,3)-4(3,2)A,vt=2 & 96.7161135 & -4.72086 & 22.0 & 420.57942 & True \\
-CH3CHOv=0,1\&2 & 5(3,2)-4(3,1)A,vt=2 & 96.7174728 & -4.72086 & 22.0 & 420.57948 & True \\
-CH3CHOv=0,1\&2 & 5(2,3)-4(2,2)A,vt=1 & 96.7184092 & -4.59281 & 22.0 & 228.29759 & True \\
-CH3CHOv=0,1\&2 & 7(0,7)-6(1,6)A,vt=0 & 96.7653706 & -5.53907 & 30.0 & 25.77791 & False \\
-CH3CHOv=0,1\&2 & 5(2,4)-4(2,3)E,vt=1 & 96.8002908 & -4.59642 & 22.0 & 226.4481 & True \\
-CH3CHOv=0,1\&2 & 5(3,2)-4(3,1)E,vt=2 & 97.6121311 & -4.96427 & 22.0 & 419.00323 & False \\
-CH3CHOv=0,1\&2 & 21(3,18)-20(4,16)E,vt=0 & 97.7032783 & -7.2856 & 86.0 & 235.35569 & True \\
-CH3CHOv=0,1\&2 & 19(2,18)-18(3,15)E,vt=0 & 97.796104 & -6.10822 & 78.0 & 183.86849 & False \\
-CH3CHOv=0,1\&2 & 21(3,18)-20(4,17)A,vt=0 & 98.2016901 & -5.99346 & 86.0 & 235.38508 & False \\
-CH3CHOv=0,1\&2 & 6(3,3)-7(2,5)E,vt=0 & 98.3686305 & -6.22843 & 26.0 & 39.81105 & True \\
-CH3CHOv=0,1\&2 & 35(9,27)-36(8,29)E,vt=0 & 98.3688332 & -6.02796 & 142.0 & 765.04873 & True
-\enddata
-\end{deluxetable*}
+% \begin{deluxetable*}{ccccccc}
+% \tablehead{\colhead{Specie} & \colhead{Transition} & \colhead{nu0 [GHz]} & \colhead{logA [s$^{-1}$]} & \colhead{$g_u$} & \colhead{$E_u$ [K]} & \colhead{blend}}
+% \startdata
+% CH3CHOv=0,1\&2 & 9(1,8)-9(0,9)E,vt=1 & 85.9476243 & -5.54243 & 38.0 & 249.80506 & False \\
+% CH3CHOv=0,1\&2 & 5(2,3)-4(2,2)E,vt=0 & 96.4755237 & -4.60025 & 22.0 & 23.02545 & False \\
+% CH3CHOv=0,1\&2 & 11(4,8)-12(3,10)E,vt=0 & 96.48895 & -6.13753 & 46.0 & 97.14095 & False \\
+% CH3CHOv=0,1\&2 & 5(3,3)-4(3,2)A,vt=2 & 96.7161135 & -4.72086 & 22.0 & 420.57942 & True \\
+% CH3CHOv=0,1\&2 & 5(3,2)-4(3,1)A,vt=2 & 96.7174728 & -4.72086 & 22.0 & 420.57948 & True \\
+% CH3CHOv=0,1\&2 & 5(2,3)-4(2,2)A,vt=1 & 96.7184092 & -4.59281 & 22.0 & 228.29759 & True \\
+% CH3CHOv=0,1\&2 & 7(0,7)-6(1,6)A,vt=0 & 96.7653706 & -5.53907 & 30.0 & 25.77791 & False \\
+% CH3CHOv=0,1\&2 & 5(3,3)-4(3,2)A,vt=2 & 96.7161135 & -4.72086 & 22.0 & 420.57942 & True \\
+% CH3CHOv=0,1\&2 & 5(3,2)-4(3,1)A,vt=2 & 96.7174728 & -4.72086 & 22.0 & 420.57948 & True \\
+% CH3CHOv=0,1\&2 & 5(2,3)-4(2,2)A,vt=1 & 96.7184092 & -4.59281 & 22.0 & 228.29759 & True \\
+% CH3CHOv=0,1\&2 & 7(0,7)-6(1,6)A,vt=0 & 96.7653706 & -5.53907 & 30.0 & 25.77791 & False \\
+% CH3CHOv=0,1\&2 & 5(2,4)-4(2,3)E,vt=1 & 96.8002908 & -4.59642 & 22.0 & 226.4481 & True \\
+% CH3CHOv=0,1\&2 & 5(3,2)-4(3,1)E,vt=2 & 97.6121311 & -4.96427 & 22.0 & 419.00323 & False \\
+% CH3CHOv=0,1\&2 & 21(3,18)-20(4,16)E,vt=0 & 97.7032783 & -7.2856 & 86.0 & 235.35569 & True \\
+% CH3CHOv=0,1\&2 & 19(2,18)-18(3,15)E,vt=0 & 97.796104 & -6.10822 & 78.0 & 183.86849 & False \\
+% CH3CHOv=0,1\&2 & 21(3,18)-20(4,17)A,vt=0 & 98.2016901 & -5.99346 & 86.0 & 235.38508 & False \\
+% CH3CHOv=0,1\&2 & 6(3,3)-7(2,5)E,vt=0 & 98.3686305 & -6.22843 & 26.0 & 39.81105 & True \\
+% CH3CHOv=0,1\&2 & 35(9,27)-36(8,29)E,vt=0 & 98.3688332 & -6.02796 & 142.0 & 765.04873 & True
+% \enddata
+% \end{deluxetable*}
 
-\begin{deluxetable*}{ccccccc}
-\tablehead{\colhead{Specie} & \colhead{Transition} & \colhead{nu0 [GHz]} & \colhead{logA [s$^{-1}$]} & \colhead{$g_u$} & \colhead{$E_u$ [K]} & \colhead{blend}}
-\startdata
-C2H5OH & 10(3,7)-9(4,5),g- & 96.5012182 & -6.18859 & 21.0 & 118.41907 & True \\
-C2H5OH & 21(1,20)-21(1,20),g- & 96.7090204 & -7.79352 & 43.0 & 255.53559 & True \\
-C2H5OH & 27(3,25)-27(3,25),g- & 97.7392926 & -8.41295 & 55.0 & 385.81102 & True \\
-C2H5OH & 29(1,29)-29(0,29),g- & 97.8159306 & -4.92423 & 59.0 & 406.7243 & True \\
-C2H5OH & 30(1,29)-30(2,29),g- & 97.8289514 & -5.01714 & 61.0 & 444.44702 & True \\
-C2H5OH & 30(1,30)-30(1,30),g- & 97.8693651 & -6.20418 & 61.0 & 430.27504 & True
-\enddata
-\end{deluxetable*}
+% \begin{deluxetable*}{ccccccc}
+% \tablehead{\colhead{Specie} & \colhead{Transition} & \colhead{nu0 [GHz]} & \colhead{logA [s$^{-1}$]} & \colhead{$g_u$} & \colhead{$E_u$ [K]} & \colhead{blend}}
+% \startdata
+% C2H5OH & 10(3,7)-9(4,5),g- & 96.5012182 & -6.18859 & 21.0 & 118.41907 & True \\
+% C2H5OH & 21(1,20)-21(1,20),g- & 96.7090204 & -7.79352 & 43.0 & 255.53559 & True \\
+% C2H5OH & 27(3,25)-27(3,25),g- & 97.7392926 & -8.41295 & 55.0 & 385.81102 & True \\
+% C2H5OH & 29(1,29)-29(0,29),g- & 97.8159306 & -4.92423 & 59.0 & 406.7243 & True \\
+% C2H5OH & 30(1,29)-30(2,29),g- & 97.8289514 & -5.01714 & 61.0 & 444.44702 & True \\
+% C2H5OH & 30(1,30)-30(1,30),g- & 97.8693651 & -6.20418 & 61.0 & 430.27504 & True
+% \enddata
+% \end{deluxetable*}
 
-\begin{deluxetable*}{ccccccc}
-\tablehead{\colhead{Specie} & \colhead{Transition} & \colhead{nu0 [GHz]} & \colhead{logA [s$^{-1}$]} & \colhead{$g_u$} & \colhead{$E_u$ [K]} & \colhead{blend}}
-\startdata
-CH3OCHOv=0 & 7(6,1)-6(6,0)E & 85.919209 & -5.61387 & 30.0 & 40.43552 & False \\
-CH3OCHOv=0 & 7(6,2)-6(6,1)E & 85.926553 & -5.61375 & 30.0 & 40.41775 & True \\
-CH3OCHOv=0 & 7(6,2)-6(6,1)A & 85.927227 & -5.61365 & 30.0 & 40.41591 & True \\
-CH3OCHOv=0 & 7(6,2)-6(6,1)A & 85.927227 & -5.61365 & 30.0 & 40.41591 & True \\
-CH3OCHOv=0 & 7(4,4)-7(3,5)E & 96.507882 & -6.15428 & 30.0 & 27.15885 & False \\
-CH3OCHOv=0 & 8(4,5)-8(3,6)A & 96.709259 & -5.9454 & 34.0 & 31.88523 & True \\
-CH3OCHOv=0 & 7(4,3)-7(3,5)E & 96.776715 & -6.45236 & 30.0 & 27.17176 & False \\
-CH3OCHOv=0 & 5(4,2)-5(3,3)A & 96.794121 & -6.10264 & 22.0 & 19.47072 & False \\
-CH3OCHOv=0 & 4(4,1)-4(3,2)E & 96.800837 & -6.28901 & 18.0 & 16.53264 & True \\
-CH3OCHOv=0 & 26(8,19)-25(9,17)E & 97.574702 & -7.00164 & 106.0 & 250.89139 & True \\
-CH3OCHOv=0 & 10(4,7)-10(3,8)E & 97.65127 & -5.90155 & 42.0 & 43.17298 & True \\
-CH3OCHOv=0 & 10(4,7)-10(3,8)A & 97.69426 & -5.89578 & 42.0 & 43.16008 & True \\
-CH3OCHOv=0 & 28(17,12)-29(16,14)E & 97.728721 & -6.91841 & 114.0 & 431.08182 & True \\
-CH3OCHOv=0 & 25(9,17)-26(7,20)A & 98.0523585 & -7.81321 & 102.0 & 246.21155 & True \\
-CH3OCHOv=0 & 8(7,1)-7(7,0)E & 98.182336 & -5.49019 & 34.0 & 53.78191 & False \\
-CH3OCHOv=0 & 8(7,2)-7(7,1)A & 98.190658 & -5.48998 & 34.0 & 53.76403 & True \\
-CH3OCHOv=0 & 8(7,2)-7(7,1)A & 98.190658 & -5.48998 & 34.0 & 53.76403 & True \\
-CH3OCHOv=0 & 8(7,2)-7(7,1)E & 98.19146 & -5.49007 & 34.0 & 53.76249 & True \\
-CH3OCHOv=0 & 8(6,2)-7(6,1)E & 98.270501 & -5.21799 & 34.0 & 45.15166 & False \\
-CH3OCHOv=0 & 8(6,3)-7(6,2)E & 98.278921 & -5.21788 & 34.0 & 45.13436 & True \\
-CH3OCHOv=0 & 8(6,3)-7(6,2)A & 98.279762 & -5.21778 & 34.0 & 45.13253 & True \\
-CH3OCHOv=0 & 8(6,3)-7(6,2)A & 98.279762 & -5.21778 & 34.0 & 45.13253 & True \\
-CH3OCHOv=0 & 8(5,3)-7(5,2)E & 98.424207 & -5.07218 & 34.0 & 37.85757 & True \\
-CH3OCHOv=0 & 8(5,4)-7(5,3)E & 98.431803 & -5.07207 & 34.0 & 37.84254 & True \\
-CH3OCHOv=0 & 8(5,4)-7(5,3)A & 98.43276 & -5.07197 & 34.0 & 37.83741 & True \\
-CH3OCHOv=0 & 8(5,3)-7(5,2)A & 98.435802 & -5.07196 & 34.0 & 37.83755 & True \\
-CH3OCHOv=0 & 8(4,5)-7(4,3)E & 98.443186 & -6.46573 & 34.0 & 31.89622 & False
-\enddata
-\end{deluxetable*}
+% \begin{deluxetable*}{ccccccc}
+% \tablehead{\colhead{Specie} & \colhead{Transition} & \colhead{nu0 [GHz]} & \colhead{logA [s$^{-1}$]} & \colhead{$g_u$} & \colhead{$E_u$ [K]} & \colhead{blend}}
+% \startdata
+% CH3OCHOv=0 & 7(6,1)-6(6,0)E & 85.919209 & -5.61387 & 30.0 & 40.43552 & False \\
+% CH3OCHOv=0 & 7(6,2)-6(6,1)E & 85.926553 & -5.61375 & 30.0 & 40.41775 & True \\
+% CH3OCHOv=0 & 7(6,2)-6(6,1)A & 85.927227 & -5.61365 & 30.0 & 40.41591 & True \\
+% CH3OCHOv=0 & 7(6,2)-6(6,1)A & 85.927227 & -5.61365 & 30.0 & 40.41591 & True \\
+% CH3OCHOv=0 & 7(4,4)-7(3,5)E & 96.507882 & -6.15428 & 30.0 & 27.15885 & False \\
+% CH3OCHOv=0 & 8(4,5)-8(3,6)A & 96.709259 & -5.9454 & 34.0 & 31.88523 & True \\
+% CH3OCHOv=0 & 7(4,3)-7(3,5)E & 96.776715 & -6.45236 & 30.0 & 27.17176 & False \\
+% CH3OCHOv=0 & 5(4,2)-5(3,3)A & 96.794121 & -6.10264 & 22.0 & 19.47072 & False \\
+% CH3OCHOv=0 & 4(4,1)-4(3,2)E & 96.800837 & -6.28901 & 18.0 & 16.53264 & True \\
+% CH3OCHOv=0 & 26(8,19)-25(9,17)E & 97.574702 & -7.00164 & 106.0 & 250.89139 & True \\
+% CH3OCHOv=0 & 10(4,7)-10(3,8)E & 97.65127 & -5.90155 & 42.0 & 43.17298 & True \\
+% CH3OCHOv=0 & 10(4,7)-10(3,8)A & 97.69426 & -5.89578 & 42.0 & 43.16008 & True \\
+% CH3OCHOv=0 & 28(17,12)-29(16,14)E & 97.728721 & -6.91841 & 114.0 & 431.08182 & True \\
+% CH3OCHOv=0 & 25(9,17)-26(7,20)A & 98.0523585 & -7.81321 & 102.0 & 246.21155 & True \\
+% CH3OCHOv=0 & 8(7,1)-7(7,0)E & 98.182336 & -5.49019 & 34.0 & 53.78191 & False \\
+% CH3OCHOv=0 & 8(7,2)-7(7,1)A & 98.190658 & -5.48998 & 34.0 & 53.76403 & True \\
+% CH3OCHOv=0 & 8(7,2)-7(7,1)A & 98.190658 & -5.48998 & 34.0 & 53.76403 & True \\
+% CH3OCHOv=0 & 8(7,2)-7(7,1)E & 98.19146 & -5.49007 & 34.0 & 53.76249 & True \\
+% CH3OCHOv=0 & 8(6,2)-7(6,1)E & 98.270501 & -5.21799 & 34.0 & 45.15166 & False \\
+% CH3OCHOv=0 & 8(6,3)-7(6,2)E & 98.278921 & -5.21788 & 34.0 & 45.13436 & True \\
+% CH3OCHOv=0 & 8(6,3)-7(6,2)A & 98.279762 & -5.21778 & 34.0 & 45.13253 & True \\
+% CH3OCHOv=0 & 8(6,3)-7(6,2)A & 98.279762 & -5.21778 & 34.0 & 45.13253 & True \\
+% CH3OCHOv=0 & 8(5,3)-7(5,2)E & 98.424207 & -5.07218 & 34.0 & 37.85757 & True \\
+% CH3OCHOv=0 & 8(5,4)-7(5,3)E & 98.431803 & -5.07207 & 34.0 & 37.84254 & True \\
+% CH3OCHOv=0 & 8(5,4)-7(5,3)A & 98.43276 & -5.07197 & 34.0 & 37.83741 & True \\
+% CH3OCHOv=0 & 8(5,3)-7(5,2)A & 98.435802 & -5.07196 & 34.0 & 37.83755 & True \\
+% CH3OCHOv=0 & 8(4,5)-7(4,3)E & 98.443186 & -6.46573 & 34.0 & 31.89622 & False
+% \enddata
+% \end{deluxetable*}
 
-\begin{deluxetable*}{ccccccc}
-\tablehead{\colhead{Specie} & \colhead{Transition} & \colhead{nu0 [GHz]} & \colhead{logA [s$^{-1}$]} & \colhead{$g_u$} & \colhead{$E_u$ [K]} & \colhead{blend}}
-\startdata
-CH3OCHOv=1 & 7(4,3)-6(4,2)E & 85.506219 & -5.21427 & 30.0 & 214.55908 & False \\
-CH3OCHOv=1 & 7(5,3)-6(5,2)E & 85.55338 & -5.35271 & 30.0 & 220.03471 & False \\
-CH3OCHOv=1 & 7(6,1)-6(6,0)E & 85.157135 & -5.62487 & 30.0 & 228.14704 & False \\
-CH3OCHOv=1 & 7(5,3)-6(5,2)A & 85.185466 & -5.36022 & 30.0 & 220.89672 & True \\
-CH3OCHOv=1 & 7(5,2)-6(5,1)A & 85.186063 & -5.36022 & 30.0 & 220.89674 & True \\
-CH3OCHOv=1 & 38(8,30)-37(10,27)A & 96.4944086 & -7.41255 & 154.0 & 673.92731 & True \\
-CH3OCHOv=1 & 8(5,3)-7(5,2)E & 97.577303 & -5.08237 & 34.0 & 225.35927 & True \\
-CH3OCHOv=1 & 8(3,6)-7(3,5)A & 97.597161 & -4.93596 & 34.0 & 214.94253 & False \\
-CH3OCHOv=1 & 8(7,2)-7(7,1)E & 97.65127 & -5.49626 & 34.0 & 240.82138 & True \\
-CH3OCHOv=1 & 8(4,5)-7(4,4)A & 97.661401 & -4.99374 & 34.0 & 219.5983 & True \\
-CH3OCHOv=1 & 12(1,11)-12(0,12)A & 97.727054 & -6.2029 & 50.0 & 234.75313 & True \\
-CH3OCHOv=1 & 38(13,26)-37(14,23)A & 97.7384514 & -6.60823 & 154.0 & 735.89104 & True \\
-CH3OCHOv=1 & 8(6,3)-7(6,2)E & 97.738738 & -5.2243 & 34.0 & 232.09484 & True \\
-CH3OCHOv=1 & 8(4,4)-7(4,3)A & 97.752885 & -4.99242 & 34.0 & 219.60485 & False \\
-CH3OCHOv=1 & 8(4,4)-8(3,5)E & 97.871147 & -5.967 & 34.0 & 219.25731 & True \\
-CH3OCHOv=1 & 10(4,7)-10(3,8)A & 97.878933 & -5.8854 & 42.0 & 230.75517 & True \\
-CH3OCHOv=1 & 8(5,4)-7(5,3)E & 97.885663 & -5.07871 & 34.0 & 224.73238 & False \\
-CH3OCHOv=1 & 8(4,4)-7(4,3)E & 97.897118 & -4.98749 & 34.0 & 219.25726 & False \\
-CH3OCHOv=1 & 8(4,5)-7(4,4)E & 98.176293 & -4.98531 & 34.0 & 218.74378 & True \\
-CH3OCHOv=1 & 9(0,9)-8(1,8)A & 98.423165 & -5.70107 & 38.0 & 212.63468 & True
-\enddata
-\end{deluxetable*}
+% \begin{deluxetable*}{ccccccc}
+% \tablehead{\colhead{Specie} & \colhead{Transition} & \colhead{nu0 [GHz]} & \colhead{logA [s$^{-1}$]} & \colhead{$g_u$} & \colhead{$E_u$ [K]} & \colhead{blend}}
+% \startdata
+% CH3OCHOv=1 & 7(4,3)-6(4,2)E & 85.506219 & -5.21427 & 30.0 & 214.55908 & False \\
+% CH3OCHOv=1 & 7(5,3)-6(5,2)E & 85.55338 & -5.35271 & 30.0 & 220.03471 & False \\
+% CH3OCHOv=1 & 7(6,1)-6(6,0)E & 85.157135 & -5.62487 & 30.0 & 228.14704 & False \\
+% CH3OCHOv=1 & 7(5,3)-6(5,2)A & 85.185466 & -5.36022 & 30.0 & 220.89672 & True \\
+% CH3OCHOv=1 & 7(5,2)-6(5,1)A & 85.186063 & -5.36022 & 30.0 & 220.89674 & True \\
+% CH3OCHOv=1 & 38(8,30)-37(10,27)A & 96.4944086 & -7.41255 & 154.0 & 673.92731 & True \\
+% CH3OCHOv=1 & 8(5,3)-7(5,2)E & 97.577303 & -5.08237 & 34.0 & 225.35927 & True \\
+% CH3OCHOv=1 & 8(3,6)-7(3,5)A & 97.597161 & -4.93596 & 34.0 & 214.94253 & False \\
+% CH3OCHOv=1 & 8(7,2)-7(7,1)E & 97.65127 & -5.49626 & 34.0 & 240.82138 & True \\
+% CH3OCHOv=1 & 8(4,5)-7(4,4)A & 97.661401 & -4.99374 & 34.0 & 219.5983 & True \\
+% CH3OCHOv=1 & 12(1,11)-12(0,12)A & 97.727054 & -6.2029 & 50.0 & 234.75313 & True \\
+% CH3OCHOv=1 & 38(13,26)-37(14,23)A & 97.7384514 & -6.60823 & 154.0 & 735.89104 & True \\
+% CH3OCHOv=1 & 8(6,3)-7(6,2)E & 97.738738 & -5.2243 & 34.0 & 232.09484 & True \\
+% CH3OCHOv=1 & 8(4,4)-7(4,3)A & 97.752885 & -4.99242 & 34.0 & 219.60485 & False \\
+% CH3OCHOv=1 & 8(4,4)-8(3,5)E & 97.871147 & -5.967 & 34.0 & 219.25731 & True \\
+% CH3OCHOv=1 & 10(4,7)-10(3,8)A & 97.878933 & -5.8854 & 42.0 & 230.75517 & True \\
+% CH3OCHOv=1 & 8(5,4)-7(5,3)E & 97.885663 & -5.07871 & 34.0 & 224.73238 & False \\
+% CH3OCHOv=1 & 8(4,4)-7(4,3)E & 97.897118 & -4.98749 & 34.0 & 219.25726 & False \\
+% CH3OCHOv=1 & 8(4,5)-7(4,4)E & 98.176293 & -4.98531 & 34.0 & 218.74378 & True \\
+% CH3OCHOv=1 & 9(0,9)-8(1,8)A & 98.423165 & -5.70107 & 38.0 & 212.63468 & True
+% \enddata
+% \end{deluxetable*}
 
-\begin{deluxetable*}{ccccccc}
-\tablehead{\colhead{Specie} & \colhead{Transition} & \colhead{nu0 [GHz]} & \colhead{logA [s$^{-1}$]} & \colhead{$g_u$} & \colhead{$E_u$ [K]} & \colhead{blend}}
-\startdata
-CH3O13CHO,vt=0,1 & 41(9,32)-40(11,29),v=0-0 & 96.719056 & -7.41952 & 166.0 & 568.41871 & True \\
-CH3O13CHO,vt=0,1 & 13(6,8)-14(4,11),v=0-0 & 97.549041 & -8.03608 & 54.0 & 77.03159 & True \\
-CH3O13CHO,vt=0,1 & 8(6,3)-7(6,2),v=1-1 & 97.549352 & -5.21851 & 34.0 & 44.7392 & True \\
-CH3O13CHO,vt=0,1 & 8(6,3)-7(6,2),v=0-0 & 97.55014 & -5.21851 & 34.0 & 44.73737 & True \\
-CH3O13CHO,vt=0,1 & 8(6,2)-7(6,1),v=0-0 & 97.550183 & -5.21851 & 34.0 & 44.73737 & True \\
-CH3O13CHO,vt=0,1 & 8(5,3)-7(5,2),v=2-2 & 97.695084 & -5.07269 & 34.0 & 37.535 & True \\
-CH3O13CHO,vt=0,1 & 8(5,4)-7(5,3),v=1-1 & 97.702479 & -5.07268 & 34.0 & 37.5201 & True \\
-CH3O13CHO,vt=0,1 & 8(5,4)-7(5,3),v=0-0 & 97.703323 & -5.07259 & 34.0 & 37.51496 & True \\
-CH3O13CHO,vt=0,1 & 8(3,6)-7(3,5),v=1-1 & 97.874331 & -4.92209 & 34.0 & 27.04247 & True \\
-CH3O13CHO,vt=0,1 & 8(3,6)-7(3,5),v=0-0 & 97.878443 & -4.9215 & 34.0 & 27.02684 & True \\
-CH3O13CHO,vt=0,1 & 8(4,4)-7(4,3),v=2-2 & 98.019644 & -4.99309 & 34.0 & 31.64795 & True
-\enddata
-\end{deluxetable*}
+% \begin{deluxetable*}{ccccccc}
+% \tablehead{\colhead{Specie} & \colhead{Transition} & \colhead{nu0 [GHz]} & \colhead{logA [s$^{-1}$]} & \colhead{$g_u$} & \colhead{$E_u$ [K]} & \colhead{blend}}
+% \startdata
+% CH3O13CHO,vt=0,1 & 41(9,32)-40(11,29),v=0-0 & 96.719056 & -7.41952 & 166.0 & 568.41871 & True \\
+% CH3O13CHO,vt=0,1 & 13(6,8)-14(4,11),v=0-0 & 97.549041 & -8.03608 & 54.0 & 77.03159 & True \\
+% CH3O13CHO,vt=0,1 & 8(6,3)-7(6,2),v=1-1 & 97.549352 & -5.21851 & 34.0 & 44.7392 & True \\
+% CH3O13CHO,vt=0,1 & 8(6,3)-7(6,2),v=0-0 & 97.55014 & -5.21851 & 34.0 & 44.73737 & True \\
+% CH3O13CHO,vt=0,1 & 8(6,2)-7(6,1),v=0-0 & 97.550183 & -5.21851 & 34.0 & 44.73737 & True \\
+% CH3O13CHO,vt=0,1 & 8(5,3)-7(5,2),v=2-2 & 97.695084 & -5.07269 & 34.0 & 37.535 & True \\
+% CH3O13CHO,vt=0,1 & 8(5,4)-7(5,3),v=1-1 & 97.702479 & -5.07268 & 34.0 & 37.5201 & True \\
+% CH3O13CHO,vt=0,1 & 8(5,4)-7(5,3),v=0-0 & 97.703323 & -5.07259 & 34.0 & 37.51496 & True \\
+% CH3O13CHO,vt=0,1 & 8(3,6)-7(3,5),v=1-1 & 97.874331 & -4.92209 & 34.0 & 27.04247 & True \\
+% CH3O13CHO,vt=0,1 & 8(3,6)-7(3,5),v=0-0 & 97.878443 & -4.9215 & 34.0 & 27.02684 & True \\
+% CH3O13CHO,vt=0,1 & 8(4,4)-7(4,3),v=2-2 & 98.019644 & -4.99309 & 34.0 & 31.64795 & True
+% \enddata
+% \end{deluxetable*}
 
-\begin{deluxetable*}{ccccccc}
-\tablehead{\colhead{Specie} & \colhead{Transition} & \colhead{nu0 [GHz]} & \colhead{logA [s$^{-1}$]} & \colhead{$g_u$} & \colhead{$E_u$ [K]} & \colhead{blend}}
-\startdata
-CH3OCH3 & 16(3,14)-15(4,11)AA & 97.9905684 & -5.69891 & 165.0 & 136.60449 & True \\
-CH3OCH3 & 16(3,14)-15(4,11)EE & 97.993397 & -5.69881 & 264.0 & 136.60448 & True \\
-CH3OCH3 & 16(3,14)-15(4,11)EA & 97.9961856 & -5.69884 & 66.0 & 136.60461 & True \\
-CH3OCH3 & 16(3,14)-15(4,11)AE & 97.9962658 & -5.69883 & 99.0 & 136.60461 & True \\
-CH3OCH3 & 20(9,11)-21(8,13)EA & 98.2793181 & -5.86758 & 82.0 & 304.93629 & True
-\enddata
-\end{deluxetable*}
+% \begin{deluxetable*}{ccccccc}
+% \tablehead{\colhead{Specie} & \colhead{Transition} & \colhead{nu0 [GHz]} & \colhead{logA [s$^{-1}$]} & \colhead{$g_u$} & \colhead{$E_u$ [K]} & \colhead{blend}}
+% \startdata
+% CH3OCH3 & 16(3,14)-15(4,11)AA & 97.9905684 & -5.69891 & 165.0 & 136.60449 & True \\
+% CH3OCH3 & 16(3,14)-15(4,11)EE & 97.993397 & -5.69881 & 264.0 & 136.60448 & True \\
+% CH3OCH3 & 16(3,14)-15(4,11)EA & 97.9961856 & -5.69884 & 66.0 & 136.60461 & True \\
+% CH3OCH3 & 16(3,14)-15(4,11)AE & 97.9962658 & -5.69883 & 99.0 & 136.60461 & True \\
+% CH3OCH3 & 20(9,11)-21(8,13)EA & 98.2793181 & -5.86758 & 82.0 & 304.93629 & True
+% \enddata
+% \end{deluxetable*}
 
 
 
-\begin{deluxetable*}{ccccccc}
-\tablehead{\colhead{Specie} & \colhead{Transition} & \colhead{nu0 [GHz]} & \colhead{logA [s$^{-1}$]} & \colhead{$g_u$} & \colhead{$E_u$ [K]} & \colhead{blend}}
-\startdata
-(CH3)2COv=0 & 19(9,11)-19(8,12)AE & 96.5134586 & -4.71844 & 78.0 & 143.23696 & True \\
-(CH3)2COv=0 & 19(9,11)-19(8,12)EA & 96.5136227 & -4.71847 & 156.0 & 143.23711 & True \\
-(CH3)2COv=0 & 4(3,2)-3(0,3)EE & 97.5823375 & -5.87199 & 144.0 & 8.2427 & True \\
-(CH3)2COv=0 & 27(20,8)-27(19,9)AE & 97.7282777 & -4.63499 & 110.0 & 320.53358 & True \\
-(CH3)2COv=0 & 27(14,14)-26(17,9)EE & 97.8301673 & -7.8004 & 880.0 & 293.54472 & True \\
-(CH3)2COv=0 & 17(6,11)-17(5,12)EE & 98.0523987 & -4.76738 & 560.0 & 110.58732 & True \\
-(CH3)2COv=0 & 17(7,11)-17(6,12)EE & 98.0535346 & -4.76738 & 560.0 & 110.58738 & True \\
-(CH3)2COv=0 & 5(5,1)-4(4,0)AE & 98.1763437 & -4.46009 & 22.0 & 14.14584 & True \\
-(CH3)2COv=0 & 17(7,11)-17(6,12)AA & 98.1766038 & -4.76524 & 210.0 & 110.53962 & True
-\enddata
-\end{deluxetable*}
+% \begin{deluxetable*}{ccccccc}
+% \tablehead{\colhead{Specie} & \colhead{Transition} & \colhead{nu0 [GHz]} & \colhead{logA [s$^{-1}$]} & \colhead{$g_u$} & \colhead{$E_u$ [K]} & \colhead{blend}}
+% \startdata
+% (CH3)2COv=0 & 19(9,11)-19(8,12)AE & 96.5134586 & -4.71844 & 78.0 & 143.23696 & True \\
+% (CH3)2COv=0 & 19(9,11)-19(8,12)EA & 96.5136227 & -4.71847 & 156.0 & 143.23711 & True \\
+% (CH3)2COv=0 & 4(3,2)-3(0,3)EE & 97.5823375 & -5.87199 & 144.0 & 8.2427 & True \\
+% (CH3)2COv=0 & 27(20,8)-27(19,9)AE & 97.7282777 & -4.63499 & 110.0 & 320.53358 & True \\
+% (CH3)2COv=0 & 27(14,14)-26(17,9)EE & 97.8301673 & -7.8004 & 880.0 & 293.54472 & True \\
+% (CH3)2COv=0 & 17(6,11)-17(5,12)EE & 98.0523987 & -4.76738 & 560.0 & 110.58732 & True \\
+% (CH3)2COv=0 & 17(7,11)-17(6,12)EE & 98.0535346 & -4.76738 & 560.0 & 110.58738 & True \\
+% (CH3)2COv=0 & 5(5,1)-4(4,0)AE & 98.1763437 & -4.46009 & 22.0 & 14.14584 & True \\
+% (CH3)2COv=0 & 17(7,11)-17(6,12)AA & 98.1766038 & -4.76524 & 210.0 & 110.53962 & True
+% \enddata
+% \end{deluxetable*}
 
-\begin{deluxetable*}{ccccccc}
-\tablehead{\colhead{Specie} & \colhead{Transition} & \colhead{nu0 [GHz]} & \colhead{logA [s$^{-1}$]} & \colhead{$g_u$} & \colhead{$E_u$ [K]} & \colhead{blend}}
-\startdata
-c-H2COCH2 & 11(9,3)-11(8,4) & 96.5010246 & -5.08298 & 115.0 & 146.7461 & True \\
-c-H2COCH2 & 12(9,4)-12(8,5) & 97.7287339 & -5.00013 & 75.0 & 169.44951 & True
-\enddata
-\end{deluxetable*}
+% \begin{deluxetable*}{ccccccc}
+% \tablehead{\colhead{Specie} & \colhead{Transition} & \colhead{nu0 [GHz]} & \colhead{logA [s$^{-1}$]} & \colhead{$g_u$} & \colhead{$E_u$ [K]} & \colhead{blend}}
+% \startdata
+% c-H2COCH2 & 11(9,3)-11(8,4) & 96.5010246 & -5.08298 & 115.0 & 146.7461 & True \\
+% c-H2COCH2 & 12(9,4)-12(8,5) & 97.7287339 & -5.00013 & 75.0 & 169.44951 & True
+% \enddata
+% \end{deluxetable*}
 
-\begin{deluxetable*}{ccccccc}
-\tablehead{\colhead{Specie} & \colhead{Transition} & \colhead{nu0 [GHz]} & \colhead{logA [s${^-1}$]} & \colhead{$g_u$} & \colhead{$E_u$ [K]} & \colhead{blend}}
-\startdata
-H13CO+ & 1-0 & 86.7542884 & -4.41685 & 3.0 & 4.16353 & False
-\enddata
-\end{deluxetable*}
+% \begin{deluxetable*}{ccccccc}
+% \tablehead{\colhead{Specie} & \colhead{Transition} & \colhead{nu0 [GHz]} & \colhead{logA [s${^-1}$]} & \colhead{$g_u$} & \colhead{$E_u$ [K]} & \colhead{blend}}
+% \startdata
+% H13CO+ & 1-0 & 86.7542884 & -4.41685 & 3.0 & 4.16353 & False
+% \enddata
+% \end{deluxetable*}
 
-\begin{deluxetable*}{ccccccc}
-\tablehead{\colhead{Specie} & \colhead{Transition} & \colhead{nu0 [GHz]} & \colhead{logA [s$^{-1}$]} & \colhead{$g_u$} & \colhead{$E_u$ [K]} & \colhead{blend}}
-\startdata
-NH2D & 1(1,1)0s-1(0,1)0a,F=2-1 & 85.9257031 & -5.23165 & 5.0 & 20.67866 & True \\
-NH2D & 1(1,1)0s-1(0,1)0a,F=2-2 & 85.9262703 & -4.75455 & 5.0 & 20.67869 & True \\
-NH2D & 1(1,1)0s-1(0,1)0a,F=1-1 & 85.9263165 & -5.2317 & 3.0 & 20.67869 & True \\
-NH2D & 1(1,1)0s-1(0,1)0a,F=1-2 & 85.9268837 & -5.00979 & 3.0 & 20.67872 & True \\
-NH2D & 1(1,1)0s-1(0,1)0a,F=1-0 & 85.9277345 & -5.10669 & 3.0 & 20.67876 & True
-\enddata
-\end{deluxetable*}
+% \begin{deluxetable*}{ccccccc}
+% \tablehead{\colhead{Specie} & \colhead{Transition} & \colhead{nu0 [GHz]} & \colhead{logA [s$^{-1}$]} & \colhead{$g_u$} & \colhead{$E_u$ [K]} & \colhead{blend}}
+% \startdata
+% NH2D & 1(1,1)0s-1(0,1)0a,F=2-1 & 85.9257031 & -5.23165 & 5.0 & 20.67866 & True \\
+% NH2D & 1(1,1)0s-1(0,1)0a,F=2-2 & 85.9262703 & -4.75455 & 5.0 & 20.67869 & True \\
+% NH2D & 1(1,1)0s-1(0,1)0a,F=1-1 & 85.9263165 & -5.2317 & 3.0 & 20.67869 & True \\
+% NH2D & 1(1,1)0s-1(0,1)0a,F=1-2 & 85.9268837 & -5.00979 & 3.0 & 20.67872 & True \\
+% NH2D & 1(1,1)0s-1(0,1)0a,F=1-0 & 85.9277345 & -5.10669 & 3.0 & 20.67876 & True
+% \enddata
+% \end{deluxetable*}
 
-\begin{deluxetable*}{ccccccc}
-\tablehead{\colhead{Specie} & \colhead{Transition} & \colhead{nu0 [GHz]} & \colhead{logA [s$^{-1}$]} & \colhead{$g_u$} & \colhead{$E_u$ [K]} & \colhead{blend}}
-\startdata
-CCHv=0 & N=1-0,J=3/2-1/2,F=2-1 & 87.316925 & -5.65605 & 5.0 & 4.19269 & False \\
-CCHv=0 & N=1-0,J=3/2-1/2,F=1-0 & 87.328624 & -5.73675 & 3.0 & 4.19109 & False
-\enddata
-\end{deluxetable*}
+% \begin{deluxetable*}{ccccccc}
+% \tablehead{\colhead{Specie} & \colhead{Transition} & \colhead{nu0 [GHz]} & \colhead{logA [s$^{-1}$]} & \colhead{$g_u$} & \colhead{$E_u$ [K]} & \colhead{blend}}
+% \startdata
+% CCHv=0 & N=1-0,J=3/2-1/2,F=2-1 & 87.316925 & -5.65605 & 5.0 & 4.19269 & False \\
+% CCHv=0 & N=1-0,J=3/2-1/2,F=1-0 & 87.328624 & -5.73675 & 3.0 & 4.19109 & False
+% \enddata
+% \end{deluxetable*}
 
-\begin{deluxetable*}{ccccccc}
-\tablehead{\colhead{Specie} & \colhead{Transition} & \colhead{nu0 [GHz]} & \colhead{logA [s$^{-1}$]} & \colhead{$g_u$} & \colhead{$E_u$ [K]} & \colhead{blend}}
-\startdata
-OCSv=0 & 7-6 & 85.139121 & -5.76601 & 15.0 & 16.34418 & False
-\enddata
-\end{deluxetable*}
+% \begin{deluxetable*}{ccccccc}
+% \tablehead{\colhead{Specie} & \colhead{Transition} & \colhead{nu0 [GHz]} & \colhead{logA [s$^{-1}$]} & \colhead{$g_u$} & \colhead{$E_u$ [K]} & \colhead{blend}}
+% \startdata
+% OCSv=0 & 7-6 & 85.139121 & -5.76601 & 15.0 & 16.34418 & False
+% \enddata
+% \end{deluxetable*}
 
-\begin{deluxetable*}{ccccccc}
-\tablehead{\colhead{Specie} & \colhead{Transition} & \colhead{nu0 [GHz]} & \colhead{logA [s$^{-1}$]} & \colhead{$g_u$} & \colhead{$E_u$ [K]} & \colhead{blend}}
-\startdata
-t-CH2CHCHO & 11(2,10)-10(2,9) & 97.8155921 & -4.44573 & 23.0 & 36.41722 & True \\
-t-CH2CHCHO & 11(8,3)-10(8,2) & 97.9470545 & -4.75628 & 23.0 & 159.90685 & True \\
-t-CH2CHCHO & 11(8,3)-10(8,2) & 97.9470545 & -4.75628 & 23.0 & 159.90685 & True \\
-t-CH2CHCHO & 11(7,5)-10(7,4) & 97.9475494 & -4.65484 & 23.0 & 129.05133 & True \\
-t-CH2CHCHO & 11(7,4)-10(7,3) & 97.9475495 & -4.65484 & 23.0 & 129.05133 & True \\
-t-CH2CHCHO & 11(9,2)-10(9,1) & 97.9480279 & -4.91006 & 23.0 & 194.86739 & True \\
-t-CH2CHCHO & 11(9,2)-10(9,1) & 97.9480279 & -4.91006 & 23.0 & 194.86739 & True \\
-t-CH2CHCHO & 11(10,1)-10(10,0) & 97.950017 & -5.18991 & 23.0 & 233.9292 & True \\
-t-CH2CHCHO & 11(10,1)-10(10,0) & 97.950017 & -5.18991 & 23.0 & 233.9292 & True \\
-t-CH2CHCHO & 11(6,5)-10(6,4) & 97.9502859 & -4.58265 & 23.0 & 102.30389 & True \\
-t-CH2CHCHO & 11(6,5)-10(6,4) & 97.9502859 & -4.58265 & 23.0 & 102.30389 & True \\
-t-CH2CHCHO & 11(5,6)-10(5,5) & 97.9570029 & -4.52979 & 23.0 & 79.66749 & False \\
-t-CH2CHCHO & 11(4,8)-10(4,7) & 97.9720364 & -4.49064 & 23.0 & 61.14536 & True \\
-t-CH2CHCHO & 11(4,7)-10(4,6) & 97.9722153 & -4.49064 & 23.0 & 61.14537 & True \\
-t-CH2CHCHO & 11(3,9)-10(3,8) & 98.0013206 & -4.46217 & 23.0 & 46.74037 & False \\
-t-CH2CHCHO & 11(3,8)-10(3,7) & 98.0190443 & -4.46198 & 23.0 & 46.74238 & True
-\enddata
-\end{deluxetable*}
+% \begin{deluxetable*}{ccccccc}
+% \tablehead{\colhead{Specie} & \colhead{Transition} & \colhead{nu0 [GHz]} & \colhead{logA [s$^{-1}$]} & \colhead{$g_u$} & \colhead{$E_u$ [K]} & \colhead{blend}}
+% \startdata
+% t-CH2CHCHO & 11(2,10)-10(2,9) & 97.8155921 & -4.44573 & 23.0 & 36.41722 & True \\
+% t-CH2CHCHO & 11(8,3)-10(8,2) & 97.9470545 & -4.75628 & 23.0 & 159.90685 & True \\
+% t-CH2CHCHO & 11(8,3)-10(8,2) & 97.9470545 & -4.75628 & 23.0 & 159.90685 & True \\
+% t-CH2CHCHO & 11(7,5)-10(7,4) & 97.9475494 & -4.65484 & 23.0 & 129.05133 & True \\
+% t-CH2CHCHO & 11(7,4)-10(7,3) & 97.9475495 & -4.65484 & 23.0 & 129.05133 & True \\
+% t-CH2CHCHO & 11(9,2)-10(9,1) & 97.9480279 & -4.91006 & 23.0 & 194.86739 & True \\
+% t-CH2CHCHO & 11(9,2)-10(9,1) & 97.9480279 & -4.91006 & 23.0 & 194.86739 & True \\
+% t-CH2CHCHO & 11(10,1)-10(10,0) & 97.950017 & -5.18991 & 23.0 & 233.9292 & True \\
+% t-CH2CHCHO & 11(10,1)-10(10,0) & 97.950017 & -5.18991 & 23.0 & 233.9292 & True \\
+% t-CH2CHCHO & 11(6,5)-10(6,4) & 97.9502859 & -4.58265 & 23.0 & 102.30389 & True \\
+% t-CH2CHCHO & 11(6,5)-10(6,4) & 97.9502859 & -4.58265 & 23.0 & 102.30389 & True \\
+% t-CH2CHCHO & 11(5,6)-10(5,5) & 97.9570029 & -4.52979 & 23.0 & 79.66749 & False \\
+% t-CH2CHCHO & 11(4,8)-10(4,7) & 97.9720364 & -4.49064 & 23.0 & 61.14536 & True \\
+% t-CH2CHCHO & 11(4,7)-10(4,6) & 97.9722153 & -4.49064 & 23.0 & 61.14537 & True \\
+% t-CH2CHCHO & 11(3,9)-10(3,8) & 98.0013206 & -4.46217 & 23.0 & 46.74037 & False \\
+% t-CH2CHCHO & 11(3,8)-10(3,7) & 98.0190443 & -4.46198 & 23.0 & 46.74238 & True
+% \enddata
+% \end{deluxetable*}
 
 
 
@@ -804,6 +821,8 @@ t-CH2CHCHO & 11(3,8)-10(3,7) & 98.0190443 & -4.46198 & 23.0 & 46.74238 & True
 %% Figure and Table counter will not reset.
 
 \appendix
+
+\section{Spectra}
 
 
 
