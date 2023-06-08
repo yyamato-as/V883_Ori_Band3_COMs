@@ -345,20 +345,20 @@ Each of the SPWs was imaged with the CASA task \texttt{tclean} \citep{Hogbom1974
 
 \section{Data Analysis and Results}
 \subsection{Spectrum Extraction and Line Identification}
-Figure \ref{} shows the spectra which are integrated over 1\farcs2 aperture and corrected for the line broadening due to the Keplerian rotation of the disk. The original disk-integrated spectra are shown in Figure \ref{} in Appendix \ref{}. To obtain the spectra corrected for the Keplerian line broadening, we used \texttt{integrated\_spectrum()} function implemented in \texttt{GoFish} package \citep{GoFish}. This method aligns the Dopper-shifted spectra at each position within the disk to a common velocity (systemic velocity of the source) to recover the single-peak spectra for each transitions, facilitating the identification of the blended transitions. In this procedure, we assumed a position angle (32\arcdeg) and inclination angle (38.3\arcdeg) of the disk, a central stellar mass of $1.29\,M_\odot$, and a distance of 400\,pc, based on previous works \citep{Cieza2016, Tobin2023}. We also assumed that the emission is originating from the midplane of the disk and did not consider the vertical extent of the emission. The uncertainties of the spectra were calculated within the \texttt{integrated\_spectrum()} function taking the spectral decorrelation \citep{Yen2016} into account.
+Figure \ref{} shows the spectra which are integrated over 1\farcs2 aperture and corrected for the line broadening due to the Keplerian rotation of the disk. The original disk-integrated spectra are shown in Figure \ref{} in Appendix \ref{}. To obtain the spectra corrected for the Keplerian line broadening, we used \texttt{integrated\_spectrum()} function implemented in \texttt{GoFish} package \citep{GoFish}. This method first deprojects the disk and then aligns the Dopper-shifted spectra at each position within the disk to a common velocity (systemic velocity of the source) to recover the single-peak spectra for each transitions, facilitating the identification of the blended transitions. In this procedure, we assumed a position angle (32\arcdeg) and inclination angle (38.3\arcdeg) of the disk, a central stellar mass of $1.29\,M_\odot$, and a distance of 400\,pc, based on previous works \citep{Cieza2016, Tobin2023}. We also assumed that the emission is originating from the midplane of the disk and did not consider the vertical extent of the emission. The uncertainties of the spectra were calculated per channel basis within the \texttt{integrated\_spectrum()} function taking the spectral decorrelation \citep{Yen2016} into account.
 
-As shown in Figure \ref{}, numerous spectral features are detected in the disk-integrated spectra. As many COMs transitions exists in narrow frequency ranges and they are usually overlapped between different species, a visual identification of the lines is challenging. Alternatively, we fitted a synthetic spectra to the observed spectra to identify each of these features. The details of the synthetic spectral model is described in Appendix \ref{}. Briefly, the model assumed a common emitting region size, a common excitation temperature, and a common line width under the local thermodynamic equilibrium (LTE) conditions, and the emitting region size, excitation temperature, line width, and the column density of each species are varied to fit the observed spectra and test if they can be reproduced with the model. 
+As shown in Figure \ref{}, numerous spectral features are detected in the disk-integrated spectra. As many COMs transitions exists in narrow frequency ranges and they are usually overlapped between different species, a visual identification of the lines is challenging. Alternatively, we fitted a synthetic spectra to the observed spectra to identify each of these features. The details of the synthetic spectral model is described in Appendix \ref{}. Briefly, the model assumed a common emitting region size, a common excitation temperature, and a common line width under the local thermodynamic equilibrium (LTE) conditions, and the emitting region size, excitation temperature, line width, and the column density of each species are varied to fit the observed spectra and test if they can be reproduced with the model. For the construction of the model, the spectroscopic data of the molecular lines are taken from the Jet Propulsion Spectroscopy \citep[JPL;][]{JPL} and the Cologne Database for Molecular Spectroscopy \citep[CDMS;][]{CDMS1, CDMS2} as detailed in Appendix \ref{}. Only the transitions with an Einstein A coefficient for spontaneous emission of $\geq10^{-8}$\,s$^{-1}$ and an upper state energy of $\leq1000$\,K are considered in the model.
 
 The identified transitions are listed in Table \ref{} in Appendix \ref{}. In summary, we firmly identified xx species: \methanol, \methylformate, \dimethylether, \acetaldehyde, ... We also tentatively identified yy species: ... The identification of species is based on the number of transitions detected; if multiple transitions of the species are detected at $>3\sigma$ in the stacked spectra, we regard that species as a firm identification. If only one transition is detected at $>3\sigma$ in the stacked spectra, it is considered as a tentative identification.
 
-Figure \ref{} shows the velocity-integrated intensity map (zeroth moment map) of the selected transitions without significant blending with other species. The molecular line emission are all confined to the disk region and marginally spatially resolved. While the spatial extent of the emission is consistent with the previous observations in Bands 6 and 7 \citep{vantHoff2018, Lee2019, Tobin2023} considering the difference in the beam size, the central emission cavities seen in the Band 6 and 7 data are not detected in the present Band 3 data. 
-
 \begin{figure*}
+\epsscale{1.15}
 \plotone{V883_Ori_original_spectra.pdf}
 \caption{}
 \end{figure*}
 
 \begin{figure*}
+\epsscale{1.15}
 \plotone{V883_Ori_mom0_gallery.pdf}
 \caption{Velocity-integrated intensity maps of the molecular line emission in the V883 Ori disk. The velocity range for integration are $\pm3.5$ km s$^{-1}$ with respect to the source systemic velocity $v_\mathrm{sys}=4.25$ km s$^{-1}$ \citep{Tobin2023} including \dimethylether and \acetone, where multiple blended transitions are integrated together. The molecular species, transitions, and upper state energy levels are indicated in the upper-left corner of each panel. The black contours start from 5$\sigma$ with steps of 2.5$\sigma$, where $\sigma$ are the noise level of each map measured on the emission-free region. The synthesized beam and a scale bar of 80 au are shown in the lower left and right corner of each panel, respectively.}
 \end{figure*}
@@ -370,6 +370,9 @@ Figure \ref{} shows the velocity-integrated intensity map (zeroth moment map) of
 % Figure \ref{fig}(b)--(d) shows the velocity-integrated intensity maps (contour) and the velocity centroid maps (color) of three representative molecular lines (\methanol, \acetaldehyde, \methylformate).
 
 % Figure \ref{fig:} shows the disk-averaged spectra toward the V883 Ori disk. These spectra were extracted from the central   
+
+\subsection{Spatial Distribution}
+Figure \ref{} shows the velocity-integrated intensity map (zeroth moment map) of the selected transitions without significant blending with other species. The molecular line emission are all confined to the disk region and marginally spatially resolved. While the spatial extent of the emission is consistent with the previous observations in Bands 6 and 7 \citep{vantHoff2018, Lee2019, Tobin2023} considering the difference in the beam size, the central emission cavities seen in the Band 6 and 7 data are not detected in the present Band 3 data. 
 
 
 \subsection{Column Density Retrieval}
@@ -788,7 +791,7 @@ Figure \ref{} shows the velocity-integrated intensity map (zeroth moment map) of
 
 
 \begin{acknowledgments}
-\textcolor{red}{We thank...}
+We thank Tomohiro Yoshida, Kiyoaki Doi, and Gianni Cataldi...
 \end{acknowledgments}
 
 %% To help institutions obtain information on the effectiveness of their 
@@ -823,6 +826,10 @@ Figure \ref{} shows the velocity-integrated intensity map (zeroth moment map) of
 \appendix
 
 \section{Spectra}
+
+\section{LTE spectral model for fitting}
+
+\section{Spectroscopic data for molecules}
 
 
 
