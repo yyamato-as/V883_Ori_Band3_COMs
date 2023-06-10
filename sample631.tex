@@ -367,13 +367,13 @@ Each of the SPWs was imaged with the CASA task \texttt{tclean} \citep{Hogbom1974
 \end{deluxetable*}
 
 
-\section{Data Analysis and Results}
+\section{Data Analysis and Result}\label{sec:analysis_result}
 \subsection{Spectrum Extraction and Line Identification}\label{subsec:line_identification}
 Figure \ref{fig:spectra_gallery} shows the spectra which are integrated over 1\farcs2 aperture and corrected for the line broadening due to the Keplerian rotation of the disk. The original disk-integrated spectra are shown in Figure \ref{} in Appendix \ref{}. To obtain the spectra corrected for the Keplerian line broadening, we used \texttt{integrated\_spectrum()} function implemented in \texttt{GoFish} package \citep{GoFish}. This method first deprojects the disk and then aligns the Dopper-shifted spectra at each position within the disk to a common velocity (systemic velocity of the source) to recover the single-peak spectra for each transitions, facilitating the identification of the blended transitions. In this procedure, we assumed a position angle (32\arcdeg) and inclination angle (38.3\arcdeg) of the disk, a central stellar mass of $1.29\,M_\odot$, and a distance of 400\,pc, based on previous works \citep{Cieza2016, Tobin2023}. We also assumed that the emission is originating from the midplane of the disk and did not consider the vertical extent of the emission. The uncertainties of the spectra were calculated per channel basis within the \texttt{integrated\_spectrum()} function taking the spectral decorrelation \citep{Yen2016} into account.
 
 As shown in Figure \ref{fig:spectra_gallery}, numerous spectral features are detected in the disk-integrated spectra. As many COMs transitions exists in narrow frequency ranges and they are usually overlapped between different species, a visual identification of the lines is challenging. Alternatively, we fitted a synthetic spectra to the observed spectra to identify each of these features. The details of the synthetic spectral model is described in Appendix \ref{}. Briefly, the model assumed a common emitting region size, a common excitation temperature, and a common line width under the local thermodynamic equilibrium (LTE) conditions, and the emitting region size, excitation temperature, line width, and the column density of each species are varied to fit the observed spectra and test if they can be reproduced with the model. For the construction of the model, the spectroscopic data of the molecular lines are taken from the Jet Propulsion Spectroscopy \citep[JPL;][]{JPL} and the Cologne Database for Molecular Spectroscopy \citep[CDMS;][]{CDMS1, CDMS2} as detailed in Appendix \ref{}. Only the transitions with an Einstein A coefficient for spontaneous emission of $\geq10^{-8}$\,s$^{-1}$ and an upper state energy of $\leq1000$\,K are considered in the model.
 
-The identified transitions are listed in Table \ref{} in Appendix \ref{}. In summary, we firmly identified 7 COM species: \methanol, \methylformate, \dimethylether, \acetaldehyde, \acetone, \ethyleneoxide, and \propenal. We also tentatively identified 8 COM species and isotopologues: \propanal, C$_2$H$_3$CN, CH$_2$DOH, CH$_3^{18}$OH, CH$_3$O$^{13}$CHO, CH$_3^{13}$CHO, CH$_2$DCHO, and CH$_3$CDO. The identification of species is based on the number of transitions detected; if multiple transitions of the species are detected at $>3\sigma$ in the stacked spectra, we regard that species as a firm identification. If only one transition is detected at $>3\sigma$ in the stacked spectra, it is considered as a tentative identification. In addition, one transition of each sulfur-bearing molecule (OCS and SO$_2$) was detected.
+The identified transitions are listed in Table \ref{tab:transitions} in Appendix \ref{appendix:transitions}. In summary, we firmly identified 7 COM species: \methanol, \methylformate, \dimethylether, \acetaldehyde, \acetone, \ethyleneoxide, and \propenal. We also tentatively identified 8 COM species and isotopologues: \propanal, C$_2$H$_3$CN, CH$_2$DOH, CH$_3^{18}$OH, CH$_3$O$^{13}$CHO, CH$_3^{13}$CHO, CH$_2$DCHO, and CH$_3$CDO. The identification of species is based on the number of transitions detected; if multiple transitions of the species are detected at $>3\sigma$ in the stacked spectra, we regard that species as a firm identification. If only one transition is detected at $>3\sigma$ in the stacked spectra, it is considered as a tentative identification. In addition, one transition of each sulfur-bearing molecule (OCS and SO$_2$) was detected.
 
 \begin{figure*}
 \epsscale{1.15}
@@ -404,7 +404,14 @@ Figure \ref{fig:moment_zero_gallery} shows the velocity-integrated intensity map
 
 \subsection{Column Density Retrieval}
 \subsubsection{Spectral fit}
-To derive the disk-averaged column density of each species, we first employ a simultaneous fit of an LTE spectral model of different species to the extracted spectra, taking the spectral blending and line optical depth into account. The same model as that used for line identification is used (see Appendix \ref{} for details), where all species (tentatively) identified as in Section \ref{subsec:line_identification} are considered.  
+To derive the disk-averaged column density of each species, we first employ a simultaneous fit of an LTE spectral model of different species to the extracted spectra, taking the spectral blending and line optical depth into account. The same model as that used for line identification is used (see Appendix \ref{appendix:spectral_model} for details), where all species (tentatively) identified as in Section \ref{subsec:line_identification} are considered. We excluded the optically thick ($\tau > 1$) transitions from the fit, since the optically thick line can underestimate the column density. The selection for the excluded transitions is based on the optical depth at the line center in the best-fit model of the fit for line identification (Section \ref{subsec:line_identification}). This mainly excluded the transitions of abundant species (e.g., \methanol, \methylformate, and \acetaldehyde) with a high Einstein A coefficient and a low upper state energy. 
+
+We employed the Affine invariant Markov Chain Monte Carlo (MCMC) algorithm implemented in the \texttt{emcee} package \citep{emcee} to explore the parameter spaces. Two types of fits were conducted, one of which assumed a fixed emitting radius of 0\farcs6 based on the COM emission extent in higher-resolution Band 6 observations \citep{Lee2019, Tobin2023}, and another of which left it as a free parameter. For both fits, we run 400 walkers for 5000 steps, and the initial 4000 steps are discarded as burn-in.
+
+Figure \ref{} demonstrates the unique capability of the simultaneous spectral fit to fully utilize the transitions even with severe spectral blending. 
+
+
+
 \subsubsection{Rotation diagram}
 
 
@@ -458,194 +465,383 @@ We thank Tomohiro Yoshida, Kiyoaki Doi, and Gianni Cataldi...
 
 \appendix
 \restartappendixnumbering
-\section{JvM effect and continuum subtraction}
+\section{JvM effect and continuum subtraction}\label{appendix:JvM_effect}
 Here we describe a brief summary of the Jorsater \& van Moorsel (JvM) effect \citep{JvM, Czekala2021}, and subsequently discuss the continuum subtraction methods, which could mitigate the JvM effect.
 
 The JvM effect could result in incorrect measurements of the flux density on the interferometric images produced by the CLEAN deconvolution method, which was originally discussed in \citet{JvM} and extensively investigated in \citet{Czekala2021}. The CLEAN algorithm iteratively extracts the CLEAN components from the residual image, and this process will be terminated when the peak value of the residual image within the CLEAN mask reaches a user-defined threshold (typically 2--3 $\times$ the RMS level; see Figure 2 in \citet{Czekala2021} for a comprehensive summary of this procedure). The final image product of CLEAN is the sum of the CLEANed model image (convolved with a CLEAN beam determined by a Gaussian fit to the dirty beam) and the residual images, which have inconsistent units (Jansky per CLEAN beam and Jansky per dirty beam). Therefore, if faint emission below the CLEAN threshold remains on the residual image, the intensity scale in the final image can be incorrect (i.e., sum of values with two different units). The impact of this effect depends on the emission strengths, the CLEAN threshold, and the deviation of the dirty beam shape from the CLEAN beam shape (Gaussian): if a significant portion of the emission remains on the residual image and the deviation is large, the intensity scale in the final image will drastically modified from the correct intensity scale \citep{JvM, Czekala2021}.  
 
 To correct for this unit inconsistency, \citet{Czekala2021} applied the ``JvM correction'' to the line emission in protoplanetary disks, where the residual image is scaled before the addition with the CLEANed model image by the ratio of the dirty beam area to the CLEAN beam area, forcing the unit of the residual image to be Jansky per CLEAN beam. However, \citet{Casassus2022} pointed out that the JvM correction can artificially manipulate the noise levels and exaggerate the signal-to-noise ratio of the emission, as the correction will scale the residual image that contains the noise typically by a factor smaller than unity. So far, no concrete solution for this problem has been drawn.
 
-We applied the JvM correction to our data following \citet{Czekala2021}, which obtained a JvM $\epsilon$ (the ratio of dirty beam area to the CLEAN beam area) of $\sim0.28$, indicating that the effect is severe (Figure \ref{fig:}). This could result in a drastic underestimation of the uncertainties of physical quantities derived from fits described in Section \ref{sec:}. Another possible solution is CLEANing deeper (e.g., down to 0.5--1$\sigma$) so that all the emission components are recovered, but this would be unrealistic as too deep CLEANing will not converge and it is practically unfeasible to CLEAN down to such deep levels particularly for the line image cubes with a lot of channels. Alternatively, we mitigate the JvM effect and recover correct flux scale as much as possible by employing the continuum subtraction on the image plane (with the CASA task \texttt{imcontsub}) rather than on the visibility plane (with the CASA task \texttt{uvcontsub}). The line emission in our data is almost cospatial to the strong continuum emission, and therefore imaging without continuum subtraction can almost completely include the line emission into the CLEAN model, thanks to the strong line plus continuum intensity well above the CLEAN threshold. While the continuum component is still affected by the JvM effect, the line emission can be safely recovered by subsequent continuum subtraction on the image plane. To demonstrate this, we compared the 
+We applied the JvM correction to our data following \citet{Czekala2021}, which obtained a JvM $\epsilon$ (the ratio of dirty beam area to the CLEAN beam area) of $\sim0.28$, indicating that the effect is severe. This could result in a drastic underestimation of the uncertainties of physical quantities derived from the fits described in Section \ref{sec:analysis_result}. Another possible solution is CLEANing deeper (e.g., down to 0.5--1 $\times$ the RMS level) so that all the emission components are recovered, but this would be unrealistic as too deep CLEANing will not converge and it is practically unfeasible to CLEAN down to such deep levels particularly for the line image cubes with a lot of channels. Alternatively, we mitigate the JvM effect and recover correct flux scale as much as possible by employing the continuum subtraction on the image plane (with the CASA task \texttt{imcontsub}) rather than on the visibility plane (with the CASA task \texttt{uvcontsub}). The line emission in our data is almost co-spatial to the strong continuum emission, and therefore imaging without continuum subtraction can almost completely include the line emission into the CLEAN model, thanks to the strong line plus continuum intensity well above the CLEAN threshold. While the continuum component is still affected by the JvM effect, the line emission can be safely recovered by subsequent continuum subtraction on the image plane. Figure \ref{fig:JvM_spectrum} shows an example demonstrating that almost no spectral line component remain in the residual spectrum and the line emission is almost fully recovered in the CLEANed image. We note that this method is only applicable to the spectral line data associated with a strong continuum emission. If the continuum emission is faint in the emitting region of the spectral line, the spectral line component will still remain in the residual even with the continuum subtraction on the image plane. 
 
-% We adopted a continuum subtraction on the image plane with the CASA task \texttt{imcontsub} rather than that on the visibility plane with \texttt{uvcontsub}. This can mitigate the JvM effect, which is critical for the intensity scales of spectral lines, as much as possible. The JvM effect is the 
-\section{Detected transitions}
+\begin{figure*}
+\epsscale{1.15}
+\plotone{JvM_effect_spectrum.pdf}
+\caption{Line plus continuum spectra of SPW 2 averaged over 1\farcs2 aperture for the CLEAN image (dark grey), the CLEAN model (grey), and the residual (light grey). The CLEAN model spectrum (in unit of Jy pixel$^{-1}$ by default) is scaled up by a ratio of the CLEAN beam area to the pixel area for visual clarity. The spectral line emission is almost fully recovered into the CLEAN model and none of that remains in the residual spectrum. The horizontal dashed line indicates the zero-flux level.}
+\label{fig:JvM_spectrum}
+\end{figure*}
+
+
+\section{Detected transitions}\label{appendix:transitions}
+Table \ref{tab:transitions} lists the transitions detected in our observations for each molecular species, including the blended ones.
+
 \startlongtable
 \begin{deluxetable*}{ccCCCCc}
 \tablecaption{Detected Transitions for Each Species\label{tab:transitions}}
-\tablehead{\colhead{Species} & \colhead{Transition} & \colhead{$\nu_0$ (GHz)} & \colhead{log$_{10}A_\mathrm{ul}$ (s$^{-1}$)} & \colhead{$E_\mathrm{up}$ (K)} & \colhead{$g_\mathrm{up}$} & \colhead{SPW}}
+\tablehead{\colhead{Species} & \colhead{Transition} & \colhead{$\nu_0$ (GHz)} & \colhead{log$_{10}A_\mathrm{ul}$ (s$^{-1}$)} & \colhead{$g_\mathrm{u}$} & \colhead{$E_\mathrm{u}$ (K)} & \colhead{SPW}}
 \decimals
 \startdata
 \hline 
 \multicolumn{7}{c}{Methanol (\methanol)} \\
 \hline 
-CH$_3$OH$^\ddagger$ & $2_{-1,2}$ -- $1_{-1,1}$ E $v_t=1$ & 96.492163 & -5.5963 & 298.42 & 20 & 7 \\
-CH$_3$OH$^\ddagger$ & $2_{0,2}$ -- $1_{0,1}$ E $v_t=1$ & 96.493551 & -5.4706 & 307.52 & 20 & 7 \\
-CH$_3$OH$^\ddagger$ & $2_{1,1}$ -- $1_{1,0}$ E $v_t=1$ & 96.501713 & -5.5967 & 420.32 & 20 & 7 \\
-CH$_3$OH & $2_{0,2}$ -- $1_{0,1}$ A $v_t=1$ & 96.513686 & -5.4709 & 430.6 & 20 & 7 \\
-CH$_3$OH$^\dagger$ & $2_{1,2}$ -- $1_{1,1}$ E $v_t=0$ & 96.739358 & -5.5923 & 12.54 & 20 & 9 \\
-CH$_3$OH$^\dagger$ & $2_{0,2}$ -- $1_{0,1}$ A $v_t=0$ & 96.741371 & -5.4676 & 6.96 & 20 & 9 \\
-CH$_3$OH & $2_{0,2}$ -- $1_{0,1}$ E $v_t=0$ & 96.744545 & -5.4676 & 20.09 & 20 & 9 \\
-CH$_3$OH & $2_{-1,1}$ -- $1_{-1,0}$ E $v_t=0$ & 96.755501 & -5.581 & 28.01 & 20 & 9 \\
-CH$_3$OH & $2_{1,1}$ -- $1_{1,0}$ A $v_t=0$ & 97.582798 & -5.5807 & 21.56 & 20 & 10 \\
-CH$_3$OH$^\dagger$ & $21_{6,16}$ -- $22_{5,17}$ A $v_t=0$ & 97.677684 & -5.8404 & 729.28 & 172 & 10 \\
-CH$_3$OH$^\dagger$ & $21_{6,15}$ -- $22_{5,18}$ A $v_t=0$ & 97.678803 & -5.8403 & 729.28 & 172 & 10 \\
+CH$_3$OH$^\ddagger$ & $2_{-1,2}$ -- $1_{-1,1}$ E $v_t=1$ & 96.492163 & -5.5963 & 20.0 & 298 & 7 \\
+CH$_3$OH$^\ddagger$ & $2_{0,2}$ -- $1_{0,1}$ E $v_t=1$ & 96.493551 & -5.4706 & 20.0 & 307 & 7 \\
+CH$_3$OH$^\ddagger$ & $2_{1,1}$ -- $1_{1,0}$ E $v_t=1$ & 96.501713 & -5.5967 & 20.0 & 420 & 7 \\
+CH$_3$OH & $2_{0,2}$ -- $1_{0,1}$ A $v_t=1$ & 96.513686 & -5.4709 & 20.0 & 430 & 7 \\
+CH$_3$OH$^\dagger$ & $2_{1,2}$ -- $1_{1,1}$ E $v_t=0$ & 96.739358 & -5.5923 & 20.0 & 12 & 9 \\
+CH$_3$OH$^\dagger$ & $2_{0,2}$ -- $1_{0,1}$ A $v_t=0$ & 96.741371 & -5.4676 & 20.0 & 6 & 9 \\
+CH$_3$OH & $2_{0,2}$ -- $1_{0,1}$ E $v_t=0$ & 96.744545 & -5.4676 & 20.0 & 20 & 9 \\
+CH$_3$OH & $2_{-1,1}$ -- $1_{-1,0}$ E $v_t=0$ & 96.755501 & -5.581 & 20.0 & 28 & 9 \\
+CH$_3$OH & $2_{1,1}$ -- $1_{1,0}$ A $v_t=0$ & 97.582798 & -5.5807 & 20.0 & 21 & 10 \\
+CH$_3$OH$^\dagger$ & $21_{6,16}$ -- $22_{5,17}$ A $v_t=0$ & 97.677684 & -5.8404 & 172.0 & 729 & 10 \\
+CH$_3$OH$^\dagger$ & $21_{6,15}$ -- $22_{5,18}$ A $v_t=0$ & 97.678803 & -5.8403 & 172.0 & 729 & 10 \\
 \hline 
 \multicolumn{7}{c}{Methanol (CH$_2$DOH)} \\
 \hline 
-CH$_2$DOH$^\ddagger$ & $2_{1,1}$ -- $2_{0,2}$ e0 & 86.668751 & -5.3322 & 10.6 & 5 & 5 \\
-CH$_2$DOH$^\ddagger$ & $4_{1,3}$ -- $4_{0,4}$ o1 & 97.870192 & -5.3363 & 44.47 & 9 & 10 \\
-CH$_2$DOH & $4_{0,4}$ -- $3_{1,3}$ e0 & 98.031213 & -5.616 & 21.45 & 9 & 10 \\
+CH$_2$DOH$^\ddagger$ & $2_{1,1}$ -- $2_{0,2}$ e0 & 86.668751 & -5.3322 & 5.0 & 10 & 4 \\
+CH$_2$DOH$^\ddagger$ & $4_{1,3}$ -- $4_{0,4}$ o1 & 97.870192 & -5.3363 & 9.0 & 44 & 10 \\
+CH$_2$DOH & $4_{0,4}$ -- $3_{1,3}$ e0 & 98.031213 & -5.616 & 9.0 & 21 & 10 \\
 \hline 
 \multicolumn{7}{c}{Methyl Formate (\methylformate)} \\
 \hline 
-CH$_3$OCHO & $7_{6,1}$ -- $6_{6,0}$ E $v_t=1$ & 85.157135 & -5.6248 & 228.15 & 30 & 2 \\
-CH$_3$OCHO$^\dagger$ & $7_{5,3}$ -- $6_{5,2}$ A $v_t=1$ & 85.185466 & -5.3602 & 220.9 & 30 & 2 \\
-CH$_3$OCHO$^\dagger$ & $7_{5,2}$ -- $6_{5,1}$ A $v_t=1$ & 85.186063 & -5.3602 & 220.9 & 30 & 2 \\
-CH$_3$OCHO & $7_{4,3}$ -- $6_{4,2}$ E $v_t=1$ & 85.506219 & -5.2142 & 214.56 & 30 & 1 \\
-CH$_3$OCHO & $7_{5,3}$ -- $6_{5,2}$ E $v_t=1$ & 85.55338 & -5.3527 & 220.04 & 30 & 1 \\
-CH$_3$OCHO & $7_{6,1}$ -- $6_{6,0}$ E $v_t=0$ & 85.919209 & -5.6138 & 40.44 & 30 & 0 \\
-CH$_3$OCHO$^\dagger$ & $7_{6,2}$ -- $6_{6,1}$ E $v_t=0$ & 85.926553 & -5.6137 & 40.42 & 30 & 0 \\
-CH$_3$OCHO$^\dagger$ & $7_{6,2}$ -- $6_{6,1}$ A $v_t=0$ & 85.927227 & -5.6136 & 40.42 & 30 & 0 \\
-CH$_3$OCHO$^\dagger$ & $7_{6,1}$ -- $6_{6,0}$ A $v_t=0$ & 85.927227 & -5.6136 & 40.42 & 30 & 0 \\
-CH$_3$OCHO & $7_{4,4}$ -- $7_{3,5}$ E $v_t=0$ & 96.507882 & -6.1542 & 27.16 & 30 & 7 \\
-CH$_3$OCHO & $8_{4,5}$ -- $8_{3,6}$ A $v_t=0$ & 96.709259 & -5.9454 & 31.89 & 34 & 9 \\
-CH$_3$OCHO & $7_{4,3}$ -- $7_{3,5}$ E $v_t=0$ & 96.776715 & -6.4523 & 27.17 & 30 & 9 \\
-CH$_3$OCHO & $5_{4,2}$ -- $5_{3,3}$ A $v_t=0$ & 96.794121 & -6.1026 & 19.47 & 22 & 9 \\
-CH$_3$OCHO & $8_{5,3}$ -- $7_{5,2}$ E $v_t=1$ & 97.577303 & -5.0823 & 225.36 & 34 & 10 \\
-CH$_3$OCHO & $8_{3,6}$ -- $7_{3,5}$ A $v_t=1$ & 97.597161 & -4.9359 & 214.94 & 34 & 10 \\
-CH$_3$OCHO$^\dagger$ & $8_{7,2}$ -- $7_{7,1}$ E $v_t=1$ & 97.65127 & -5.4962 & 240.82 & 34 & 10 \\
-CH$_3$OCHO$^\dagger$ & $10_{4,7}$ -- $10_{3,8}$ E $v_t=0$ & 97.65127 & -5.9015 & 43.17 & 42 & 10 \\
-CH$_3$OCHO & $8_{4,5}$ -- $7_{4,4}$ A $v_t=1$ & 97.661401 & -4.9937 & 219.6 & 34 & 10 \\
-CH$_3$OCHO$^\ddagger$ & $10_{4,7}$ -- $10_{3,8}$ A $v_t=0$ & 97.69426 & -5.8957 & 43.16 & 42 & 10 \\
-CH$_3$OCHO$^\ddagger$ & $12_{1,11}$ -- $12_{0,12}$ A $v_t=1$ & 97.727054 & -6.2029 & 234.75 & 50 & 10 \\
-CH$_3$OCHO & $8_{6,3}$ -- $7_{6,2}$ E $v_t=1$ & 97.738738 & -5.2243 & 232.1 & 34 & 10 \\
-CH$_3$OCHO & $8_{4,4}$ -- $7_{4,3}$ A $v_t=1$ & 97.752885 & -4.9924 & 219.61 & 34 & 10 \\
-CH$_3$OCHO$^\ddagger$ & $8_{4,4}$ -- $8_{3,5}$ E $v_t=1$ & 97.871147 & -5.967 & 219.26 & 34 & 10 \\
-CH$_3$OCHO$^\ddagger$ & $10_{4,7}$ -- $10_{3,8}$ A $v_t=1$ & 97.878933 & -5.8854 & 230.76 & 42 & 10 \\
-CH$_3$OCHO & $8_{5,4}$ -- $7_{5,3}$ E $v_t=1$ & 97.885663 & -5.0787 & 224.73 & 34 & 10 \\
-CH$_3$OCHO & $8_{4,4}$ -- $7_{4,3}$ E $v_t=1$ & 97.897118 & -4.9875 & 219.26 & 34 & 10 \\
-CH$_3$OCHO$^\ddagger$ & $21_{4,17}$ -- $21_{3,18}$ A $v_t=1$ & 98.066305 & -5.7833 & 337.99 & 86 & 10 \\
-CH$_3$OCHO$^\ddagger$ & $8_{4,5}$ -- $7_{4,4}$ E $v_t=1$ & 98.176293 & -4.9853 & 218.74 & 34 & 10 \\
-CH$_3$OCHO & $8_{7,1}$ -- $7_{7,0}$ E $v_t=0$ & 98.182336 & -5.4902 & 53.78 & 34 & 10 \\
-CH$_3$OCHO$^\dagger$ & $8_{7,2}$ -- $7_{7,1}$ A $v_t=0$ & 98.190658 & -5.4899 & 53.76 & 34 & 10 \\
-CH$_3$OCHO$^\dagger$ & $8_{7,1}$ -- $7_{7,0}$ A $v_t=0$ & 98.190658 & -5.4899 & 53.76 & 34 & 10 \\
-CH$_3$OCHO$^\dagger$ & $8_{7,2}$ -- $7_{7,1}$ E $v_t=0$ & 98.19146 & -5.49 & 53.76 & 34 & 10 \\
-CH$_3$OCHO & $8_{6,2}$ -- $7_{6,1}$ E $v_t=0$ & 98.270501 & -5.218 & 45.15 & 34 & 10 \\
-CH$_3$OCHO$^\dagger$ & $8_{6,3}$ -- $7_{6,2}$ E $v_t=0$ & 98.278921 & -5.2178 & 45.13 & 34 & 10 \\
-CH$_3$OCHO$^\dagger$ & $8_{6,3}$ -- $7_{6,2}$ A $v_t=0$ & 98.279762 & -5.2178 & 45.13 & 34 & 10 \\
-CH$_3$OCHO$^\dagger$ & $8_{6,2}$ -- $7_{6,1}$ A $v_t=0$ & 98.279762 & -5.2178 & 45.13 & 34 & 10 \\
-CH$_3$OCHO$^\dagger$ & $9_{0,9}$ -- $8_{1,8}$ A $v_t=1$ & 98.423165 & -5.701 & 212.64 & 38 & 10 \\
-CH$_3$OCHO$^\dagger$ & $8_{5,3}$ -- $7_{5,2}$ E $v_t=0$ & 98.424207 & -5.0722 & 37.86 & 34 & 10 \\
-CH$_3$OCHO$^\dagger$ & $8_{5,4}$ -- $7_{5,3}$ E $v_t=0$ & 98.431803 & -5.072 & 37.84 & 34 & 10 \\
-CH$_3$OCHO$^\dagger$ & $8_{5,4}$ -- $7_{5,3}$ A $v_t=0$ & 98.43276 & -5.0719 & 37.84 & 34 & 10 \\
-CH$_3$OCHO & $8_{5,3}$ -- $7_{5,2}$ A $v_t=0$ & 98.435802 & -5.0719 & 37.84 & 34 & 10 \\
-CH$_3$OCHO & $8_{4,5}$ -- $7_{4,3}$ E $v_t=0$ & 98.443186 & -6.4657 & 31.9 & 34 & 10 \\
+CH$_3$OCHO & $7_{6,1}$ -- $6_{6,0}$ E $v_t=1$ & 85.157135 & -5.6248 & 30.0 & 228 & 3 \\
+CH$_3$OCHO$^\dagger$ & $7_{5,3}$ -- $6_{5,2}$ A $v_t=1$ & 85.185466 & -5.3602 & 30.0 & 220 & 3 \\
+CH$_3$OCHO$^\dagger$ & $7_{5,2}$ -- $6_{5,1}$ A $v_t=1$ & 85.186063 & -5.3602 & 30.0 & 220 & 3 \\
+CH$_3$OCHO & $7_{4,3}$ -- $6_{4,2}$ E $v_t=1$ & 85.506219 & -5.2142 & 30.0 & 214 & 1 \\
+CH$_3$OCHO & $7_{5,3}$ -- $6_{5,2}$ E $v_t=1$ & 85.55338 & -5.3527 & 30.0 & 220 & 1 \\
+CH$_3$OCHO & $7_{6,1}$ -- $6_{6,0}$ E $v_t=0$ & 85.919209 & -5.6138 & 30.0 & 40 & 2 \\
+CH$_3$OCHO$^\dagger$ & $7_{6,2}$ -- $6_{6,1}$ E $v_t=0$ & 85.926553 & -5.6137 & 30.0 & 40 & 2 \\
+CH$_3$OCHO$^\dagger$ & $7_{6,2}$ -- $6_{6,1}$ A $v_t=0$ & 85.927227 & -5.6136 & 30.0 & 40 & 2 \\
+CH$_3$OCHO$^\dagger$ & $7_{6,1}$ -- $6_{6,0}$ A $v_t=0$ & 85.927227 & -5.6136 & 30.0 & 40 & 2 \\
+CH$_3$OCHO & $7_{4,4}$ -- $7_{3,5}$ E $v_t=0$ & 96.507882 & -6.1542 & 30.0 & 27 & 7 \\
+CH$_3$OCHO & $8_{4,5}$ -- $8_{3,6}$ A $v_t=0$ & 96.709259 & -5.9454 & 34.0 & 31 & 9 \\
+CH$_3$OCHO & $7_{4,3}$ -- $7_{3,5}$ E $v_t=0$ & 96.776715 & -6.4523 & 30.0 & 27 & 9 \\
+CH$_3$OCHO & $5_{4,2}$ -- $5_{3,3}$ A $v_t=0$ & 96.794121 & -6.1026 & 22.0 & 19 & 9 \\
+CH$_3$OCHO & $8_{5,3}$ -- $7_{5,2}$ E $v_t=1$ & 97.577303 & -5.0823 & 34.0 & 225 & 10 \\
+CH$_3$OCHO & $8_{3,6}$ -- $7_{3,5}$ A $v_t=1$ & 97.597161 & -4.9359 & 34.0 & 214 & 10 \\
+CH$_3$OCHO$^\dagger$ & $8_{7,2}$ -- $7_{7,1}$ E $v_t=1$ & 97.65127 & -5.4962 & 34.0 & 240 & 10 \\
+CH$_3$OCHO$^\dagger$ & $10_{4,7}$ -- $10_{3,8}$ E $v_t=0$ & 97.65127 & -5.9015 & 42.0 & 43 & 10 \\
+CH$_3$OCHO & $8_{4,5}$ -- $7_{4,4}$ A $v_t=1$ & 97.661401 & -4.9937 & 34.0 & 219 & 10 \\
+CH$_3$OCHO$^\ddagger$ & $10_{4,7}$ -- $10_{3,8}$ A $v_t=0$ & 97.69426 & -5.8957 & 42.0 & 43 & 10 \\
+CH$_3$OCHO$^\ddagger$ & $12_{1,11}$ -- $12_{0,12}$ A $v_t=1$ & 97.727054 & -6.2029 & 50.0 & 234 & 10 \\
+CH$_3$OCHO & $8_{6,3}$ -- $7_{6,2}$ E $v_t=1$ & 97.738738 & -5.2243 & 34.0 & 232 & 10 \\
+CH$_3$OCHO & $8_{4,4}$ -- $7_{4,3}$ A $v_t=1$ & 97.752885 & -4.9924 & 34.0 & 219 & 10 \\
+CH$_3$OCHO$^\ddagger$ & $8_{4,4}$ -- $8_{3,5}$ E $v_t=1$ & 97.871147 & -5.967 & 34.0 & 219 & 10 \\
+CH$_3$OCHO$^\ddagger$ & $10_{4,7}$ -- $10_{3,8}$ A $v_t=1$ & 97.878933 & -5.8854 & 42.0 & 230 & 10 \\
+CH$_3$OCHO & $8_{5,4}$ -- $7_{5,3}$ E $v_t=1$ & 97.885663 & -5.0787 & 34.0 & 224 & 10 \\
+CH$_3$OCHO & $8_{4,4}$ -- $7_{4,3}$ E $v_t=1$ & 97.897118 & -4.9875 & 34.0 & 219 & 10 \\
+CH$_3$OCHO$^\ddagger$ & $21_{4,17}$ -- $21_{3,18}$ A $v_t=1$ & 98.066305 & -5.7833 & 86.0 & 337 & 10 \\
+CH$_3$OCHO$^\ddagger$ & $8_{4,5}$ -- $7_{4,4}$ E $v_t=1$ & 98.176293 & -4.9853 & 34.0 & 218 & 10 \\
+CH$_3$OCHO & $8_{7,1}$ -- $7_{7,0}$ E $v_t=0$ & 98.182336 & -5.4902 & 34.0 & 53 & 10 \\
+CH$_3$OCHO$^\dagger$ & $8_{7,2}$ -- $7_{7,1}$ A $v_t=0$ & 98.190658 & -5.4899 & 34.0 & 53 & 10 \\
+CH$_3$OCHO$^\dagger$ & $8_{7,1}$ -- $7_{7,0}$ A $v_t=0$ & 98.190658 & -5.4899 & 34.0 & 53 & 10 \\
+CH$_3$OCHO$^\dagger$ & $8_{7,2}$ -- $7_{7,1}$ E $v_t=0$ & 98.19146 & -5.49 & 34.0 & 53 & 10 \\
+CH$_3$OCHO & $8_{6,2}$ -- $7_{6,1}$ E $v_t=0$ & 98.270501 & -5.218 & 34.0 & 45 & 10 \\
+CH$_3$OCHO$^\dagger$ & $8_{6,3}$ -- $7_{6,2}$ E $v_t=0$ & 98.278921 & -5.2178 & 34.0 & 45 & 10 \\
+CH$_3$OCHO$^\dagger$ & $8_{6,3}$ -- $7_{6,2}$ A $v_t=0$ & 98.279762 & -5.2178 & 34.0 & 45 & 10 \\
+CH$_3$OCHO$^\dagger$ & $8_{6,2}$ -- $7_{6,1}$ A $v_t=0$ & 98.279762 & -5.2178 & 34.0 & 45 & 10 \\
+CH$_3$OCHO$^\dagger$ & $9_{0,9}$ -- $8_{1,8}$ A $v_t=1$ & 98.423165 & -5.701 & 38.0 & 212 & 10 \\
+CH$_3$OCHO$^\dagger$ & $8_{5,3}$ -- $7_{5,2}$ E $v_t=0$ & 98.424207 & -5.0722 & 34.0 & 37 & 10 \\
+CH$_3$OCHO$^\dagger$ & $8_{5,4}$ -- $7_{5,3}$ E $v_t=0$ & 98.431803 & -5.072 & 34.0 & 37 & 10 \\
+CH$_3$OCHO$^\dagger$ & $8_{5,4}$ -- $7_{5,3}$ A $v_t=0$ & 98.43276 & -5.0719 & 34.0 & 37 & 10 \\
+CH$_3$OCHO & $8_{5,3}$ -- $7_{5,2}$ A $v_t=0$ & 98.435802 & -5.0719 & 34.0 & 37 & 10 \\
+CH$_3$OCHO & $8_{4,5}$ -- $7_{4,3}$ E $v_t=0$ & 98.443186 & -6.4657 & 34.0 & 31 & 10 \\
 \hline 
 \multicolumn{7}{c}{Methyl Formate (CH$_3$O$^{13}$CHO)} \\
 \hline 
-CH$_3$O$^{13}$CHO$^\dagger$ & $8_{6,2}$ -- $7_{6,1}$ E $v_t=0$ & 97.541168 & -5.2186 & 44.76 & 34 & 10 \\
-CH$_3$O$^{13}$CHO$^\dagger$ & $8_{-6,3}$ -- $7_{-6,2}$ E $v_t=0$ & 97.549352 & -5.2185 & 44.74 & 34 & 10 \\
-CH$_3$O$^{13}$CHO$^\dagger$ & $8_{6,3}$ -- $7_{6,2}$ A $v_t=0$ & 97.55014 & -5.2185 & 44.74 & 34 & 10 \\
-CH$_3$O$^{13}$CHO$^\dagger$ & $8_{6,2}$ -- $7_{6,1}$ A $v_t=0$ & 97.550183 & -5.2185 & 44.74 & 34 & 10 \\
-CH$_3$O$^{13}$CHO$^\ddagger$ & $8_{-5,4}$ -- $7_{-5,3}$ E $v_t=0$ & 97.702479 & -5.0727 & 37.52 & 34 & 10 \\
-CH$_3$O$^{13}$CHO$^\ddagger$ & $8_{5,4}$ -- $7_{5,3}$ A $v_t=0$ & 97.703323 & -5.0726 & 37.51 & 34 & 10 \\
-CH$_3$O$^{13}$CHO$^\dagger$ & $8_{5,3}$ -- $7_{5,2}$ A $v_t=0$ & 97.706423 & -5.0726 & 37.51 & 34 & 10 \\
-CH$_3$O$^{13}$CHO & $8_{-3,6}$ -- $7_{-3,5}$ E $v_t=0$ & 97.874331 & -4.9221 & 27.04 & 34 & 10 \\
-CH$_3$O$^{13}$CHO$^\ddagger$ & $8_{3,6}$ -- $7_{3,5}$ A $v_t=0$ & 97.878443 & -4.9215 & 27.03 & 34 & 10 \\
-CH$_3$O$^{13}$CHO$^\ddagger$ & $8_{4,4}$ -- $7_{4,3}$ E $v_t=0$ & 98.019644 & -4.9931 & 31.65 & 34 & 10 \\
+CH$_3$O$^{13}$CHO$^\dagger$ & $8_{6,2}$ -- $7_{6,1}$ E $v_t=0$ & 97.541168 & -5.2186 & 34.0 & 44 & 10 \\
+CH$_3$O$^{13}$CHO$^\dagger$ & $8_{-6,3}$ -- $7_{-6,2}$ E $v_t=0$ & 97.549352 & -5.2185 & 34.0 & 44 & 10 \\
+CH$_3$O$^{13}$CHO$^\dagger$ & $8_{6,3}$ -- $7_{6,2}$ A $v_t=0$ & 97.55014 & -5.2185 & 34.0 & 44 & 10 \\
+CH$_3$O$^{13}$CHO$^\dagger$ & $8_{6,2}$ -- $7_{6,1}$ A $v_t=0$ & 97.550183 & -5.2185 & 34.0 & 44 & 10 \\
+CH$_3$O$^{13}$CHO$^\ddagger$ & $8_{-5,4}$ -- $7_{-5,3}$ E $v_t=0$ & 97.702479 & -5.0727 & 34.0 & 37 & 10 \\
+CH$_3$O$^{13}$CHO$^\ddagger$ & $8_{5,4}$ -- $7_{5,3}$ A $v_t=0$ & 97.703323 & -5.0726 & 34.0 & 37 & 10 \\
+CH$_3$O$^{13}$CHO$^\dagger$ & $8_{5,3}$ -- $7_{5,2}$ A $v_t=0$ & 97.706423 & -5.0726 & 34.0 & 37 & 10 \\
+CH$_3$O$^{13}$CHO & $8_{-3,6}$ -- $7_{-3,5}$ E $v_t=0$ & 97.874331 & -4.9221 & 34.0 & 27 & 10 \\
+CH$_3$O$^{13}$CHO$^\ddagger$ & $8_{3,6}$ -- $7_{3,5}$ A $v_t=0$ & 97.878443 & -4.9215 & 34.0 & 27 & 10 \\
+CH$_3$O$^{13}$CHO$^\ddagger$ & $8_{4,4}$ -- $7_{4,3}$ E $v_t=0$ & 98.019644 & -4.9931 & 34.0 & 31 & 10 \\
 \hline 
 \multicolumn{7}{c}{Acetaldehyde (\acetaldehyde)} \\
 \hline 
-CH$_3$CHO & $9_{1,8}$ -- $9_{0,9}$ E $v_t=1$ & 85.947624 & -5.559 & 249.81 & 38 & 0 \\
-CH$_3$CHO$^\dagger$ & $12_{2,11}$ -- $12_{1,11}$ E $v_t=1$ & 87.303557 & -6.1944 & 285.13 & 50 & 6 \\
-CH$_3$CHO$^\dagger$ & $11_{4,7}$ -- $12_{3,9}$ E $v_t=1$ & 87.303714 & -6.2602 & 303.24 & 46 & 6 \\
-CH$_3$CHO & $5_{2,3}$ -- $4_{2,2}$ E $v_t=0$ & 96.475524 & -4.6168 & 23.03 & 22 & 7 \\
-CH$_3$CHO & $11_{4,8}$ -- $12_{3,10}$ E $v_t=0$ & 96.48895 & -6.1541 & 97.14 & 46 & 7 \\
-CH$_3$CHO$^\dagger$ & $5_{3,3}$ -- $4_{3,2}$ A $v_t=2$ & 96.716114 & -4.7374 & 420.58 & 22 & 9 \\
-CH$_3$CHO$^\dagger$ & $5_{3,2}$ -- $4_{3,1}$ A $v_t=2$ & 96.717473 & -4.7374 & 420.58 & 22 & 9 \\
-CH$_3$CHO$^\dagger$ & $5_{2,3}$ -- $4_{2,2}$ A $v_t=1$ & 96.718409 & -4.6093 & 228.3 & 22 & 9 \\
-CH$_3$CHO & $7_{0,7}$ -- $6_{1,6}$ A $v_t=0$ & 96.765371 & -5.5556 & 25.78 & 30 & 9 \\
-CH$_3$CHO & $5_{2,4}$ -- $4_{2,3}$ E $v_t=1$ & 96.800291 & -4.613 & 226.45 & 22 & 9 \\
-CH$_3$CHO & $5_{3,2}$ -- $4_{3,1}$ E $v_t=2$ & 97.612131 & -4.9808 & 419.01 & 22 & 10 \\
-CH$_3$CHO & $19_{2,18}$ -- $18_{3,15}$ E $v_t=0$ & 97.796104 & -6.1248 & 183.87 & 78 & 10 \\
-CH$_3$CHO & $10_{4,7}$ -- $11_{3,8}$ A $v_t=1$ & 97.941422 & -6.1583 & 290.44 & 42 & 10 \\
-CH$_3$CHO & $21_{3,18}$ -- $20_{4,17}$ A $v_t=0$ & 98.20169 & -6.01 & 235.39 & 86 & 10 \\
-CH$_3$CHO & $6_{3,3}$ -- $7_{2,5}$ E $v_t=0$ & 98.368631 & -6.245 & 39.81 & 26 & 10 \\
+CH$_3$CHO & $9_{1,8}$ -- $9_{0,9}$ E $v_t=1$ & 85.947624 & -5.559 & 38.0 & 249 & 2 \\
+CH$_3$CHO$^\dagger$ & $12_{2,11}$ -- $12_{1,11}$ E $v_t=1$ & 87.303557 & -6.1944 & 50.0 & 285 & 6 \\
+CH$_3$CHO$^\dagger$ & $11_{4,7}$ -- $12_{3,9}$ E $v_t=1$ & 87.303714 & -6.2602 & 46.0 & 303 & 6 \\
+CH$_3$CHO & $5_{2,3}$ -- $4_{2,2}$ E $v_t=0$ & 96.475524 & -4.6168 & 22.0 & 23 & 7 \\
+CH$_3$CHO & $11_{4,8}$ -- $12_{3,10}$ E $v_t=0$ & 96.48895 & -6.1541 & 46.0 & 97 & 7 \\
+CH$_3$CHO$^\dagger$ & $5_{3,3}$ -- $4_{3,2}$ A $v_t=2$ & 96.716114 & -4.7374 & 22.0 & 420 & 9 \\
+CH$_3$CHO$^\dagger$ & $5_{3,2}$ -- $4_{3,1}$ A $v_t=2$ & 96.717473 & -4.7374 & 22.0 & 420 & 9 \\
+CH$_3$CHO$^\dagger$ & $5_{2,3}$ -- $4_{2,2}$ A $v_t=1$ & 96.718409 & -4.6093 & 22.0 & 228 & 9 \\
+CH$_3$CHO & $7_{0,7}$ -- $6_{1,6}$ A $v_t=0$ & 96.765371 & -5.5556 & 30.0 & 25 & 9 \\
+CH$_3$CHO & $5_{2,4}$ -- $4_{2,3}$ E $v_t=1$ & 96.800291 & -4.613 & 22.0 & 226 & 9 \\
+CH$_3$CHO & $5_{3,2}$ -- $4_{3,1}$ E $v_t=2$ & 97.612131 & -4.9808 & 22.0 & 419 & 10 \\
+CH$_3$CHO & $19_{2,18}$ -- $18_{3,15}$ E $v_t=0$ & 97.796104 & -6.1248 & 78.0 & 183 & 10 \\
+CH$_3$CHO & $10_{4,7}$ -- $11_{3,8}$ A $v_t=1$ & 97.941422 & -6.1583 & 42.0 & 290 & 10 \\
+CH$_3$CHO & $21_{3,18}$ -- $20_{4,17}$ A $v_t=0$ & 98.20169 & -6.01 & 86.0 & 235 & 10 \\
+CH$_3$CHO & $6_{3,3}$ -- $7_{2,5}$ E $v_t=0$ & 98.368631 & -6.245 & 26.0 & 39 & 10 \\
 \hline 
 \multicolumn{7}{c}{Acetaldehyde (CH$_3^{13}$CHO)} \\
 \hline 
-CH$_3^{13}$CHO$^\ddagger$ & $5_{2,3}$ -- $4_{2,2}$ A $v_t=0$ & 96.494465 & -4.5971 & 22.74 & 11 & 7 \\
+CH$_3^{13}$CHO$^\ddagger$ & $5_{2,3}$ -- $4_{2,2}$ A $v_t=0$ & 96.494465 & -4.5971 & 11.0 & 22 & 7 \\
 \hline 
 \multicolumn{7}{c}{Acetaldehyde (CH$_3$CDO)} \\
 \hline 
-CH$_3$CDO & $5_{1,4}$ -- $4_{1,3}$ E $v_t=0$ & 97.81231 & -4.5235 & 15.86 & 11 & 10 \\
-CH$_3$CDO & $5_{1,4}$ -- $4_{1,3}$ A $v_t=0$ & 97.828514 & -4.5234 & 15.81 & 11 & 10 \\
+CH$_3$CDO & $5_{1,4}$ -- $4_{1,3}$ E $v_t=0$ & 97.81231 & -4.5235 & 11.0 & 15 & 10 \\
+CH$_3$CDO & $5_{1,4}$ -- $4_{1,3}$ A $v_t=0$ & 97.828514 & -4.5234 & 11.0 & 15 & 10 \\
 \hline 
 \multicolumn{7}{c}{Acetaldehyde (CH$_2$DCHO)} \\
 \hline 
-CH$_2$DCHO & $11_{2,9}i$ -- $11_{1,10}i$ & 98.412832 & -5.2329 & 66.88 & 23 & 10 \\
+CH$_2$DCHO & $11_{2,9}i$ -- $11_{1,10}i$ & 98.412832 & -5.2329 & 23.0 & 66 & 10 \\
 \hline 
 \multicolumn{7}{c}{Dimethyl Ether (\dimethylether)} \\
 \hline 
-CH$_3$OCH$_3$$^\dagger$ & $16_{3,14}$ -- $15_{4,11}$ AA & 97.990629 & -5.8984 & 136.6 & 330 & 10 \\
-CH$_3$OCH$_3$$^\dagger$ & $16_{3,14}$ -- $15_{4,11}$ EE & 97.993382 & -5.8983 & 136.6 & 528 & 10 \\
-CH$_3$OCH$_3$$^\dagger$ & $16_{3,14}$ -- $15_{4,11}$ EA & 97.996098 & -5.8984 & 136.6 & 132 & 10 \\
-CH$_3$OCH$_3$$^\dagger$ & $16_{3,14}$ -- $15_{4,11}$ AE & 97.996174 & -5.8984 & 136.6 & 198 & 10 \\
+CH$_3$OCH$_3$$^\dagger$ & $16_{3,14}$ -- $15_{4,11}$ AA & 97.990629 & -5.8984 & 330.0 & 136 & 10 \\
+CH$_3$OCH$_3$$^\dagger$ & $16_{3,14}$ -- $15_{4,11}$ EE & 97.993382 & -5.8983 & 528.0 & 136 & 10 \\
+CH$_3$OCH$_3$$^\dagger$ & $16_{3,14}$ -- $15_{4,11}$ EA & 97.996098 & -5.8984 & 132.0 & 136 & 10 \\
+CH$_3$OCH$_3$$^\dagger$ & $16_{3,14}$ -- $15_{4,11}$ AE & 97.996174 & -5.8984 & 198.0 & 136 & 10 \\
 \hline 
 \multicolumn{7}{c}{Acetone (\acetone)} \\
 \hline 
-CH$_3$COCH$_3$$^\dagger$ & $17_{6,11}$ -- $17_{5,12}$ AE & 97.929123 & -4.7694 & 110.64 & 210 & 10 \\
-CH$_3$COCH$_3$$^\dagger$ & $17_{6,11}$ -- $17_{5,12}$ & 97.929247 & -4.7694 & 110.64 & 140 & 10 \\
-CH$_3$COCH$_3$$^\dagger$ & $17_{7,11}$ -- $17_{6,12}$ AE & 97.930235 & -4.7694 & 110.64 & 70 & 10 \\
-CH$_3$COCH$_3$$^\dagger$ & $17_{7,11}$ -- $17_{6,12}$ & 97.930344 & -4.7693 & 110.64 & 140 & 10 \\
-CH$_3$COCH$_3$$^\dagger$ & $17_{6,11}$ -- $17_{5,12}$ EE & 98.052399 & -4.7674 & 110.59 & 560 & 10 \\
-CH$_3$COCH$_3$$^\dagger$ & $17_{7,11}$ -- $17_{6,12}$ EE & 98.053535 & -4.7674 & 110.59 & 560 & 10 \\
+CH$_3$COCH$_3$$^\dagger$ & $17_{6,11}$ -- $17_{5,12}$ AE & 97.929123 & -4.7694 & 210.0 & 110 & 10 \\
+CH$_3$COCH$_3$$^\dagger$ & $17_{6,11}$ -- $17_{5,12}$ & 97.929247 & -4.7694 & 140.0 & 110 & 10 \\
+CH$_3$COCH$_3$$^\dagger$ & $17_{7,11}$ -- $17_{6,12}$ AE & 97.930235 & -4.7694 & 70.0 & 110 & 10 \\
+CH$_3$COCH$_3$$^\dagger$ & $17_{7,11}$ -- $17_{6,12}$ & 97.930344 & -4.7693 & 140.0 & 110 & 10 \\
+CH$_3$COCH$_3$$^\dagger$ & $17_{6,11}$ -- $17_{5,12}$ EE & 98.052399 & -4.7674 & 560.0 & 110 & 10 \\
+CH$_3$COCH$_3$$^\dagger$ & $17_{7,11}$ -- $17_{6,12}$ EE & 98.053535 & -4.7674 & 560.0 & 110 & 10 \\
 \hline 
 \multicolumn{7}{c}{Ethylene Oxide (\ethyleneoxide)} \\
 \hline 
-$c$-C$_2$H$_4$O$^\ddagger$ & $11_{9,3}$ -- $11_{8,4}$ & 96.501033 & -5.0737 & 146.75 & 115 & 7 \\
-$c$-C$_2$H$_4$O$^\ddagger$ & $12_{9,4}$ -- $12_{8,5}$ & 97.728742 & -4.9909 & 169.45 & 75 & 10 \\
+$c$-C$_2$H$_4$O$^\ddagger$ & $11_{9,3}$ -- $11_{8,4}$ & 96.501033 & -5.0737 & 115.0 & 146 & 7 \\
+$c$-C$_2$H$_4$O$^\ddagger$ & $12_{9,4}$ -- $12_{8,5}$ & 97.728742 & -4.9909 & 75.0 & 169 & 10 \\
 \hline 
 \multicolumn{7}{c}{Propenal (\propenal)} \\
 \hline 
-$t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{2,10}$ -- $10_{2,9}$ & 97.815592 & -4.3286 & 36.42 & 23 & 10 \\
-$t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{8,3}$ -- $10_{8,2}$ & 97.947054 & -4.6391 & 159.91 & 23 & 10 \\
-$t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{8,4}$ -- $10_{8,3}$ & 97.947054 & -4.6391 & 159.91 & 23 & 10 \\
-$t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{7,5}$ -- $10_{7,4}$ & 97.947549 & -4.5377 & 129.05 & 23 & 10 \\
-$t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{7,4}$ -- $10_{7,3}$ & 97.94755 & -4.5377 & 129.05 & 23 & 10 \\
-$t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{9,2}$ -- $10_{9,1}$ & 97.948051 & -4.793 & 194.87 & 23 & 10 \\
-$t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{9,3}$ -- $10_{9,2}$ & 97.948051 & -4.793 & 194.87 & 23 & 10 \\
-$t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{10,1}$ -- $10_{10,0}$ & 97.950017 & -5.0727 & 233.93 & 23 & 10 \\
-$t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{10,2}$ -- $10_{10,1}$ & 97.950017 & -5.0727 & 233.93 & 23 & 10 \\
-$t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{6,5}$ -- $10_{6,4}$ & 97.950286 & -4.4656 & 102.3 & 23 & 10 \\
-$t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{6,6}$ -- $10_{6,5}$ & 97.950286 & -4.4656 & 102.3 & 23 & 10 \\
-$t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{5,7}$ -- $10_{5,6}$ & 97.957003 & -4.4126 & 79.67 & 23 & 10 \\
-$t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{5,6}$ -- $10_{5,5}$ & 97.957003 & -4.4126 & 79.67 & 23 & 10 \\
-$t$-C$_2$H$_3$CHO$^\dagger$ & $11_{4,8}$ -- $10_{4,7}$ & 97.972119 & -4.3735 & 61.15 & 23 & 10 \\
-$t$-C$_2$H$_3$CHO$^\dagger$ & $11_{4,7}$ -- $10_{4,6}$ & 97.972119 & -4.3735 & 61.15 & 23 & 10 \\
-$t$-C$_2$H$_3$CHO & $11_{3,9}$ -- $10_{3,8}$ & 98.001321 & -4.3451 & 46.74 & 23 & 10 \\
-$t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{3,8}$ -- $10_{3,7}$ & 98.019044 & -4.3448 & 46.74 & 23 & 10 \\
+$t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{2,10}$ -- $10_{2,9}$ & 97.815592 & -4.3286 & 23.0 & 36 & 10 \\
+$t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{8,3}$ -- $10_{8,2}$ & 97.947054 & -4.6391 & 23.0 & 159 & 10 \\
+$t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{8,4}$ -- $10_{8,3}$ & 97.947054 & -4.6391 & 23.0 & 159 & 10 \\
+$t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{7,5}$ -- $10_{7,4}$ & 97.947549 & -4.5377 & 23.0 & 129 & 10 \\
+$t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{7,4}$ -- $10_{7,3}$ & 97.94755 & -4.5377 & 23.0 & 129 & 10 \\
+$t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{9,2}$ -- $10_{9,1}$ & 97.948051 & -4.793 & 23.0 & 194 & 10 \\
+$t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{9,3}$ -- $10_{9,2}$ & 97.948051 & -4.793 & 23.0 & 194 & 10 \\
+$t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{10,1}$ -- $10_{10,0}$ & 97.950017 & -5.0727 & 23.0 & 233 & 10 \\
+$t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{10,2}$ -- $10_{10,1}$ & 97.950017 & -5.0727 & 23.0 & 233 & 10 \\
+$t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{6,5}$ -- $10_{6,4}$ & 97.950286 & -4.4656 & 23.0 & 102 & 10 \\
+$t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{6,6}$ -- $10_{6,5}$ & 97.950286 & -4.4656 & 23.0 & 102 & 10 \\
+$t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{5,7}$ -- $10_{5,6}$ & 97.957003 & -4.4126 & 23.0 & 79 & 10 \\
+$t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{5,6}$ -- $10_{5,5}$ & 97.957003 & -4.4126 & 23.0 & 79 & 10 \\
+$t$-C$_2$H$_3$CHO$^\dagger$ & $11_{4,8}$ -- $10_{4,7}$ & 97.972119 & -4.3735 & 23.0 & 61 & 10 \\
+$t$-C$_2$H$_3$CHO$^\dagger$ & $11_{4,7}$ -- $10_{4,6}$ & 97.972119 & -4.3735 & 23.0 & 61 & 10 \\
+$t$-C$_2$H$_3$CHO & $11_{3,9}$ -- $10_{3,8}$ & 98.001321 & -4.3451 & 23.0 & 46 & 10 \\
+$t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{3,8}$ -- $10_{3,7}$ & 98.019044 & -4.3448 & 23.0 & 46 & 10 \\
 \hline 
 \multicolumn{7}{c}{Propanal (\propanal)} \\
 \hline 
-$s$-C$_2$H$_5$CHO$^\ddagger$ & $14_{4,11}$ -- $14_{3,12}$ E & 87.307042 & -5.1587 & 62.19 & 29 & 6 \\
-$s$-C$_2$H$_5$CHO$^\ddagger$ & $14_{4,11}$ -- $14_{3,12}$ A & 87.307594 & -5.1587 & 62.19 & 29 & 6 \\
-$s$-C$_2$H$_5$CHO$^\ddagger$ & $29_{6,23}$ -- $29_{5,24}$ E & 96.793208 & -4.8841 & 245.73 & 59 & 9 \\
-$s$-C$_2$H$_5$CHO$^\ddagger$ & $29_{6,23}$ -- $29_{5,24}$ A & 96.794186 & -4.8841 & 245.73 & 59 & 9 \\
-$s$-C$_2$H$_5$CHO$^\dagger$ & $12_{5,7}$ -- $12_{4,8}$ E & 98.378025 & -5.0192 & 53.26 & 25 & 10 \\
-$s$-C$_2$H$_5$CHO$^\dagger$ & $12_{5,7}$ -- $12_{4,8}$ A & 98.378025 & -5.0191 & 53.26 & 25 & 10 \\
-$s$-C$_2$H$_5$CHO$^\dagger$ & $29_{7,22}$ -- $29_{6,23}$ A & 98.39443 & -4.847 & 250.45 & 59 & 10 \\
-$s$-C$_2$H$_5$CHO$^\dagger$ & $29_{7,22}$ -- $29_{6,23}$ E & 98.394692 & -4.847 & 250.45 & 59 & 10 \\
+$s$-C$_2$H$_5$CHO$^\ddagger$ & $14_{4,11}$ -- $14_{3,12}$ E & 87.307042 & -5.1587 & 29.0 & 62 & 6 \\
+$s$-C$_2$H$_5$CHO$^\ddagger$ & $14_{4,11}$ -- $14_{3,12}$ A & 87.307594 & -5.1587 & 29.0 & 62 & 6 \\
+$s$-C$_2$H$_5$CHO$^\ddagger$ & $29_{6,23}$ -- $29_{5,24}$ E & 96.793208 & -4.8841 & 59.0 & 245 & 9 \\
+$s$-C$_2$H$_5$CHO$^\ddagger$ & $29_{6,23}$ -- $29_{5,24}$ A & 96.794186 & -4.8841 & 59.0 & 245 & 9 \\
+$s$-C$_2$H$_5$CHO$^\dagger$ & $12_{5,7}$ -- $12_{4,8}$ E & 98.378025 & -5.0192 & 25.0 & 53 & 10 \\
+$s$-C$_2$H$_5$CHO$^\dagger$ & $12_{5,7}$ -- $12_{4,8}$ A & 98.378025 & -5.0191 & 25.0 & 53 & 10 \\
+$s$-C$_2$H$_5$CHO$^\dagger$ & $29_{7,22}$ -- $29_{6,23}$ A & 98.39443 & -4.847 & 59.0 & 250 & 10 \\
+$s$-C$_2$H$_5$CHO$^\dagger$ & $29_{7,22}$ -- $29_{6,23}$ E & 98.394692 & -4.847 & 59.0 & 250 & 10 \\
 \hline 
 \multicolumn{7}{c}{Others} \\
 \hline 
-C$_2$H$_3$CN & $9_{1,8}$ -- $8_{1,7}$ & 87.312812 & -4.2778 & 23.13 & 57 & 6 \\
-SO$_2$$^\ddagger$ & $7_{3,5}$ -- $8_{2,6}$ & 97.702334 & -5.7413 & 47.84 & 15 & 10 \\
-OCS & $7$ -- $6$ & 85.139103 & -5.7658 & 16.34 & 15 & 2
+C$_2$H$_3$CN & $9_{1,8}$ -- $8_{1,7}$ & 87.312812 & -4.2778 & 57.0 & 23 & 6 \\
+SO$_2$$^\ddagger$ & $7_{3,5}$ -- $8_{2,6}$ & 97.702334 & -5.7413 & 15.0 & 47 & 10 \\
+OCS & $7$ -- $6$ & 85.139103 & -5.7658 & 15.0 & 16 & 3
 \enddata
-\tablenotetext{\dagger}{Blended with the other transitions of the same species.}
-\tablenotetext{\ddagger}{Blended with transitions of other species.}
 \end{deluxetable*}
+
+
+
+
+
+% \startlongtable
+% \begin{deluxetable*}{ccCCCCc}
+% \tablecaption{Detected Transitions for Each Species\label{tab:transitions}}
+% \tablehead{\colhead{Species} & \colhead{Transition} & \colhead{$\nu_0$ (GHz)} & \colhead{log$_{10}A_\mathrm{ul}$ (s$^{-1}$)} & \colhead{$E_\mathrm{up}$ (K)} & \colhead{$g_\mathrm{up}$} & \colhead{SPW}}
+% \decimals
+% \startdata
+% \hline 
+% \multicolumn{7}{c}{Methanol (\methanol)} \\
+% \hline 
+% CH$_3$OH$^\ddagger$ & $2_{-1,2}$ -- $1_{-1,1}$ E $v_t=1$ & 96.492163 & -5.5963 & 298.42 & 20 & 7 \\
+% CH$_3$OH$^\ddagger$ & $2_{0,2}$ -- $1_{0,1}$ E $v_t=1$ & 96.493551 & -5.4706 & 307.52 & 20 & 7 \\
+% CH$_3$OH$^\ddagger$ & $2_{1,1}$ -- $1_{1,0}$ E $v_t=1$ & 96.501713 & -5.5967 & 420.32 & 20 & 7 \\
+% CH$_3$OH & $2_{0,2}$ -- $1_{0,1}$ A $v_t=1$ & 96.513686 & -5.4709 & 430.6 & 20 & 7 \\
+% CH$_3$OH$^\dagger$ & $2_{1,2}$ -- $1_{1,1}$ E $v_t=0$ & 96.739358 & -5.5923 & 12.54 & 20 & 9 \\
+% CH$_3$OH$^\dagger$ & $2_{0,2}$ -- $1_{0,1}$ A $v_t=0$ & 96.741371 & -5.4676 & 6.96 & 20 & 9 \\
+% CH$_3$OH & $2_{0,2}$ -- $1_{0,1}$ E $v_t=0$ & 96.744545 & -5.4676 & 20.09 & 20 & 9 \\
+% CH$_3$OH & $2_{-1,1}$ -- $1_{-1,0}$ E $v_t=0$ & 96.755501 & -5.581 & 28.01 & 20 & 9 \\
+% CH$_3$OH & $2_{1,1}$ -- $1_{1,0}$ A $v_t=0$ & 97.582798 & -5.5807 & 21.56 & 20 & 10 \\
+% CH$_3$OH$^\dagger$ & $21_{6,16}$ -- $22_{5,17}$ A $v_t=0$ & 97.677684 & -5.8404 & 729.28 & 172 & 10 \\
+% CH$_3$OH$^\dagger$ & $21_{6,15}$ -- $22_{5,18}$ A $v_t=0$ & 97.678803 & -5.8403 & 729.28 & 172 & 10 \\
+% \hline 
+% \multicolumn{7}{c}{Methanol (CH$_2$DOH)} \\
+% \hline 
+% CH$_2$DOH$^\ddagger$ & $2_{1,1}$ -- $2_{0,2}$ e0 & 86.668751 & -5.3322 & 10.6 & 5 & 5 \\
+% CH$_2$DOH$^\ddagger$ & $4_{1,3}$ -- $4_{0,4}$ o1 & 97.870192 & -5.3363 & 44.47 & 9 & 10 \\
+% CH$_2$DOH & $4_{0,4}$ -- $3_{1,3}$ e0 & 98.031213 & -5.616 & 21.45 & 9 & 10 \\
+% \hline 
+% \multicolumn{7}{c}{Methyl Formate (\methylformate)} \\
+% \hline 
+% CH$_3$OCHO & $7_{6,1}$ -- $6_{6,0}$ E $v_t=1$ & 85.157135 & -5.6248 & 228.15 & 30 & 2 \\
+% CH$_3$OCHO$^\dagger$ & $7_{5,3}$ -- $6_{5,2}$ A $v_t=1$ & 85.185466 & -5.3602 & 220.9 & 30 & 2 \\
+% CH$_3$OCHO$^\dagger$ & $7_{5,2}$ -- $6_{5,1}$ A $v_t=1$ & 85.186063 & -5.3602 & 220.9 & 30 & 2 \\
+% CH$_3$OCHO & $7_{4,3}$ -- $6_{4,2}$ E $v_t=1$ & 85.506219 & -5.2142 & 214.56 & 30 & 1 \\
+% CH$_3$OCHO & $7_{5,3}$ -- $6_{5,2}$ E $v_t=1$ & 85.55338 & -5.3527 & 220.04 & 30 & 1 \\
+% CH$_3$OCHO & $7_{6,1}$ -- $6_{6,0}$ E $v_t=0$ & 85.919209 & -5.6138 & 40.44 & 30 & 0 \\
+% CH$_3$OCHO$^\dagger$ & $7_{6,2}$ -- $6_{6,1}$ E $v_t=0$ & 85.926553 & -5.6137 & 40.42 & 30 & 0 \\
+% CH$_3$OCHO$^\dagger$ & $7_{6,2}$ -- $6_{6,1}$ A $v_t=0$ & 85.927227 & -5.6136 & 40.42 & 30 & 0 \\
+% CH$_3$OCHO$^\dagger$ & $7_{6,1}$ -- $6_{6,0}$ A $v_t=0$ & 85.927227 & -5.6136 & 40.42 & 30 & 0 \\
+% CH$_3$OCHO & $7_{4,4}$ -- $7_{3,5}$ E $v_t=0$ & 96.507882 & -6.1542 & 27.16 & 30 & 7 \\
+% CH$_3$OCHO & $8_{4,5}$ -- $8_{3,6}$ A $v_t=0$ & 96.709259 & -5.9454 & 31.89 & 34 & 9 \\
+% CH$_3$OCHO & $7_{4,3}$ -- $7_{3,5}$ E $v_t=0$ & 96.776715 & -6.4523 & 27.17 & 30 & 9 \\
+% CH$_3$OCHO & $5_{4,2}$ -- $5_{3,3}$ A $v_t=0$ & 96.794121 & -6.1026 & 19.47 & 22 & 9 \\
+% CH$_3$OCHO & $8_{5,3}$ -- $7_{5,2}$ E $v_t=1$ & 97.577303 & -5.0823 & 225.36 & 34 & 10 \\
+% CH$_3$OCHO & $8_{3,6}$ -- $7_{3,5}$ A $v_t=1$ & 97.597161 & -4.9359 & 214.94 & 34 & 10 \\
+% CH$_3$OCHO$^\dagger$ & $8_{7,2}$ -- $7_{7,1}$ E $v_t=1$ & 97.65127 & -5.4962 & 240.82 & 34 & 10 \\
+% CH$_3$OCHO$^\dagger$ & $10_{4,7}$ -- $10_{3,8}$ E $v_t=0$ & 97.65127 & -5.9015 & 43.17 & 42 & 10 \\
+% CH$_3$OCHO & $8_{4,5}$ -- $7_{4,4}$ A $v_t=1$ & 97.661401 & -4.9937 & 219.6 & 34 & 10 \\
+% CH$_3$OCHO$^\ddagger$ & $10_{4,7}$ -- $10_{3,8}$ A $v_t=0$ & 97.69426 & -5.8957 & 43.16 & 42 & 10 \\
+% CH$_3$OCHO$^\ddagger$ & $12_{1,11}$ -- $12_{0,12}$ A $v_t=1$ & 97.727054 & -6.2029 & 234.75 & 50 & 10 \\
+% CH$_3$OCHO & $8_{6,3}$ -- $7_{6,2}$ E $v_t=1$ & 97.738738 & -5.2243 & 232.1 & 34 & 10 \\
+% CH$_3$OCHO & $8_{4,4}$ -- $7_{4,3}$ A $v_t=1$ & 97.752885 & -4.9924 & 219.61 & 34 & 10 \\
+% CH$_3$OCHO$^\ddagger$ & $8_{4,4}$ -- $8_{3,5}$ E $v_t=1$ & 97.871147 & -5.967 & 219.26 & 34 & 10 \\
+% CH$_3$OCHO$^\ddagger$ & $10_{4,7}$ -- $10_{3,8}$ A $v_t=1$ & 97.878933 & -5.8854 & 230.76 & 42 & 10 \\
+% CH$_3$OCHO & $8_{5,4}$ -- $7_{5,3}$ E $v_t=1$ & 97.885663 & -5.0787 & 224.73 & 34 & 10 \\
+% CH$_3$OCHO & $8_{4,4}$ -- $7_{4,3}$ E $v_t=1$ & 97.897118 & -4.9875 & 219.26 & 34 & 10 \\
+% CH$_3$OCHO$^\ddagger$ & $21_{4,17}$ -- $21_{3,18}$ A $v_t=1$ & 98.066305 & -5.7833 & 337.99 & 86 & 10 \\
+% CH$_3$OCHO$^\ddagger$ & $8_{4,5}$ -- $7_{4,4}$ E $v_t=1$ & 98.176293 & -4.9853 & 218.74 & 34 & 10 \\
+% CH$_3$OCHO & $8_{7,1}$ -- $7_{7,0}$ E $v_t=0$ & 98.182336 & -5.4902 & 53.78 & 34 & 10 \\
+% CH$_3$OCHO$^\dagger$ & $8_{7,2}$ -- $7_{7,1}$ A $v_t=0$ & 98.190658 & -5.4899 & 53.76 & 34 & 10 \\
+% CH$_3$OCHO$^\dagger$ & $8_{7,1}$ -- $7_{7,0}$ A $v_t=0$ & 98.190658 & -5.4899 & 53.76 & 34 & 10 \\
+% CH$_3$OCHO$^\dagger$ & $8_{7,2}$ -- $7_{7,1}$ E $v_t=0$ & 98.19146 & -5.49 & 53.76 & 34 & 10 \\
+% CH$_3$OCHO & $8_{6,2}$ -- $7_{6,1}$ E $v_t=0$ & 98.270501 & -5.218 & 45.15 & 34 & 10 \\
+% CH$_3$OCHO$^\dagger$ & $8_{6,3}$ -- $7_{6,2}$ E $v_t=0$ & 98.278921 & -5.2178 & 45.13 & 34 & 10 \\
+% CH$_3$OCHO$^\dagger$ & $8_{6,3}$ -- $7_{6,2}$ A $v_t=0$ & 98.279762 & -5.2178 & 45.13 & 34 & 10 \\
+% CH$_3$OCHO$^\dagger$ & $8_{6,2}$ -- $7_{6,1}$ A $v_t=0$ & 98.279762 & -5.2178 & 45.13 & 34 & 10 \\
+% CH$_3$OCHO$^\dagger$ & $9_{0,9}$ -- $8_{1,8}$ A $v_t=1$ & 98.423165 & -5.701 & 212.64 & 38 & 10 \\
+% CH$_3$OCHO$^\dagger$ & $8_{5,3}$ -- $7_{5,2}$ E $v_t=0$ & 98.424207 & -5.0722 & 37.86 & 34 & 10 \\
+% CH$_3$OCHO$^\dagger$ & $8_{5,4}$ -- $7_{5,3}$ E $v_t=0$ & 98.431803 & -5.072 & 37.84 & 34 & 10 \\
+% CH$_3$OCHO$^\dagger$ & $8_{5,4}$ -- $7_{5,3}$ A $v_t=0$ & 98.43276 & -5.0719 & 37.84 & 34 & 10 \\
+% CH$_3$OCHO & $8_{5,3}$ -- $7_{5,2}$ A $v_t=0$ & 98.435802 & -5.0719 & 37.84 & 34 & 10 \\
+% CH$_3$OCHO & $8_{4,5}$ -- $7_{4,3}$ E $v_t=0$ & 98.443186 & -6.4657 & 31.9 & 34 & 10 \\
+% \hline 
+% \multicolumn{7}{c}{Methyl Formate (CH$_3$O$^{13}$CHO)} \\
+% \hline 
+% CH$_3$O$^{13}$CHO$^\dagger$ & $8_{6,2}$ -- $7_{6,1}$ E $v_t=0$ & 97.541168 & -5.2186 & 44.76 & 34 & 10 \\
+% CH$_3$O$^{13}$CHO$^\dagger$ & $8_{-6,3}$ -- $7_{-6,2}$ E $v_t=0$ & 97.549352 & -5.2185 & 44.74 & 34 & 10 \\
+% CH$_3$O$^{13}$CHO$^\dagger$ & $8_{6,3}$ -- $7_{6,2}$ A $v_t=0$ & 97.55014 & -5.2185 & 44.74 & 34 & 10 \\
+% CH$_3$O$^{13}$CHO$^\dagger$ & $8_{6,2}$ -- $7_{6,1}$ A $v_t=0$ & 97.550183 & -5.2185 & 44.74 & 34 & 10 \\
+% CH$_3$O$^{13}$CHO$^\ddagger$ & $8_{-5,4}$ -- $7_{-5,3}$ E $v_t=0$ & 97.702479 & -5.0727 & 37.52 & 34 & 10 \\
+% CH$_3$O$^{13}$CHO$^\ddagger$ & $8_{5,4}$ -- $7_{5,3}$ A $v_t=0$ & 97.703323 & -5.0726 & 37.51 & 34 & 10 \\
+% CH$_3$O$^{13}$CHO$^\dagger$ & $8_{5,3}$ -- $7_{5,2}$ A $v_t=0$ & 97.706423 & -5.0726 & 37.51 & 34 & 10 \\
+% CH$_3$O$^{13}$CHO & $8_{-3,6}$ -- $7_{-3,5}$ E $v_t=0$ & 97.874331 & -4.9221 & 27.04 & 34 & 10 \\
+% CH$_3$O$^{13}$CHO$^\ddagger$ & $8_{3,6}$ -- $7_{3,5}$ A $v_t=0$ & 97.878443 & -4.9215 & 27.03 & 34 & 10 \\
+% CH$_3$O$^{13}$CHO$^\ddagger$ & $8_{4,4}$ -- $7_{4,3}$ E $v_t=0$ & 98.019644 & -4.9931 & 31.65 & 34 & 10 \\
+% \hline 
+% \multicolumn{7}{c}{Acetaldehyde (\acetaldehyde)} \\
+% \hline 
+% CH$_3$CHO & $9_{1,8}$ -- $9_{0,9}$ E $v_t=1$ & 85.947624 & -5.559 & 249.81 & 38 & 0 \\
+% CH$_3$CHO$^\dagger$ & $12_{2,11}$ -- $12_{1,11}$ E $v_t=1$ & 87.303557 & -6.1944 & 285.13 & 50 & 6 \\
+% CH$_3$CHO$^\dagger$ & $11_{4,7}$ -- $12_{3,9}$ E $v_t=1$ & 87.303714 & -6.2602 & 303.24 & 46 & 6 \\
+% CH$_3$CHO & $5_{2,3}$ -- $4_{2,2}$ E $v_t=0$ & 96.475524 & -4.6168 & 23.03 & 22 & 7 \\
+% CH$_3$CHO & $11_{4,8}$ -- $12_{3,10}$ E $v_t=0$ & 96.48895 & -6.1541 & 97.14 & 46 & 7 \\
+% CH$_3$CHO$^\dagger$ & $5_{3,3}$ -- $4_{3,2}$ A $v_t=2$ & 96.716114 & -4.7374 & 420.58 & 22 & 9 \\
+% CH$_3$CHO$^\dagger$ & $5_{3,2}$ -- $4_{3,1}$ A $v_t=2$ & 96.717473 & -4.7374 & 420.58 & 22 & 9 \\
+% CH$_3$CHO$^\dagger$ & $5_{2,3}$ -- $4_{2,2}$ A $v_t=1$ & 96.718409 & -4.6093 & 228.3 & 22 & 9 \\
+% CH$_3$CHO & $7_{0,7}$ -- $6_{1,6}$ A $v_t=0$ & 96.765371 & -5.5556 & 25.78 & 30 & 9 \\
+% CH$_3$CHO & $5_{2,4}$ -- $4_{2,3}$ E $v_t=1$ & 96.800291 & -4.613 & 226.45 & 22 & 9 \\
+% CH$_3$CHO & $5_{3,2}$ -- $4_{3,1}$ E $v_t=2$ & 97.612131 & -4.9808 & 419.01 & 22 & 10 \\
+% CH$_3$CHO & $19_{2,18}$ -- $18_{3,15}$ E $v_t=0$ & 97.796104 & -6.1248 & 183.87 & 78 & 10 \\
+% CH$_3$CHO & $10_{4,7}$ -- $11_{3,8}$ A $v_t=1$ & 97.941422 & -6.1583 & 290.44 & 42 & 10 \\
+% CH$_3$CHO & $21_{3,18}$ -- $20_{4,17}$ A $v_t=0$ & 98.20169 & -6.01 & 235.39 & 86 & 10 \\
+% CH$_3$CHO & $6_{3,3}$ -- $7_{2,5}$ E $v_t=0$ & 98.368631 & -6.245 & 39.81 & 26 & 10 \\
+% \hline 
+% \multicolumn{7}{c}{Acetaldehyde (CH$_3^{13}$CHO)} \\
+% \hline 
+% CH$_3^{13}$CHO$^\ddagger$ & $5_{2,3}$ -- $4_{2,2}$ A $v_t=0$ & 96.494465 & -4.5971 & 22.74 & 11 & 7 \\
+% \hline 
+% \multicolumn{7}{c}{Acetaldehyde (CH$_3$CDO)} \\
+% \hline 
+% CH$_3$CDO & $5_{1,4}$ -- $4_{1,3}$ E $v_t=0$ & 97.81231 & -4.5235 & 15.86 & 11 & 10 \\
+% CH$_3$CDO & $5_{1,4}$ -- $4_{1,3}$ A $v_t=0$ & 97.828514 & -4.5234 & 15.81 & 11 & 10 \\
+% \hline 
+% \multicolumn{7}{c}{Acetaldehyde (CH$_2$DCHO)} \\
+% \hline 
+% CH$_2$DCHO & $11_{2,9}i$ -- $11_{1,10}i$ & 98.412832 & -5.2329 & 66.88 & 23 & 10 \\
+% \hline 
+% \multicolumn{7}{c}{Dimethyl Ether (\dimethylether)} \\
+% \hline 
+% CH$_3$OCH$_3$$^\dagger$ & $16_{3,14}$ -- $15_{4,11}$ AA & 97.990629 & -5.8984 & 136.6 & 330 & 10 \\
+% CH$_3$OCH$_3$$^\dagger$ & $16_{3,14}$ -- $15_{4,11}$ EE & 97.993382 & -5.8983 & 136.6 & 528 & 10 \\
+% CH$_3$OCH$_3$$^\dagger$ & $16_{3,14}$ -- $15_{4,11}$ EA & 97.996098 & -5.8984 & 136.6 & 132 & 10 \\
+% CH$_3$OCH$_3$$^\dagger$ & $16_{3,14}$ -- $15_{4,11}$ AE & 97.996174 & -5.8984 & 136.6 & 198 & 10 \\
+% \hline 
+% \multicolumn{7}{c}{Acetone (\acetone)} \\
+% \hline 
+% CH$_3$COCH$_3$$^\dagger$ & $17_{6,11}$ -- $17_{5,12}$ AE & 97.929123 & -4.7694 & 110.64 & 210 & 10 \\
+% CH$_3$COCH$_3$$^\dagger$ & $17_{6,11}$ -- $17_{5,12}$ & 97.929247 & -4.7694 & 110.64 & 140 & 10 \\
+% CH$_3$COCH$_3$$^\dagger$ & $17_{7,11}$ -- $17_{6,12}$ AE & 97.930235 & -4.7694 & 110.64 & 70 & 10 \\
+% CH$_3$COCH$_3$$^\dagger$ & $17_{7,11}$ -- $17_{6,12}$ & 97.930344 & -4.7693 & 110.64 & 140 & 10 \\
+% CH$_3$COCH$_3$$^\dagger$ & $17_{6,11}$ -- $17_{5,12}$ EE & 98.052399 & -4.7674 & 110.59 & 560 & 10 \\
+% CH$_3$COCH$_3$$^\dagger$ & $17_{7,11}$ -- $17_{6,12}$ EE & 98.053535 & -4.7674 & 110.59 & 560 & 10 \\
+% \hline 
+% \multicolumn{7}{c}{Ethylene Oxide (\ethyleneoxide)} \\
+% \hline 
+% $c$-C$_2$H$_4$O$^\ddagger$ & $11_{9,3}$ -- $11_{8,4}$ & 96.501033 & -5.0737 & 146.75 & 115 & 7 \\
+% $c$-C$_2$H$_4$O$^\ddagger$ & $12_{9,4}$ -- $12_{8,5}$ & 97.728742 & -4.9909 & 169.45 & 75 & 10 \\
+% \hline 
+% \multicolumn{7}{c}{Propenal (\propenal)} \\
+% \hline 
+% $t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{2,10}$ -- $10_{2,9}$ & 97.815592 & -4.3286 & 36.42 & 23 & 10 \\
+% $t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{8,3}$ -- $10_{8,2}$ & 97.947054 & -4.6391 & 159.91 & 23 & 10 \\
+% $t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{8,4}$ -- $10_{8,3}$ & 97.947054 & -4.6391 & 159.91 & 23 & 10 \\
+% $t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{7,5}$ -- $10_{7,4}$ & 97.947549 & -4.5377 & 129.05 & 23 & 10 \\
+% $t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{7,4}$ -- $10_{7,3}$ & 97.94755 & -4.5377 & 129.05 & 23 & 10 \\
+% $t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{9,2}$ -- $10_{9,1}$ & 97.948051 & -4.793 & 194.87 & 23 & 10 \\
+% $t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{9,3}$ -- $10_{9,2}$ & 97.948051 & -4.793 & 194.87 & 23 & 10 \\
+% $t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{10,1}$ -- $10_{10,0}$ & 97.950017 & -5.0727 & 233.93 & 23 & 10 \\
+% $t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{10,2}$ -- $10_{10,1}$ & 97.950017 & -5.0727 & 233.93 & 23 & 10 \\
+% $t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{6,5}$ -- $10_{6,4}$ & 97.950286 & -4.4656 & 102.3 & 23 & 10 \\
+% $t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{6,6}$ -- $10_{6,5}$ & 97.950286 & -4.4656 & 102.3 & 23 & 10 \\
+% $t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{5,7}$ -- $10_{5,6}$ & 97.957003 & -4.4126 & 79.67 & 23 & 10 \\
+% $t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{5,6}$ -- $10_{5,5}$ & 97.957003 & -4.4126 & 79.67 & 23 & 10 \\
+% $t$-C$_2$H$_3$CHO$^\dagger$ & $11_{4,8}$ -- $10_{4,7}$ & 97.972119 & -4.3735 & 61.15 & 23 & 10 \\
+% $t$-C$_2$H$_3$CHO$^\dagger$ & $11_{4,7}$ -- $10_{4,6}$ & 97.972119 & -4.3735 & 61.15 & 23 & 10 \\
+% $t$-C$_2$H$_3$CHO & $11_{3,9}$ -- $10_{3,8}$ & 98.001321 & -4.3451 & 46.74 & 23 & 10 \\
+% $t$-C$_2$H$_3$CHO$^\ddagger$ & $11_{3,8}$ -- $10_{3,7}$ & 98.019044 & -4.3448 & 46.74 & 23 & 10 \\
+% \hline 
+% \multicolumn{7}{c}{Propanal (\propanal)} \\
+% \hline 
+% $s$-C$_2$H$_5$CHO$^\ddagger$ & $14_{4,11}$ -- $14_{3,12}$ E & 87.307042 & -5.1587 & 62.19 & 29 & 6 \\
+% $s$-C$_2$H$_5$CHO$^\ddagger$ & $14_{4,11}$ -- $14_{3,12}$ A & 87.307594 & -5.1587 & 62.19 & 29 & 6 \\
+% $s$-C$_2$H$_5$CHO$^\ddagger$ & $29_{6,23}$ -- $29_{5,24}$ E & 96.793208 & -4.8841 & 245.73 & 59 & 9 \\
+% $s$-C$_2$H$_5$CHO$^\ddagger$ & $29_{6,23}$ -- $29_{5,24}$ A & 96.794186 & -4.8841 & 245.73 & 59 & 9 \\
+% $s$-C$_2$H$_5$CHO$^\dagger$ & $12_{5,7}$ -- $12_{4,8}$ E & 98.378025 & -5.0192 & 53.26 & 25 & 10 \\
+% $s$-C$_2$H$_5$CHO$^\dagger$ & $12_{5,7}$ -- $12_{4,8}$ A & 98.378025 & -5.0191 & 53.26 & 25 & 10 \\
+% $s$-C$_2$H$_5$CHO$^\dagger$ & $29_{7,22}$ -- $29_{6,23}$ A & 98.39443 & -4.847 & 250.45 & 59 & 10 \\
+% $s$-C$_2$H$_5$CHO$^\dagger$ & $29_{7,22}$ -- $29_{6,23}$ E & 98.394692 & -4.847 & 250.45 & 59 & 10 \\
+% \hline 
+% \multicolumn{7}{c}{Others} \\
+% \hline 
+% C$_2$H$_3$CN & $9_{1,8}$ -- $8_{1,7}$ & 87.312812 & -4.2778 & 23.13 & 57 & 6 \\
+% SO$_2$$^\ddagger$ & $7_{3,5}$ -- $8_{2,6}$ & 97.702334 & -5.7413 & 47.84 & 15 & 10 \\
+% OCS & $7$ -- $6$ & 85.139103 & -5.7658 & 16.34 & 15 & 2
+% \enddata
+% \tablenotetext{\dagger}{Blended with the other transitions of the same species.}
+% \tablenotetext{\ddagger}{Blended with transitions of other species.}
+% \end{deluxetable*}
 
 
 
@@ -653,7 +849,7 @@ OCS & $7$ -- $6$ & 85.139103 & -5.7658 & 16.34 & 15 & 2
 
 \section{Spectra}
 
-\section{LTE spectral model}
+\section{LTE spectral model}\label{appendix:spectral_model}
 Here we describe the details of the spectral model which is fitted to the spectra corrected for Keplerian rotation for column density derivation. We assume that the excitation condition of observed COM emission is well approximated by local thermodynamic equilibrium (LTE), where the gas temperature is equal to the excitation temperature ($T_\mathrm{ex}$) of the emitting molecules. This assumption should be reasonable as the typical gas density in protoplanetary disks () is higher than the typical critical density of the COM transitions. For example, the critical density of xx-yy transition of \methanol is calculated to be zzz cm-3 at a gas kinetic temperature of 100 K \citep[ref][]{}. We further assume that different species are sufficiently cospatial to share the same emitting region size and excitation temperature. This assumption is also broadly supported by the similar emission extent of different COMs shown in Figure \ref{fig:moment_zero_gallery}. 
 
 The model intensity $I_\nu$ are computed based on a solution of the basic radiative transfer equations for an isothermal, uniform slab:
@@ -681,7 +877,7 @@ to take line broadening in the spectra corrected for Keplerian rotation. As show
 
 
 
-In total, we consider 19 free parameters:  $r, T_\mathrm{ex}, \gamma, \Delta V_\mathrm{FWHM}$, and $N$ for 15 species. The fit 
+% In total, we consider 19 free parameters:  $r, T_\mathrm{ex}, \gamma, \Delta V_\mathrm{FWHM}$, and $N$ for 15 species. The fit 
 
 \begin{figure}
 % \epsscale{1.15}
