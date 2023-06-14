@@ -302,7 +302,7 @@ The detailed properties of the SPWs are summarized in Table \ref{tab:cube_proper
 The initial calibrations were performed by the ALMA staff using the standard ALMA calibration pipeline version 2021.2.0.128. Subsequent self-calibration and imaging were conducted using the Common Astronomy Software Applications \citep[CASA;][]{CASA} version 6.2.1.7. The pipeline-calibrated data were first imaged without any deconvolutions (i.e., dirty imaging) or continuum-subtractions to specify the line-free channels precisely by visually inspecting the dirty image cubes. These line-free channels are averaged to obtain continuum visibilities. Self-calibration was subsequently conducted using the continuum visibilities with the CASA tasks \texttt{gaincal} and \texttt{applycal}. One round of the phase-only and phase plus amplitude self-calibration were first performed on the data with a compact antenna configuration. The data with extended antenna configurations were then concatenated and self-calibrated together. Two rounds of the phase-only self-calibration and one round of the phase plus amplitude self-calibration were performed on the combined data. The solutions were then applied to the spectral line visibilities.
 % , which were then continuum-subtracted using the CASA task \texttt{uvcontsub}. 
 
-Each of the SPWs was imaged with the CASA task \texttt{tclean} \citep{Hogbom1974} using Briggs weighting (\texttt{robust} $=$ 0.5). The \texttt{tclean} task was run in parallel mode using \texttt{mpicasa} implementation. As a specific weighting scheme, \texttt{briggsbwtaper} is adopted with independent weight densities for each channel (i.e., \texttt{perchanweightdensity = True}) to achieve more uniform sensitivity over whole channels. For each SPW, a common restoring beam across all channels is used. A few channels at the edge of the SPW are removed during the imaging process because of the large deviation of the beam size caused by a slight difference in the frequency coverage between the data with compact and extended antenna configurations\footnote{see \url{https://casadocs.readthedocs.io/en/stable/notebooks/memo-series.html\#Correcting-bad-common-beam}.}. All SPWs were CLEANed down to 3\,$\times$\,RMS with the native channel widths. Automatic masking algorithm with \texttt{automultithresh} was also adopted to generate the CLEAN mask. The typical beam size and the RMS noise level were $\sim0\farcs3$--$0\farcs4$ and 0.6--1\,mJy\,beam$^{-1}$, respectively. The RMS noise level was measured on the images without the primary beam correction. The beam sizes and RMS noise levels for each SPW are listed in Table \ref{tab:cube_properties}. Finally, the continuum component is subtracted from these image cubes using the CASA task \texttt{imcontsub} to produce the spectral-line-only image cubes. The continuum subtraction on the image plane rather than the visibility plane (e.g., with the CASA task \texttt{uvcontsub}) mitigates the Jorsater \& van Moorsel (JvM) effect \citep{JvM, Czekala2021} on the line emission, which is critical for the flux scale, as much as possible (see Appendix \ref{}). Throughout this paper, we use ...
+Each of the SPWs was imaged with the CASA task \texttt{tclean} \citep{Hogbom1974} using Briggs weighting (\texttt{robust} $=$ 0.5). The \texttt{tclean} task was run in parallel mode using \texttt{mpicasa} implementation. As a specific weighting scheme, \texttt{briggsbwtaper} is adopted with independent weight densities for each channel (i.e., \texttt{perchanweightdensity = True}) to achieve more uniform sensitivity over whole channels. For each SPW, a common restoring beam across all channels is used. A few channels at the edge of the SPW are removed during the imaging process because of the large deviation of the beam size caused by a slight difference in the frequency coverage between the data with compact and extended antenna configurations\footnote{see \url{https://casadocs.readthedocs.io/en/stable/notebooks/memo-series.html\#Correcting-bad-common-beam}.}. All SPWs were CLEANed down to 3\,$\times$\,RMS with the native channel widths. Automatic masking algorithm with \texttt{automultithresh} was also adopted to generate the CLEAN mask. The typical beam size and the RMS noise level were $\sim0\farcs3$--$0\farcs4$ and 0.6--1\,mJy\,beam$^{-1}$, respectively. The RMS noise level was measured on the images without the primary beam correction. The beam sizes and RMS noise levels for each SPW are listed in Table \ref{tab:cube_properties}. Finally, the continuum component is subtracted from these image cubes using the CASA task \texttt{imcontsub} to produce the spectral-line-only image cubes. The continuum subtraction on the image plane rather than the visibility plane (e.g., with the CASA task \texttt{uvcontsub}) mitigates the Jorsater \& van Moorsel (JvM) effect \citep{JvM, Czekala2021} on the line emission, which is critical for the flux scale, as much as possible (see Appendix \ref{appendix:JvM_effect}). Throughout this paper, we use ...
 
 % \subsection{JvM Correction}\label{subsec:JvM_correction}
 % The restored images with the default CLEANing process were further processed to account for the Jorsater \& van Moorsel \citep[][hereafter JvM]{JvM} effect: the JvM correction. Due to the inconsistency between the units of the residual image (in Jy per dirty beam) and the model image (in Jy per CLEAN beam), the flux scale in the CLEANed image can be incorrect, particularly for the faint emission. We followed the approach described in \citet{Czekala2021}, where the correction is made by rescaling the residual image by the ratio of the CLEAN beam and dirty beam volumes ($\epsilon$). The JvM $\epsilon$ is $\approx$ 0.29 for all SPWs as listed in Table \ref{tab:cube_properties}. The small $\epsilon$ values indicate that the effect is severe, as expected for the dataset combined with different antenna configurations \citep{Czekala2021}. While the JvM correction recovers the correct flux scale on the CLEANed image, which is critical for determining molecular column densities and temperatures, \citet{Casassus2022} cautioned that the JvM correction may exaggerate the S/N of the emission by artificially reducing the noise level. We thus show the spectra extracted from the JvM-uncorrected images as well in Appendix \ref{}, to ensure that the detections of molecular line emission are statistically significant. 
@@ -403,16 +403,82 @@ Figure \ref{fig:moment_zero_gallery} shows the velocity-integrated intensity map
 
 
 \subsection{Column Density Retrieval}
-\subsubsection{Spectral fit}
+\subsubsection{Spectral fit}\label{subsubsec:spectral_fit}
 To derive the disk-averaged column density of each species, we first employ a simultaneous fit of an LTE spectral model of different species to the extracted spectra, taking the spectral blending and line optical depth into account. The same model as that used for line identification is used (see Appendix \ref{appendix:spectral_model} for details), where all species (tentatively) identified as in Section \ref{subsec:line_identification} are considered. We excluded the optically thick ($\tau > 1$) transitions from the fit, since the optically thick line can underestimate the column density. The selection for the excluded transitions is based on the optical depth at the line center in the best-fit model of the fit for line identification (Section \ref{subsec:line_identification}). This mainly excluded the transitions of abundant species (e.g., \methanol, \methylformate, and \acetaldehyde) with a high Einstein A coefficient and a low upper state energy. 
 
-We employed the Affine invariant Markov Chain Monte Carlo (MCMC) algorithm implemented in the \texttt{emcee} package \citep{emcee} to explore the parameter spaces. Two types of fits were conducted, one of which assumed a fixed emitting radius of 0\farcs6 based on the COM emission extent in higher-resolution Band 6 observations \citep{Lee2019, Tobin2023}, and another of which left it as a free parameter. For both fits, we run 400 walkers for 5000 steps, and the initial 4000 steps are discarded as burn-in.
+We consider 18 parameters in total; emitting region radius ($R_\mathrm{s}$), excitation temperature ($T_\mathrm{ex}$), line width ($\Delta V_\mathrm{FWHM}$), column density of 15 species, and an additional parameter $\gamma$ for line broadening (see Appendix \ref{appendix:spectral_model}). Two types of fits were conducted, one of which assumed a fixed emitting radius of $R_\mathrm{s} = 0\farcs3$ based on the COM emission extent in higher-resolution Band 6 observations \citep{Lee2019, Tobin2023}, and another of which left it as a free parameter. The fit with a fixed emitting radius to that in Band 6 data is motivated by the aim of direct comparison of column densities in Band 3 with those in Band 6. We employed the Affine invariant Markov Chain Monte Carlo (MCMC) algorithm implemented in the \texttt{emcee} package \citep{emcee} to explore the parameter spaces. For both fits, we run 400 walkers for 5000 steps, and the initial 4000 steps are discarded as burn-in. Figure \ref{fig:spectral_fit_demo} demonstrates the unique capability of the simultaneous spectral fit to fully utilize the transitions even with severe spectral blending for . 
 
-Figure \ref{} demonstrates the unique capability of the simultaneous spectral fit to fully utilize the transitions even with severe spectral blending. 
+The results of the fits are summarized in Table \ref{tab:specfit_result}. While both fits obtained similarly high excitation temperatures of $\sim100$\,K indicative of ice sublimation, the column density of molecules are significantly different between the two fits. In the fit with $R_\mathrm{s}$ being a free parameter, the emitting radius is smaller than that of in Band 6 (0\farcs3) by a factor of $\sim2$, and the column density of molecules are thus higher than that in the fit with a fixed emitting radius by factors of $\sim$ 4--8.
+
+\begin{figure*}
+\epsscale{1.15}
+\plotone{spectral_fit_demo.pdf}
+\caption{Demonstration of the simultaneous spectral fit for a selected frequency range in SPW 7. The observed spectra (grey) is well reproduced by the model (black) composed of multiple blended transitions of different species, \methanol, \acetaldehyde, \acetone, \ethyleneoxide, and CH$_3^{13}$CHO (dashed colored lines).}
+\label{fig:spectral_fit_demo}
+\end{figure*}
+
+\begin{deluxetable}{lcc}
+\tablecaption{Results of the spectral fits}
+\tablehead{\colhead{Parameter} & \colhead{$R_\mathrm{s} = 0\farcs3$} & \colhead{$R_\mathrm{s}$ Free}}
+\startdata
+$R_\mathrm{s}$ ($^{\prime\prime}$) & 0.3 (fixed) & $0.148_{-0.004}^{+0.006}$ \\
+$T_\mathrm{ex}$ (K) & $100.4_{-2.8}^{+2.7}$ & $98.9_{-2.0}^{+2.0}$ \\
+$\Delta V_\mathrm{FWHM}$ (km s$^{-1}$) & $0.48_{-0.01}^{+0.01}$ & $1.20_{-0.09}^{+0.08}$ \\
+$\gamma$ (km s$^{-1}$) & $1.38_{-0.02}^{+0.02}$ & $1.15_{-0.03}^{+0.04}$ \\
+$N$ (CH$_3$OH) (cm$^{-2}$) & $2.91_{-0.24}^{+0.29} \times 10^{18}$ & $2.19_{-0.26}^{+0.27} \times 10^{19}$ \\
+$N$ (CH$_3$OCHO) (cm$^{-2}$) & $5.36_{-0.15}^{+0.15} \times 10^{17}$ & $4.16_{-0.34}^{+0.32} \times 10^{18}$ \\
+$N$ (CH$_3$CHO) (cm$^{-2}$) & $3.74_{-0.18}^{+0.21} \times 10^{17}$ & $2.55_{-0.21}^{+0.19} \times 10^{18}$ \\
+$N$ (CH$_3$OCH$_3$) (cm$^{-2}$) & $5.13_{-0.30}^{+0.31} \times 10^{17}$ & $2.35_{-0.25}^{+0.24} \times 10^{18}$ \\
+$N$ (CH$_3$COCH$_3$) (cm$^{-2}$) & $3.23_{-0.25}^{+0.26} \times 10^{16}$ & $1.33_{-0.14}^{+0.15} \times 10^{17}$ \\
+$N$ ($c$-C$_2$H$_4$O) (cm$^{-2}$) & $3.91_{-0.28}^{+0.31} \times 10^{16}$ & $1.83_{-0.24}^{+0.26} \times 10^{17}$ \\
+$N$ ($t$-C$_2$H$_3$CHO) (cm$^{-2}$) & $4.34_{-0.19}^{+0.20} \times 10^{15}$ & $2.15_{-0.19}^{+0.18} \times 10^{16}$ \\
+$N$ ($s$-C$_2$H$_5$CHO) (cm$^{-2}$) & $1.75_{-0.16}^{+0.16} \times 10^{16}$ & $6.31_{-0.80}^{+0.79} \times 10^{16}$ \\
+$N$ (CH$_2$DOH) (cm$^{-2}$) & $2.11_{-0.23}^{+0.24} \times 10^{16}$ & $8.58_{-1.15}^{+1.18} \times 10^{16}$ \\
+$N$ (CH$_3$O$^{13}$CHO) (cm$^{-2}$) & $2.99_{-0.23}^{+0.23} \times 10^{16}$ & $1.16_{-0.12}^{+0.13} \times 10^{17}$ \\
+$N$ (CH$_3^{13}$CHO) (cm$^{-2}$) & $7.70_{-1.10}^{+1.14} \times 10^{16}$ & $4.09_{-0.65}^{+0.69} \times 10^{17}$ \\
+$N$ (CH$_2$DCHO) (cm$^{-2}$) & $1.65_{-0.33}^{+0.35} \times 10^{16}$ & $9.40_{-2.03}^{+2.24} \times 10^{16}$ \\
+$N$ (CH$_3$CDO) (cm$^{-2}$) & $6.61_{-0.75}^{+0.77} \times 10^{15}$ & $2.64_{-0.40}^{+0.42} \times 10^{16}$ \\
+$N$ (C$_2$H$_3$CN) (cm$^{-2}$) & $1.92_{-0.39}^{+0.41} \times 10^{15}$ & $7.96_{-1.87}^{+2.11} \times 10^{15}$ \\
+$N$ (SO$_2$) (cm$^{-2}$) & $1.70_{-0.30}^{+0.31} \times 10^{16}$ & $1.35_{-0.28}^{+0.31} \times 10^{17}$
+\enddata
+\tablenotetext{\dagger}{Uncertainties are the 16th and 84th percentile of the posterior distributions, where only the statistical uncertainty is included.}
+\label{tab:specfit_result}
+\end{deluxetable}
 
 
 
 \subsubsection{Rotation diagram}
+As a complementary method, we also employed the rotation diagram analysis \citep[e.g.,][]{Goldsmith1999} for three species (\methanol, \methylformate, and \acetaldehyde) whose transitions without line blending are detected in a sufficient number for this analysis. The formulation of the rotation diagram is based on \citet{Goldsmith1999}, where the optical depth correction factor is considered \citep[see also, e.g., ][]{Loomis2018}. Specifically, the column density of molecules in the upper state of each transition under the assumption of optically thin emission, $N_\mathrm{u}^{\mathrm{thin}}$, can be related to the disk-integrated flux density $S_\nu$,
+\begin{equation}
+    N_\mathrm{u}^\mathrm{thin} = \frac{4\pi S_\nu \Delta v}{A_\mathrm{ul}\Omega hc},
+\end{equation}
+where $A_\mathrm{ul}$ is the Einstein A coefficient, $\Delta v$ is the line width, and $\Omega$ is the solid angle of the emitting region. In the case where the optical depth is not negligible ($\tau \nll 1$), the upper state column density $N_\mathrm{u}^\mathrm{thin}$ needs to be scaled by an optical depth correction factor,
+\begin{equation}
+    C_\tau = \frac{\tau}{1 - e^{-\tau}},
+\end{equation}
+to obtain the correct upper state column density, i.e., $N_\mathrm{u} = N_\mathrm{u}^\mathrm{thin} C_\tau$ \citep{Goldsmith1999}. The upper state column density $N_\mathrm{u}$ is then related to the total column density $N$ by the Boltzmann equation,
+\begin{equation}
+    \frac{N_\mathrm{u}}{g_\mathrm{u}} = \frac{N}{Q(T_\mathrm{ex})}e^{-E_\mathrm{u} / k_\mathrm{B} T_\mathrm{ex}},
+\end{equation}
+where $g_\mathrm{u}$ is the upper state degeneracy of each transition, $Q$ is the partition function of the molecule, $T_\mathrm{ex}$ is the excitation temperature, and $E_\mathrm{u}$ is the upper state energy of each transition. Taking the logarithm of this equation yields the conventional rotation diagram as in \citet{Goldsmith1999},
+\begin{equation}
+    \ln\frac{N_\mathrm{u}}{g_\mathrm{u}} = \ln N - \ln Q(T_\mathrm{ex}) - \frac{E_\mathrm{u}}{k_\mathrm{B}T_\mathrm{ex}},
+\end{equation}
+or, expressing the optical depth correction factor explicitly,
+\begin{equation}
+    \ln\frac{N_\mathrm{u}^\mathrm{thin}}{g_\mathrm{u}} + \ln C_\tau = \ln N - \ln Q(T_\mathrm{ex}) - \frac{E_\mathrm{u}}{k_\mathrm{B}T_\mathrm{ex}}.
+\end{equation}
+The optical depth $\tau$ can be related back to the upper state column density of each transition by 
+\begin{equation}
+    \tau = \frac{c^3A_\mathrm{ul}N_\mathrm{u}}{8\pi\nu^3\Delta v}\left(e^{h\nu/k_\mathrm{B}T_\mathrm{ex}} - 1\right),
+\end{equation}
+which makes it possible to write down a likelihood function $\mathcal{L}(N, T_\mathrm{ex})$ to optimize these parameters. 
+
+To conduct this analysis, we first correctly measure the velocity-integrated flux density ($S_\nu\Delta v$) of each transition by applying a Keplerian mask to the image cubes. We used the aforementioned disk parameters (see Section \ref{subsec:line_identification}) and an inner radius and outer radius of 0\farcs05 and 0\farcs3, respectively, for generation of the Keplerian masks. The Keplerian mask is convolved with the observing beam, and then used to extract the spectrum. We confirmed that the beam-convolved Keplerian mask is apparently encompassing the observed emission. The extracted spectra for each transition are shown in Figure \ref{} in Appendix \ref{}. 
+
+
+
+Here we also conducted two types of the rotation diagram fits, one of which assumed an emitting radius of 0\farcs3 and a line width of 0.48 km s$^{-1}$, and another of which assumed an emitting radius of 0\farcs15 and a line width of 1.2 km s$^{-1}$, following the results of the two spectral fits in Section \ref{subsubsec:spectral_fit}. We excluded the optically thick ($\tau > 1$) or blended transitions from the analysis. 
 
 
 
@@ -659,6 +725,8 @@ C$_2$H$_3$CN & $9_{1,8}$ -- $8_{1,7}$ & 87.312812 & -4.2778 & 57.0 & 23 & 6 \\
 SO$_2$$^\ddagger$ & $7_{3,5}$ -- $8_{2,6}$ & 97.702334 & -5.7413 & 15.0 & 47 & 10 \\
 OCS & $7$ -- $6$ & 85.139103 & -5.7658 & 15.0 & 16 & 3
 \enddata
+\tablenotetext{\dagger}{Blended with the other transitions of the same species.}
+\tablenotetext{\ddagger}{Blended with transitions of other species.}
 \end{deluxetable*}
 
 
@@ -847,7 +915,9 @@ OCS & $7$ -- $6$ & 85.139103 & -5.7658 & 15.0 & 16 & 3
 
 
 
-\section{Spectra}
+\section{Spectra}\label{appendix:spectra}
+\begin{figure}
+\end{figure}
 
 \section{LTE spectral model}\label{appendix:spectral_model}
 Here we describe the details of the spectral model which is fitted to the spectra corrected for Keplerian rotation for column density derivation. We assume that the excitation condition of observed COM emission is well approximated by local thermodynamic equilibrium (LTE), where the gas temperature is equal to the excitation temperature ($T_\mathrm{ex}$) of the emitting molecules. This assumption should be reasonable as the typical gas density in protoplanetary disks () is higher than the typical critical density of the COM transitions. For example, the critical density of xx-yy transition of \methanol is calculated to be zzz cm-3 at a gas kinetic temperature of 100 K \citep[ref][]{}. We further assume that different species are sufficiently cospatial to share the same emitting region size and excitation temperature. This assumption is also broadly supported by the similar emission extent of different COMs shown in Figure \ref{fig:moment_zero_gallery}. 
