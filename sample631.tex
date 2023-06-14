@@ -453,7 +453,7 @@ As a complementary method, we also employed the rotation diagram analysis \citep
     N_\mathrm{u}^\mathrm{thin} = \frac{4\pi S_\nu \Delta v}{A_\mathrm{ul}\Omega hc},
 \end{equation}
 where $A_\mathrm{ul}$ is the Einstein A coefficient, $\Delta v$ is the line width, and $\Omega$ is the solid angle of the emitting region. In the case where the optical depth is not negligible ($\tau \nll 1$), the upper state column density $N_\mathrm{u}^\mathrm{thin}$ needs to be scaled by an optical depth correction factor,
-\begin{equation}
+\begin{equation}\label{eq:tau_correction_factor}
     C_\tau = \frac{\tau}{1 - e^{-\tau}},
 \end{equation}
 to obtain the correct upper state column density, i.e., $N_\mathrm{u} = N_\mathrm{u}^\mathrm{thin} C_\tau$ \citep{Goldsmith1999}. The upper state column density $N_\mathrm{u}$ is then related to the total column density $N$ by the Boltzmann equation,
@@ -469,16 +469,78 @@ or, expressing the optical depth correction factor explicitly,
     \ln\frac{N_\mathrm{u}^\mathrm{thin}}{g_\mathrm{u}} + \ln C_\tau = \ln N - \ln Q(T_\mathrm{ex}) - \frac{E_\mathrm{u}}{k_\mathrm{B}T_\mathrm{ex}}.
 \end{equation}
 The optical depth $\tau$ can be related back to the upper state column density of each transition by 
-\begin{equation}
-    \tau = \frac{c^3A_\mathrm{ul}N_\mathrm{u}}{8\pi\nu^3\Delta v}\left(e^{h\nu/k_\mathrm{B}T_\mathrm{ex}} - 1\right),
+\begin{equation}\label{eq:optical_depth}
+    \tau = \frac{c^3A_\mathrm{ul}N_\mathrm{u}}{8\pi\nu^3\Delta V_\mathrm{FWHM}}\left(e^{h\nu/k_\mathrm{B}T_\mathrm{ex}} - 1\right),
 \end{equation}
 which makes it possible to write down a likelihood function $\mathcal{L}(N, T_\mathrm{ex})$ to optimize these parameters. 
 
-To conduct this analysis, we first correctly measure the velocity-integrated flux density ($S_\nu\Delta v$) of each transition by applying a Keplerian mask to the image cubes. We used the aforementioned disk parameters (see Section \ref{subsec:line_identification}) and an inner radius and outer radius of 0\farcs05 and 0\farcs3, respectively, for generation of the Keplerian masks. The Keplerian mask is convolved with the observing beam, and then used to extract the spectrum. We confirmed that the beam-convolved Keplerian mask is apparently encompassing the observed emission. The extracted spectra for each transition are shown in Figure \ref{} in Appendix \ref{}. 
+To conduct this analysis, we first correctly measured the velocity-integrated flux density ($S_\nu\Delta v$) of each transition by applying a Keplerian mask to the image cubes. Since even the Keplerian masking could not resolve the spectral blending due to the limited spatial resolution, blended transitions were excluded from the measurement except for two blended \methanol transitions $21_{6,16}$ -- $22_{5,17}$ A $v_t=0$ and $21_{6,15}$ -- $22_{5,18}$ A $v_t=0$, each of whose velocity-integrated flux density is measured by dividing the sum of these transitions by two as the intrinsic strength of these transitions are same (see Table \ref{tab:flux_density}). These transitions are critical for rotation diagram analysis as the number of optically thin \methanol transitions are insufficient (one) if these transitions are excluded. To construct the Keplerian mask, we used the aforementioned disk parameters (see Section \ref{subsec:line_identification}) and an inner radius and outer radius of 0\farcs05 and 0\farcs3, respectively. The Keplerian mask is convolved with the observing beam, and then used to extract the spectrum. We confirmed that the beam-convolved Keplerian mask is apparently encompassing the observed emission. The extracted spectra for each transition are shown in Figure \ref{fig:CH3OH_spectra}, \ref{fig:CH3OCHO_spectra}, and \ref{fig:CH3CHO_spectra} in Appendix \ref{appendix:spectra}. The uncertainty of the spectra is calculated as $\sqrt{\Omega_\mathrm{mask}/\Omega_\mathrm{beam}}\times\sigma_\mathrm{RMS}$, where $\Omega_\mathrm{mask}$ is the solid angle of the Keplerian mask in each channel, $\Omega_\mathrm{beam}$ is the solid angle of the beam, and $\sigma_\mathrm{RMS}$ is the channel RMS reported in Table \ref{tab:cube_properties}. The velocity-integrated flux densities were measured by integrating the spectra along the velocity axis, i.e., $S_\nu\Delta v = \sum_i S_{\nu, i}\,dv$, where $i$ is the index for each channel and $dv$ is the channel width. The uncertainties of the flux densities were calculated as $\sqrt{\sum_i (dS_{\nu, i})^2}\,dv$, where $dS_{\nu, i}$ is the uncertainty of the spectra. The measured flux densities are reported in Table \ref{tab:flux_density} with spectroscopic data of each transition.
+
+For the solid angle of emitting region $\Omega$ and the line width $\Delta V_\mathrm{FWHM}$ in Equation (\ref{eq:optical_depth}), we assumed two sets of values following the results of the spectral fits described in Section \ref{subsubsec:spectral_fit}. For the one fit, we assumed an emitting radius of $R_\mathrm{s} = 0\farcs3$ ($\Omega = \pi R_\mathrm{s}^2\cos i$) and a line width of $\Delta v = $ 0.48 km s$^{-1}$, and for another fit, we assumed an emitting region radius of $R_\mathrm{s} = 0\farcs15$ and a line width of $\Delta V_\mathrm{FWHM} = 1.2$ km s$^{-1}$. 
+
+We first tried to fit using all transitions listed in Table \ref{tab:flux_density}, from which we excluded highly optically thick transitions ($\tau \gg 1$) as they could trace the different temperature regions (e.g., vertical temperature gradient) and were not fitted well even with the optical depth correction factor (Equation \ref{eq:tau_correction_factor}). The excluded transitions are marked in Table \ref{tab:flux_density}. With these selected transitions, we sampled the posterior probability distributions $N$ and $T_\mathrm{ex}$ using the \texttt{emcee} code \citep{emcee}. For both fits, we run 32 walkers for 1000 steps, and the initial 500 steps are discarded as burn-in. The $N_\mathrm{u}/g_\mathrm{u}$ values of the observed transitions are plotted against $E_\mathrm{u}$ in Figure \ref{fig} with models generated from ($N, T_\mathrm{ex}$) pairs randomly selected from the posterior distributions.
+
+
+\begin{deluxetable*}{lLLCCC}
+\tablecaption{Spectroscopic Data and Flux Density of Unblended Transitions}
+\tablehead{\colhead{Transition} & \colhead{$\nu_0$} & \colhead{log$_{10}A_\mathrm{ul}$} & \colhead{$g_\mathrm{u}$} & \colhead{$E_\mathrm{u}$} & \colhead{$S_\nu\Delta v^\mathrm{a}$} \\
+\colhead{} & \colhead{(GHz)} & \colhead{(s$^{-1}$)} & \colhead{} & \colhead{(K)} & \colhead{(mJy km s$^{-1}$)}}
+\startdata
+\hline 
+\multicolumn{6}{c}{\methanol} \\
+\hline 
+$2_{0,2}$ -- $1_{0,1}$ A $v_t=1$ & 96.513686 & -5.4709 & 20.0 & 430 & 40.2 \pm 3.4 \\
+$2_{0,2}$ -- $1_{0,1}$ E $v_t=0$ & 96.744545 & -5.4676 & 20.0 & 20 & 150 \pm 3.3 \\
+$2_{-1,1}$ -- $1_{-1,0}$ E $v_t=0$ & 96.755501 & -5.581 & 20.0 & 28 & 135 \pm 3.3 \\
+$2_{1,1}$ -- $1_{1,0}$ A $v_t=0$ & 97.582798 & -5.5807 & 20.0 & 21 & 155 \pm 2.9 \\
+$21_{6,16}$ -- $22_{5,17}$ A $v_t=0$$^\dagger$ & 97.677684 & -5.8404 & 172.0 & 729 & 18 \pm 1.9$^\dagger$ \\
+$21_{6,15}$ -- $22_{5,18}$ A $v_t=0$$^\dagger$ & 97.678803 & -5.8403 & 172.0 & 729 & 18 \pm 1.9$^\dagger$ \\
+\hline 
+\multicolumn{6}{c}{\methylformate} \\
+\hline 
+$7_{6,1}$ -- $6_{6,0}$ E $v_t=1$ & 85.157135 & -5.6248 & 30.0 & 228 & 22.8 \pm 3.6 \\
+$7_{4,3}$ -- $6_{4,2}$ E $v_t=1$ & 85.506219 & -5.2142 & 30.0 & 214 & 34.5 \pm 3.4 \\
+$7_{5,3}$ -- $6_{5,2}$ E $v_t=1$ & 85.55338 & -5.3527 & 30.0 & 220 & 26.7 \pm 3.4 \\
+$7_{6,1}$ -- $6_{6,0}$ E $v_t=0$ & 85.919209 & -5.6138 & 30.0 & 40 & 36.3 \pm 3.3 \\
+$7_{4,4}$ -- $7_{3,5}$ E $v_t=0$ & 96.507882 & -6.1542 & 30.0 & 27 & 28.6 \pm 3.4 \\
+$8_{4,5}$ -- $8_{3,6}$ A $v_t=0$ & 96.709259 & -5.9454 & 34.0 & 31 & 33 \pm 3.3 \\
+$7_{4,3}$ -- $7_{3,5}$ E $v_t=0$ & 96.776715 & -6.4523 & 30.0 & 27 & 16.7 \pm 3.3 \\
+$5_{4,2}$ -- $5_{3,3}$ A $v_t=0$ & 96.794121 & -6.1026 & 22.0 & 19 & 27.2 \pm 3.3 \\
+$8_{5,3}$ -- $7_{5,2}$ E $v_t=1$ & 97.577303 & -5.0823 & 34.0 & 225 & 34.2 \pm 2.9 \\
+$8_{3,6}$ -- $7_{3,5}$ A $v_t=1$ & 97.597161 & -4.9359 & 34.0 & 214 & 43.4 \pm 2.9 \\
+$8_{4,5}$ -- $7_{4,4}$ A $v_t=1$ & 97.661401 & -4.9937 & 34.0 & 219 & 42.2 \pm 2.9 \\
+$8_{6,3}$ -- $7_{6,2}$ E $v_t=1$ & 97.738738 & -5.2243 & 34.0 & 232 & 33.7 \pm 3 \\
+$8_{4,4}$ -- $7_{4,3}$ A $v_t=1$ & 97.752885 & -4.9924 & 34.0 & 219 & 38.8 \pm 2.9 \\
+$8_{5,4}$ -- $7_{5,3}$ E $v_t=1$ & 97.885663 & -5.0787 & 34.0 & 224 & 28.5 \pm 3 \\
+$8_{4,4}$ -- $7_{4,3}$ E $v_t=1$ & 97.897118 & -4.9875 & 34.0 & 219 & 35.4 \pm 3.1 \\
+$8_{7,1}$ -- $7_{7,0}$ E $v_t=0$ & 98.182336 & -5.4902 & 34.0 & 53 & 51.8 \pm 2.9 \\
+$8_{6,2}$ -- $7_{6,1}$ E $v_t=0$ & 98.270501 & -5.218 & 34.0 & 45 & 71.3 \pm 3 \\
+$8_{5,3}$ -- $7_{5,2}$ A $v_t=0$ & 98.435802 & -5.0719 & 34.0 & 37 & 82 \pm 3 \\
+$8_{4,5}$ -- $7_{4,3}$ E $v_t=0$ & 98.443186 & -6.4657 & 34.0 & 31 & 23.1 \pm 2.9 \\
+\hline 
+\multicolumn{6}{c}{\acetaldehyde} \\
+\hline 
+$9_{1,8}$ -- $9_{0,9}$ E $v_t=1$ & 85.947624 & -5.559 & 38.0 & 249 & 19.7 \pm 3.4 \\
+$5_{2,3}$ -- $4_{2,2}$ E $v_t=0$ & 96.475524 & -4.6168 & 22.0 & 23 & 96.5 \pm 3.4 \\
+$11_{4,8}$ -- $12_{3,10}$ E $v_t=0$ & 96.48895 & -6.1541 & 46.0 & 97 & 33.5 \pm 3.3 \\
+$7_{0,7}$ -- $6_{1,6}$ A $v_t=0$ & 96.765371 & -5.5556 & 30.0 & 25 & 60.1 \pm 3.3 \\
+$5_{2,4}$ -- $4_{2,3}$ E $v_t=1$ & 96.800291 & -4.613 & 22.0 & 226 & 65.8 \pm 3.3 \\
+$5_{3,2}$ -- $4_{3,1}$ E $v_t=2$ & 97.612131 & -4.9808 & 22.0 & 419 & 17.9 \pm 2.9 \\
+$19_{2,18}$ -- $18_{3,15}$ E $v_t=0$ & 97.796104 & -6.1248 & 78.0 & 183 & 26.8 \pm 2.9 \\
+$10_{4,7}$ -- $11_{3,8}$ A $v_t=1$ & 97.941422 & -6.1583 & 42.0 & 290 & 8.53 \pm 3 \\
+$21_{3,18}$ -- $20_{4,17}$ A $v_t=0$ & 98.20169 & -6.01 & 86.0 & 235 & 25.6 \pm 3 \\
+$6_{3,3}$ -- $7_{2,5}$ E $v_t=0$ & 98.368631 & -6.245 & 26.0 & 39 & 31.5 \pm 2.9
+\enddata
+\tablenotetext{\dagger}{Blended each other. The reported flux density is the sum of these transitions' divided by two.}
+\tablenotetext{\ddagger}{Excluded from rotation diagram analysis due to the high optical depth.}
+\tablenotetext{\mathrm{a}}{Reported errors only account for the statistical uncertainty.}
+\label{tab:flux_density}
+\end{deluxetable*}
 
 
 
-Here we also conducted two types of the rotation diagram fits, one of which assumed an emitting radius of 0\farcs3 and a line width of 0.48 km s$^{-1}$, and another of which assumed an emitting radius of 0\farcs15 and a line width of 1.2 km s$^{-1}$, following the results of the two spectral fits in Section \ref{subsubsec:spectral_fit}. We excluded the optically thick ($\tau > 1$) or blended transitions from the analysis. 
+
+Here 
 
 
 
@@ -919,16 +981,22 @@ OCS & $7$ -- $6$ & 85.139103 & -5.7658 & 15.0 & 16 & 3
 \begin{figure*}
 \epsscale{1.15}
 \plotone{CH3OH_spectra.pdf}
+\caption{\methanol spectrum for each transition without spectral line blending.}
+\label{fig:CH3OH_spectra}
 \end{figure*}
 
 \begin{figure*}
 \epsscale{1.15}
 \plotone{CH3OCHO_spectra.pdf}
+\caption{Same as Figure \ref{fig:CH3OH_spectra}, but for \methylformate.}
+\label{fig:CH3OCHO_spectra}
 \end{figure*}
 
 \begin{figure*}
 \epsscale{1.15}
 \plotone{CH3CHO_spectra.pdf}
+\caption{Same as Figure \ref{fig:CH3OH_spectra}, but for \acetaldehyde.}
+\label{fig:CH3CHO_spectra}
 \end{figure*}
 
 \section{LTE spectral model}\label{appendix:spectral_model}
