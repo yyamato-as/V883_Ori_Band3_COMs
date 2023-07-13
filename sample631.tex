@@ -403,7 +403,7 @@ Figure \ref{fig:moment_zero_gallery} shows the velocity-integrated intensity map
 
 
 \subsection{Column Density Retrieval}
-\subsubsection{Spectral fit}\label{subsubsec:spectral_fit}
+\subsubsection{Spectral Analysis}\label{subsubsec:spectral_fit}
 To derive the disk-averaged column density of each species, we first employ a simultaneous fit of an LTE spectral model of different species to the extracted spectra, taking the spectral blending and line optical depth into account. The same model as that used for line identification is used (see Appendix \ref{appendix:spectral_model} for details), where all species (tentatively) identified as in Section \ref{subsec:line_identification} are considered. We excluded the optically thick ($\tau > 1$) transitions from the fit, since the optically thick line can underestimate the column density. The selection for the excluded transitions is based on the optical depth at the line center in the best-fit model of the fit for line identification (Section \ref{subsec:line_identification}). This mainly excluded the transitions of abundant species (e.g., \methanol, \methylformate, and \acetaldehyde) with a high Einstein A coefficient and a low upper state energy. 
 
 We consider 18 parameters in total; emitting region radius ($R_\mathrm{s}$), excitation temperature ($T_\mathrm{ex}$), line width ($\Delta V_\mathrm{FWHM}$), column density of 15 species, and an additional parameter $\gamma$ for line broadening (see Appendix \ref{appendix:spectral_model}). Two types of fits were conducted, one of which assumed a fixed emitting radius of $R_\mathrm{s} = 0\farcs3$ based on the COM emission extent in higher-resolution Band 6 observations \citep{Lee2019, Tobin2023}, and another of which left it as a free parameter. The fit with a fixed emitting radius to that in Band 6 data is motivated by the aim of direct comparison of column densities in Band 3 with those in Band 6. We employed the Affine invariant Markov Chain Monte Carlo (MCMC) algorithm implemented in the \texttt{emcee} package \citep{emcee} to explore the parameter spaces. For both fits, we run 400 walkers for 5000 steps, and the initial 4000 steps are discarded as burn-in. Figure \ref{fig:spectral_fit_demo} demonstrates the unique capability of the simultaneous spectral fit to fully utilize the transitions even with severe spectral blending for . 
@@ -447,8 +447,8 @@ $N$ (SO$_2$) (cm$^{-2}$) & $1.70_{-0.30}^{+0.31} \times 10^{16}$ & $1.35_{-0.28}
 
 
 
-\subsubsection{Rotation diagram}
-As a complementary method, we also employed the rotation diagram analysis \citep[e.g.,][]{Goldsmith1999} for three species (\methanol, \methylformate, and \acetaldehyde) whose transitions without line blending are detected in a sufficient number for this analysis. The formulation of the rotation diagram is based on \citet{Goldsmith1999}, where the optical depth correction factor is considered \citep[see also, e.g., ][]{Loomis2018}. Specifically, the column density of molecules in the upper state of each transition under the assumption of optically thin emission, $N_\mathrm{u}^{\mathrm{thin}}$, can be related to the disk-integrated flux density $S_\nu$,
+\subsubsection{Integrated Intensity Analysis}
+As a complementary method, we also employed the analysis of the velocity-integrated intensities \citep[e.g.,][]{Goldsmith1999} for three species (\methanol, \methylformate, and \acetaldehyde) whose transitions without line blending are detected in a sufficient number for this analysis. Following \citet{Goldsmith1999}, the column density of molecules in the upper state of each transition under the assumption of optically thin emission, $N_\mathrm{u}^{\mathrm{thin}}$, can be related to the disk-integrated flux density $S_\nu$,
 \begin{equation}
     N_\mathrm{u}^\mathrm{thin} = \frac{4\pi S_\nu \Delta v}{A_\mathrm{ul}\Omega hc},
 \end{equation}
@@ -465,20 +465,21 @@ where $g_\mathrm{u}$ is the upper state degeneracy of each transition, $Q$ is th
     \ln\frac{N_\mathrm{u}}{g_\mathrm{u}} = \ln N - \ln Q(T_\mathrm{ex}) - \frac{E_\mathrm{u}}{k_\mathrm{B}T_\mathrm{ex}},
 \end{equation}
 or, expressing the optical depth correction factor explicitly,
-\begin{equation}
+\begin{equation}\label{eq:rotation_diagram}
     \ln\frac{N_\mathrm{u}^\mathrm{thin}}{g_\mathrm{u}} + \ln C_\tau = \ln N - \ln Q(T_\mathrm{ex}) - \frac{E_\mathrm{u}}{k_\mathrm{B}T_\mathrm{ex}}.
 \end{equation}
 The optical depth $\tau$ can be related back to the upper state column density of each transition by 
 \begin{equation}\label{eq:optical_depth}
     \tau = \frac{c^3A_\mathrm{ul}N_\mathrm{u}}{8\pi\nu^3\Delta V_\mathrm{FWHM}}\left(e^{h\nu/k_\mathrm{B}T_\mathrm{ex}} - 1\right),
 \end{equation}
-which makes it possible to write down a likelihood function $\mathcal{L}(N, T_\mathrm{ex})$ to optimize these parameters. 
+which makes it possible to write down a likelihood function $\mathcal{L}(N, T_\mathrm{ex})$ from Equation (\ref{eq:rotation_diagram}) to optimize these parameters. 
 
-To conduct this analysis, we first correctly measured the velocity-integrated flux density ($S_\nu\Delta v$) of each transition by applying a Keplerian mask to the image cubes. Since even the Keplerian masking could not resolve the spectral blending due to the limited spatial resolution, blended transitions were excluded from the measurement except for two blended \methanol transitions $21_{6,16}$ -- $22_{5,17}$ A $v_t=0$ and $21_{6,15}$ -- $22_{5,18}$ A $v_t=0$, each of whose velocity-integrated flux density is measured by dividing the sum of these transitions by two as the intrinsic strength of these transitions are same (see Table \ref{tab:flux_density}). These transitions are critical for rotation diagram analysis as the number of optically thin \methanol transitions are insufficient (one) if these transitions are excluded. To construct the Keplerian mask, we used the aforementioned disk parameters (see Section \ref{subsec:line_identification}) and an inner radius and outer radius of 0\farcs05 and 0\farcs3, respectively. The Keplerian mask is convolved with the observing beam, and then used to extract the spectrum. We confirmed that the beam-convolved Keplerian mask is apparently encompassing the observed emission. The extracted spectra for each transition are shown in Figure \ref{fig:CH3OH_spectra}, \ref{fig:CH3OCHO_spectra}, and \ref{fig:CH3CHO_spectra} in Appendix \ref{appendix:spectra}. The uncertainty of the spectra is calculated as $\sqrt{\Omega_\mathrm{mask}/\Omega_\mathrm{beam}}\times\sigma_\mathrm{RMS}$, where $\Omega_\mathrm{mask}$ is the solid angle of the Keplerian mask in each channel, $\Omega_\mathrm{beam}$ is the solid angle of the beam, and $\sigma_\mathrm{RMS}$ is the channel RMS reported in Table \ref{tab:cube_properties}. The velocity-integrated flux densities were measured by integrating the spectra along the velocity axis, i.e., $S_\nu\Delta v = \sum_i S_{\nu, i}\,dv$, where $i$ is the index for each channel and $dv$ is the channel width. The uncertainties of the flux densities were calculated as $\sqrt{\sum_i (dS_{\nu, i})^2}\,dv$, where $dS_{\nu, i}$ is the uncertainty of the spectra. The measured flux densities are reported in Table \ref{tab:flux_density} with spectroscopic data of each transition.
+To conduct this analysis, we first correctly measured the velocity-integrated flux density ($S_\nu\Delta v$) of each transition by applying a Keplerian mask to the image cubes. Since even the Keplerian masking could not resolve the spectral blending due to the limited spatial/spectral resolution, blended transitions were excluded from the measurement except for two blended \methanol transitions $21_{6,16}$ -- $22_{5,17}$ A $v_t=0$ and $21_{6,15}$ -- $22_{5,18}$ A $v_t=0$, each of whose velocity-integrated flux density is measured by dividing the sum of these transitions by two as the intrinsic strength of these transitions are same (see Table \ref{tab:flux_density}). These transitions are critical for this analysis as the number of optically thin \methanol transitions are insufficient (one) if these transitions are excluded. To construct the Keplerian mask, we used the aforementioned disk parameters (see Section \ref{subsec:line_identification}) and an inner radius and outer radius of 0\farcs05 and 0\farcs3, respectively. The Keplerian mask is convolved with the observing beam, and then used to extract the spectrum. We confirmed that the beam-convolved Keplerian mask is apparently encompassing the observed emission. The extracted spectra for each transition are shown in Figure \ref{fig:CH3OH_spectra}, \ref{fig:CH3OCHO_spectra}, and \ref{fig:CH3CHO_spectra} in Appendix \ref{appendix:spectra}. The uncertainty of the spectra is calculated at per-channel basis as $\sqrt{\Omega_\mathrm{mask}/\Omega_\mathrm{beam}}\times\sigma_\mathrm{RMS}$, where $\Omega_\mathrm{mask}$ is the solid angle of the Keplerian mask in each channel, $\Omega_\mathrm{beam}$ is the solid angle of the beam, and $\sigma_\mathrm{RMS}$ is the channel RMS reported in Table \ref{tab:cube_properties}. The velocity-integrated flux densities were measured by integrating the spectra along the velocity axis, i.e., $S_\nu\Delta v = \sum_i S_{\nu, i}\,\Delta v_\mathrm{chan}$, where $i$ is the index for each channel and $\Delta v_\mathrm{chan}$ is the channel width. The uncertainties of the flux densities were calculated as $\sqrt{\Delta v_\mathrm{res}/\Delta v_\mathrm{chan}}\,\times\sqrt{\sum_i (dS_{\nu, i})^2}\,\Delta v_\mathrm{chan}$, where $\Delta v_\mathrm{res}$ and $dS_{\nu, i}$ are the velocity resolution (Table \ref{tab:cube_properties}) and the uncertainty of the spectra, respectively. The additional factor of $\sqrt{\Delta v_\mathrm{chan}/\Delta v_\mathrm{res}}$ accounts for the correlation between channels due to the narrower channel width than the velocity resolution. The measured flux densities are reported in Table \ref{tab:flux_density} with spectroscopic data of each transition.
 
-For the solid angle of emitting region $\Omega$ and the line width $\Delta V_\mathrm{FWHM}$ in Equation (\ref{eq:optical_depth}), we assumed two sets of values following the results of the spectral fits described in Section \ref{subsubsec:spectral_fit}. For the one fit, we assumed an emitting radius of $R_\mathrm{s} = 0\farcs3$ ($\Omega = \pi R_\mathrm{s}^2\cos i$) and a line width of $\Delta v = $ 0.48 km s$^{-1}$, and for another fit, we assumed an emitting region radius of $R_\mathrm{s} = 0\farcs15$ and a line width of $\Delta V_\mathrm{FWHM} = 1.2$ km s$^{-1}$. 
+For the solid angle of emitting region $\Omega$ and the line width $\Delta V_\mathrm{FWHM}$ in Equation (\ref{eq:optical_depth}), we assumed two sets of values based on the results of the spectral analysis described in Section \ref{subsubsec:spectral_fit}. For the one fit, we assumed an emitting radius of $R_\mathrm{s} = 0\farcs3$ ($\Omega = \pi R_\mathrm{s}^2\cos i$) and a line width of $\Delta v = $ 0.48 km s$^{-1}$, and for another fit, we assumed an emitting region radius of $R_\mathrm{s} = 0\farcs15$ and a line width of $\Delta V_\mathrm{FWHM} = 1.2$ km s$^{-1}$. 
 
-We first tried to fit using all transitions listed in Table \ref{tab:flux_density}, from which we excluded highly optically thick transitions ($\tau \gg 1$) as they could trace the different temperature regions (e.g., vertical temperature gradient) and were not fitted well even with the optical depth correction factor (Equation \ref{eq:tau_correction_factor}). The excluded transitions are marked in Table \ref{tab:flux_density}. With these selected transitions, we sampled the posterior probability distributions $N$ and $T_\mathrm{ex}$ using the \texttt{emcee} code \citep{emcee}. For both fits, we run 32 walkers for 1000 steps, and the initial 500 steps are discarded as burn-in. The $N_\mathrm{u}/g_\mathrm{u}$ values of the observed transitions are plotted against $E_\mathrm{u}$ in Figure \ref{fig} with models generated from ($N, T_\mathrm{ex}$) pairs randomly selected from the posterior distributions.
+% We first tried to fit using all transitions listed in Table \ref{tab:flux_density}, from which we excluded highly optically thick transitions ($\tau \gg 1$) as they could trace the different temperature regions (e.g., vertical temperature gradient) and were not fitted well even with the optical depth correction factor (Equation \ref{eq:tau_correction_factor}). 
+The same transitions as those in the spectral analysis (Section \ref{subsubsec:spectral_fit}) are excluded from these fits as well for the same reason. The excluded transitions are marked in Table \ref{tab:flux_density}. We sampled the posterior probability distributions of $N$ and $T_\mathrm{ex}$ using the \texttt{emcee} package \citep{emcee}. For both fits, we run 32 walkers for 1000 steps, and the initial 500 steps are discarded as burn-in. The $N_\mathrm{u}/g_\mathrm{u}$ values of the observed transitions are plotted against $E_\mathrm{u}$ in Figure \ref{fig:rotdiag_0.3arcsec} and \ref{fig:rotdiag_0.15arcsec} with models generated from ($N, T_\mathrm{ex}$) pairs randomly selected from the posterior distributions.
 
 
 \begin{deluxetable*}{lLLCCC}
@@ -538,10 +539,21 @@ $6_{3,3}$ -- $7_{2,5}$ E $v_t=0$ & 98.368631 & -6.245 & 26.0 & 39 & 31.5 \pm 2.9
 \end{deluxetable*}
 
 
+\begin{figure*}
+\epsscale{1.15}
+\plotone{rotation_diagram_size0.3arcsec.pdf}
+\caption{Rotation diagram of \methanol, \methylformate, and \acetaldehyde with an emitting radius of $R_\mathrm{s} = 0\farcs3$ and a line width of $\Delta V_\mathrm{FWHM} = 0.5$ km s$^{-1}$. The black points denotes the observed values with the correction for optical depth. The individual blue lines indicates the models generated from the samples randomly selected from the posterior distributions. The median values of the posterior distributions of $N$ and $T_\mathrm{ex}$ with associated uncertainties (16th and 84th percentiles of the posterior distributions) are shown in the lower-left corner. These uncertainties only account for the statistical uncertainty.}
+\label{fig:rotdiag_0.3arcsec}
+\end{figure*}
 
+\begin{figure*}
+\epsscale{1.15}
+\plotone{rotation_diagram_size0.15arcsec.pdf}
+\caption{Same as Figure \ref{fig:rotdiag_0.3arcsec}, but with an emitting radius of $R_\mathrm{s} = 0\farcs15$ and a line width of $\Delta V_\mathrm{FWHM} = 1.2$ km s$^{-1}$.}
+\label{fig:rotdiag_0.15arcsec}
+\end{figure*}
 
-Here 
-
+The rotation diagram and the estimated column density and excitation temperature for each fit are shown in Figure \ref{fig:rotdiag_0.3arcsec} and \ref{fig:rotdiag_0.15arcsec}. For all fits, the column densities are consistent with the values derived from the spectral analysis (Section \ref{subsubsec:spectral_fit}), confirming that these methods are robust. The excitation temperatures are also consistent ($\sim100\,\mathrm{K}$) within the uncertainties among these molecules, supporting the assumption of a common excitation temperature in the spectral analysis (Section \ref{subsubsec:spectral_fit}) at least for \methanol, \methylformate, and \acetaldehyde. 
 
 
 
@@ -550,6 +562,19 @@ Here
 
 
 \section{Discussion} \label{sec:discussion}
+\subsection{Comparison to the sub-mm observations}
+\subsubsection{Spatial Distributions}
+The spatial distributions of the COM emission in Band 3, where the dust continuum emission is expected to be optically thin, are essential information to infer the origin of the inner cavity seen in the sub-mm observations. We found that the spatial distributions of various COM emission in Band 3 are commonly centrally-peaked, which is different from the sub-mm observations \citep{vantHoff2018, Lee2019, Tobin2023}. While this may indicate that the Band 3 observations traces the emission from the cavity region in sub-mm, the spatial resolution of the presented Band 3 observations is insufficient to conclude so. We compare the radial intensity profile of \methanol emission along the disk major axis (P.A. $= 32\arcdeg$) in Band 3 and Band 6 in Figure \ref{fig:} (The Band 6 data is based on \citealt{Tobin2023}\footnote{Taken from the Harvard Dataverse repository \url{https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/MDQJEU}}). The intenisty profile of the Band 6 data is created from the velocity-integrated intensity map smoothed to the same spatial resolution 
+
+
+\subsubsection{Column Densities}
+With the presented Band 3 observations, we found similar column densities of COMs to those based on the sub-mm observations. This naturally indicates that the Band 3 observations traces the same emission component with that traced by the sub-mm observations. 
+
+\subsection{Inner cavity of COMs and the thermal structure of the V883 Ori disk}
+
+\subsection{Chemical abundance ratios of COMs}
+\subsection{Isotopic ratios of COMs}
+
 \begin{itemize}
     \item comparison with Band 6/7 data
     \item comparison with protostars/comets
