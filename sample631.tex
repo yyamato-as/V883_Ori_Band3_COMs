@@ -93,7 +93,9 @@
 %% the \begin{document} command.
 %%
 \usepackage{xspace}
+\usepackage{amsmath}
 \usepackage{txfonts}
+\usepackage{multirow}
 \newcommand{\vdag}{(v)^\dagger}
 \newcommand\aastex{AAS\TeX}
 \newcommand\latex{La\TeX}
@@ -236,6 +238,11 @@
 
 \author[0000-0003-4099-6941]{Yoshihide Yamato}
 \affiliation{Department of Astronomy, Graduate School of Science, The University of Tokyo, 7-3-1 Hongo, Bunkyo, Tokyo 113-0033, Japan}
+
+\author[0000-0003-2493-912X]{Shota Notsu}
+\affiliation{Department of Astronomy, Graduate School of Science, The University of Tokyo, 7-3-1 Hongo, Bunkyo-ku, Tokyo 113-0033, Japan}
+\affiliation{Star and Planet Formation Laboratory, RIKEN Cluster for Pioneering Research, 2-1 Hirosawa, Wako, Saitama 351-0198, Japan}
+
 
 %% Note that the \and command from previous versions of AASTeX is now
 %% depreciated in this version as it is no longer necessary. AASTeX 
@@ -417,29 +424,53 @@ The results of the fits are summarized in Table \ref{tab:specfit_result}. While 
 \label{fig:spectral_fit_demo}
 \end{figure*}
 
-\begin{deluxetable}{lcc}
+% \begin{deluxetable}{lcc}
+% \tablecaption{Results of the spectral fits}
+% \tablehead{\colhead{Parameter} & \colhead{$R_\mathrm{s} = 0\farcs3$} & \colhead{$R_\mathrm{s}$ Free}}
+% \startdata
+% $R_\mathrm{s}$ ($^{\prime\prime}$) & 0.3 (fixed) & $0.148_{-0.004}^{+0.006}$ \\
+% $T_\mathrm{ex}$ (K) & $100.4_{-2.8}^{+2.7}$ & $98.9_{-2.0}^{+2.0}$ \\
+% $\Delta V_\mathrm{FWHM}$ (km s$^{-1}$) & $0.48_{-0.01}^{+0.01}$ & $1.20_{-0.09}^{+0.08}$ \\
+% $\gamma$ (km s$^{-1}$) & $1.38_{-0.02}^{+0.02}$ & $1.15_{-0.03}^{+0.04}$ \\
+% $N$ (CH$_3$OH) (cm$^{-2}$) & $2.91_{-0.24}^{+0.29} \times 10^{18}$ & $2.19_{-0.26}^{+0.27} \times 10^{19}$ \\
+% $N$ (CH$_3$OCHO) (cm$^{-2}$) & $5.36_{-0.15}^{+0.15} \times 10^{17}$ & $4.16_{-0.34}^{+0.32} \times 10^{18}$ \\
+% $N$ (CH$_3$CHO) (cm$^{-2}$) & $3.74_{-0.18}^{+0.21} \times 10^{17}$ & $2.55_{-0.21}^{+0.19} \times 10^{18}$ \\
+% $N$ (CH$_3$OCH$_3$) (cm$^{-2}$) & $5.13_{-0.30}^{+0.31} \times 10^{17}$ & $2.35_{-0.25}^{+0.24} \times 10^{18}$ \\
+% $N$ (CH$_3$COCH$_3$) (cm$^{-2}$) & $3.23_{-0.25}^{+0.26} \times 10^{16}$ & $1.33_{-0.14}^{+0.15} \times 10^{17}$ \\
+% $N$ ($c$-C$_2$H$_4$O) (cm$^{-2}$) & $3.91_{-0.28}^{+0.31} \times 10^{16}$ & $1.83_{-0.24}^{+0.26} \times 10^{17}$ \\
+% $N$ ($t$-C$_2$H$_3$CHO) (cm$^{-2}$) & $4.34_{-0.19}^{+0.20} \times 10^{15}$ & $2.15_{-0.19}^{+0.18} \times 10^{16}$ \\
+% $N$ ($s$-C$_2$H$_5$CHO) (cm$^{-2}$) & $1.75_{-0.16}^{+0.16} \times 10^{16}$ & $6.31_{-0.80}^{+0.79} \times 10^{16}$ \\
+% $N$ (CH$_2$DOH) (cm$^{-2}$) & $2.11_{-0.23}^{+0.24} \times 10^{16}$ & $8.58_{-1.15}^{+1.18} \times 10^{16}$ \\
+% $N$ (CH$_3$O$^{13}$CHO) (cm$^{-2}$) & $2.99_{-0.23}^{+0.23} \times 10^{16}$ & $1.16_{-0.12}^{+0.13} \times 10^{17}$ \\
+% $N$ (CH$_3^{13}$CHO) (cm$^{-2}$) & $7.70_{-1.10}^{+1.14} \times 10^{16}$ & $4.09_{-0.65}^{+0.69} \times 10^{17}$ \\
+% $N$ (CH$_2$DCHO) (cm$^{-2}$) & $1.65_{-0.33}^{+0.35} \times 10^{16}$ & $9.40_{-2.03}^{+2.24} \times 10^{16}$ \\
+% $N$ (CH$_3$CDO) (cm$^{-2}$) & $6.61_{-0.75}^{+0.77} \times 10^{15}$ & $2.64_{-0.40}^{+0.42} \times 10^{16}$ \\
+% $N$ (C$_2$H$_3$CN) (cm$^{-2}$) & $1.92_{-0.39}^{+0.41} \times 10^{15}$ & $7.96_{-1.87}^{+2.11} \times 10^{15}$ \\
+% $N$ (SO$_2$) (cm$^{-2}$) & $1.70_{-0.30}^{+0.31} \times 10^{16}$ & $1.35_{-0.28}^{+0.31} \times 10^{17}$
+% \enddata
+% \tablenotetext{\dagger}{Uncertainties are the 16th and 84th percentile of the posterior distributions, where only the statistical uncertainty is included.}
+% \label{tab:specfit_result}
+% \end{deluxetable}
+
+\begin{deluxetable}{lccc}
 \tablecaption{Results of the spectral fits}
-\tablehead{\colhead{Parameter} & \colhead{$R_\mathrm{s} = 0\farcs3$} & \colhead{$R_\mathrm{s}$ Free}}
+\tablehead{\colhead{Species} & \colhead{$T_\mathrm{ex}$ (K)} & \colhead{$\Delta V_\mathrm{FWHM}$ (km s$^{-1}$)} & \colhead{$N$ (cm$^{-2}$)}}
 \startdata
-$R_\mathrm{s}$ ($^{\prime\prime}$) & 0.3 (fixed) & $0.148_{-0.004}^{+0.006}$ \\
-$T_\mathrm{ex}$ (K) & $100.4_{-2.8}^{+2.7}$ & $98.9_{-2.0}^{+2.0}$ \\
-$\Delta V_\mathrm{FWHM}$ (km s$^{-1}$) & $0.48_{-0.01}^{+0.01}$ & $1.20_{-0.09}^{+0.08}$ \\
-$\gamma$ (km s$^{-1}$) & $1.38_{-0.02}^{+0.02}$ & $1.15_{-0.03}^{+0.04}$ \\
-$N$ (CH$_3$OH) (cm$^{-2}$) & $2.91_{-0.24}^{+0.29} \times 10^{18}$ & $2.19_{-0.26}^{+0.27} \times 10^{19}$ \\
-$N$ (CH$_3$OCHO) (cm$^{-2}$) & $5.36_{-0.15}^{+0.15} \times 10^{17}$ & $4.16_{-0.34}^{+0.32} \times 10^{18}$ \\
-$N$ (CH$_3$CHO) (cm$^{-2}$) & $3.74_{-0.18}^{+0.21} \times 10^{17}$ & $2.55_{-0.21}^{+0.19} \times 10^{18}$ \\
-$N$ (CH$_3$OCH$_3$) (cm$^{-2}$) & $5.13_{-0.30}^{+0.31} \times 10^{17}$ & $2.35_{-0.25}^{+0.24} \times 10^{18}$ \\
-$N$ (CH$_3$COCH$_3$) (cm$^{-2}$) & $3.23_{-0.25}^{+0.26} \times 10^{16}$ & $1.33_{-0.14}^{+0.15} \times 10^{17}$ \\
-$N$ ($c$-C$_2$H$_4$O) (cm$^{-2}$) & $3.91_{-0.28}^{+0.31} \times 10^{16}$ & $1.83_{-0.24}^{+0.26} \times 10^{17}$ \\
-$N$ ($t$-C$_2$H$_3$CHO) (cm$^{-2}$) & $4.34_{-0.19}^{+0.20} \times 10^{15}$ & $2.15_{-0.19}^{+0.18} \times 10^{16}$ \\
-$N$ ($s$-C$_2$H$_5$CHO) (cm$^{-2}$) & $1.75_{-0.16}^{+0.16} \times 10^{16}$ & $6.31_{-0.80}^{+0.79} \times 10^{16}$ \\
-$N$ (CH$_2$DOH) (cm$^{-2}$) & $2.11_{-0.23}^{+0.24} \times 10^{16}$ & $8.58_{-1.15}^{+1.18} \times 10^{16}$ \\
-$N$ (CH$_3$O$^{13}$CHO) (cm$^{-2}$) & $2.99_{-0.23}^{+0.23} \times 10^{16}$ & $1.16_{-0.12}^{+0.13} \times 10^{17}$ \\
-$N$ (CH$_3^{13}$CHO) (cm$^{-2}$) & $7.70_{-1.10}^{+1.14} \times 10^{16}$ & $4.09_{-0.65}^{+0.69} \times 10^{17}$ \\
-$N$ (CH$_2$DCHO) (cm$^{-2}$) & $1.65_{-0.33}^{+0.35} \times 10^{16}$ & $9.40_{-2.03}^{+2.24} \times 10^{16}$ \\
-$N$ (CH$_3$CDO) (cm$^{-2}$) & $6.61_{-0.75}^{+0.77} \times 10^{15}$ & $2.64_{-0.40}^{+0.42} \times 10^{16}$ \\
-$N$ (C$_2$H$_3$CN) (cm$^{-2}$) & $1.92_{-0.39}^{+0.41} \times 10^{15}$ & $7.96_{-1.87}^{+2.11} \times 10^{15}$ \\
-$N$ (SO$_2$) (cm$^{-2}$) & $1.70_{-0.30}^{+0.31} \times 10^{16}$ & $1.35_{-0.28}^{+0.31} \times 10^{17}$
+CH$_3$OH & \multirow{15}{*}{$100.4_{-2.8}^{+2.7}$} & \multirow{15}{*}{$0.48_{-0.01}^{+0.01}$} & $2.91_{-0.24}^{+0.29} \times 10^{18}$ \\
+CH$_3$OCHO & & & $5.36_{-0.15}^{+0.15} \times 10^{17}$ \\
+CH$_3$CHO & & & $3.74_{-0.18}^{+0.21} \times 10^{17}$ \\
+CH$_3$OCH$_3$ & & & $5.13_{-0.30}^{+0.31} \times 10^{17}$ \\
+CH$_3$COCH$_3$ & & & $3.23_{-0.25}^{+0.26} \times 10^{16}$ \\
+$c$-C$_2$H$_4$O & & & $3.91_{-0.28}^{+0.31} \times 10^{16}$ \\
+$t$-C$_2$H$_3$CHO & & & $4.34_{-0.19}^{+0.20} \times 10^{15}$ \\
+$s$-C$_2$H$_5$CHO & & & $1.75_{-0.16}^{+0.16} \times 10^{16}$ \\
+CH$_2$DOH & & & $2.11_{-0.23}^{+0.24} \times 10^{16}$ \\
+CH$_3$O$^{13}$CHO & & & $2.99_{-0.23}^{+0.23} \times 10^{16}$ \\
+CH$_3^{13}$CHO & & & $7.70_{-1.10}^{+1.14} \times 10^{16}$ \\
+CH$_2$DCHO & & & $1.65_{-0.33}^{+0.35} \times 10^{16}$ \\
+CH$_3$CDO & & & $6.61_{-0.75}^{+0.77} \times 10^{15}$ \\
+C$_2$H$_3$CN & & & $1.92_{-0.39}^{+0.41} \times 10^{15}$ \\
+SO$_2$ & & & $1.70_{-0.30}^{+0.31} \times 10^{16}$
 \enddata
 \tablenotetext{\dagger}{Uncertainties are the 16th and 84th percentile of the posterior distributions, where only the statistical uncertainty is included.}
 \label{tab:specfit_result}
@@ -557,6 +588,12 @@ The rotation diagram and the estimated column density and excitation temperature
 
 
 
+\subsection{Line Profile analysis}
+As the disk emission is only marginally spatially resolved, it is difficult to directly infer the distribution of emission in the inner region, particularly the cavity region seen in sub-mm observations \citep{vantHoff2018, Lee2019, Tobin2023}. Alternatively, we can indirectly probe the emission in the inner region which is not spatially resolved in the velocity-integrated intensity maps from the line profile assuming gas kinematics. If we assume that the observed gas follows the Keplerian rotation, the high-velocity components with respect to the systemic velocity contains the information about the emission from the inner region. The maximum velocity of Keplerian rotation as a function of disk radius ($v_\mathrm{max}(r)$) can be written as 
+\begin{equation}
+    v_\mathrm{max}(r) = \sqrt{\frac{GM_\star}{r}}\sin i,
+\end{equation}
+where $G$ is the gravitational constant, $M_\star$ is the central stellar mass, and $i$ is the inclination of the disk. Using this relation, the radial intensity profile (as a function of radius) can be reconstructed from the line profile (as a function of velocity) as demonstrated by \citet{Bosman2021}. Based on the forward modeling described in \citet{Bosman2021}, we employed a similar approach to construct the radial intensity profiles of three bright transitions of \methanol, \acetaldehyde, and \methylformate from their line profile. The details of fitting can be found in Appendix \ref{}.
 
 
 
@@ -566,7 +603,7 @@ The rotation diagram and the estimated column density and excitation temperature
 \subsubsection{Spatial Distributions}\label{subsubsec:spatial_dist}
 The spatial distributions of the COM emission in Band 3, where the dust continuum emission would be fainter than the sub-mm regime, are essential information to infer the origin of the inner cavity seen in the sub-mm observations. We found that the spatial distributions of various COM emission in Band 3 are commonly centrally-peaked, which is different from the sub-mm observations \citep{vantHoff2018, Lee2019, Tobin2023}. While this may indicate that the Band 3 observations traces the emission from the cavity region in sub-mm, the spatial resolution of the presented Band 3 observations is insufficient to conclude so. We compare the radial intensity profile of \methanol emission along the disk major axis (P.A. $= 32\arcdeg$) in Band 3 and Band 6 in Figure \ref{fig:radial_profile_CH3OH} (The Band 6 data is based on \citealt{Tobin2023}\footnote{Taken from the Harvard Dataverse repository \url{https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/MDQJEU}}). The Band 6 intensity profile is created from the higher resolution data ($\sim0\farcs1$ beam) than the Band 3 data. The Band 6 data was smoothed to the same beam size as that in Band 3 using the CASA task \texttt{imsmooth} to facilitate the direct comparison to the Band 3 data. The direction of the disk major axis is almost same as the direction of the minor axis of the Band 3 beam, which has the maximum potential to spatially resolve the COM emission. As seen in Figure \ref{fig:radial_profile_CH3OH}, even the Band 6 data which shows the inner cavity with the original resolutions \citep{Tobin2023} shows a centrally-peaked profile with the Band 3 beam, which is quite similar to that of the Band 3 data. These similar profiles indicate that the COM emission in both Band 6 and Band 3 traces the same component, or at least there are no predominant component from the cavity region in the Band 3 data.
 
-We also examined the channel map of the COM emission in Band 3 (Figure \ref{fig:channelmap_CH3OH}, \ref{fig:channelmap_CH3OCHO}, and \ref{fig:channelmap_CH3CHO} in Appendix \ref{appendix:channel_maps}) to search for the potential signals from the cavity region. Assuming that the COM gas follows the Keplerian rotation, the high-velocity components purely traces the emission from the inner region, allowing for the direct inspection of more inner region than that traced by the velocity-integrated maps. The channel maps of the strongest transitions of \methanol, \methylformate, and \acetaldehyde, which should be the most sensitive to the innermost region with a given observing sensitivity, are shown as representatives. The channel map shows that the emission is mainly originating from the velocity range of $v_\mathrm{sys} \pm 3.5$ km s$^{-1}$, which corresponds to the radius of $\gtrsim 40$ au on the assumption that the emission completely follows the Keplerian rotation, although faint emission ($\sim3\sigma$) are seen in a few channels which correspond to 20--30 au. 
+We also examined the channel map of the COM emission in Band 3 (Figure \ref{fig:channelmap_CH3OH}, \ref{fig:channelmap_CH3OCHO}, and \ref{fig:channelmap_CH3CHO} in Appendix \ref{appendix:channel_maps}) to search for the potential signals from the cavity region. Assuming that the COM gas follows the Keplerian rotation, the high-velocity components purely traces the emission from the inner region, allowing for the direct inspection of more inner region than that explored by the velocity-integrated maps. The channel maps of the brightest transitions of \methanol, \methylformate, and \acetaldehyde, which should be most sensitive to the innermost region with a given observing sensitivity, are shown as representatives. The channel map shows that the emission is mainly originating from the velocity range of $v_\mathrm{sys} \pm 3.5$\,km\,s$^{-1}$, which corresponds to the radius of $\gtrsim 40$ au on the assumption that the emission completely follows the Keplerian rotation, although faint emission ($\sim3\sigma$) are seen in a few channels which correspond to 20--30 au. 
 
 In summary, it is likely that the emission observed in the Band 3 observations mainly traces the components outside the cavity ($\gtrsim 40\,$ au, i.e., the same component as that traced by the sub-mm observations) with a potential small additional contribution from more inner region. 
 
@@ -574,7 +611,7 @@ In summary, it is likely that the emission observed in the Band 3 observations m
 \begin{figure}
 % \epsscale{1.15}
 \plotone{radial_profile_CH3OH.pdf}
-\caption{Normalized radial intensity profiles of the \methanol emission along the disk major axis (P.A. $= 32\arcdeg$) in Band 3 (blue) and Band 6 (orange). The Band 6 profile is created from the velocity-integrated intensity map smoothed to the same beam size as that in Band 3. The original beam size is $0\farcs098\times0\farcs078$. The original intensity profile is normalized by the radial peak of the profile. The color-shaded region indicates the 1$\sigma$ scatter in each radial bin. The horizontal grey dashed line marks the zero-intensity level.}
+\caption{Normalized radial intensity profiles of the \methanol emission along the disk major axis (P.A. $= 32\arcdeg$) in Band 3 (blue) and Band 6 (orange). The intensity profile of the Band 6 data is created from the velocity-integrated intensity map smoothed to the same beam size as that of the Band 3 data and shown by the dark-orange line. The original beam size of the Band 6 data is $0\farcs098\times0\farcs078$, and the original intensity profile is shown by the light-orange line. These profiles are normalized by the radial peaks. The color-shaded region indicates the 1$\sigma$ scatter in each radial bin. The beam profile of the Band 3 data along the disk major axis is shown in the black dotted line. The horizontal grey dashed line marks the zero-intensity level.}
 \label{fig:radial_profile_CH3OH}
 \end{figure}
 
@@ -589,10 +626,34 @@ Disk-averaged column density is an alternative probe of the emission cavity, eve
 
 \textcolor{red}{Note for potential uncertainty in the column density? Missing flux etc.}
 
-\subsection{The thermochemical structure of the V883 Ori disk}
+\subsection{The physical and chemical structure of the innermost region of the V883 Ori disk}
+The presented Band 3 observations suggest that the COM line emission in Band 3 also shows the inner depression at $\lesssim$ 40 au radius. Here we discuss the possible origins of the inner depression and the associated physical and chemical structures of the V883 Ori disk. 
+
+% \subsubsection{Bright dust continuum emission hiding the molecular lines}
+The first possible explanations for the observed depression of the COM emission in Band 3 are that the dust continuum emission is still too bright even in Band 3 for the line emission to be detected in the innermost disk (inside 40 au radius). In sub-mm wavelengths, the dust continuum emission at $\lesssim$ 40 au radius has been proven to be optically thick ($\tau \gtrsim 2$) by the intra-band analysis of the ALMA Band 6 observations with higher resolution ($\sim0\farcs04$; \citealt{Cieza2016}). Since the dust opacity is smaller in lower frequencies in general, the dust continuum emission is expected to be more optically thin in the longer wavelength regime such as ALMA Band 3. 
+
+However, the factors that affects the line intensity are not only the dust optical depth, but also the temperature of the dust emitting layer. In a simple slab model prescription with the assumption of LTE, if the line emitting layer is well separated and elevated from the dust emitting layer (near the midplane) with the line emitting layer being closer to the observer \citep[e.g., see][]{Bosman2021}, the observed line intensity after the continuum subtraction is expressed as 
+\begin{align}\label{equation:line_intensity_separated}
+    I_\mathrm{L-C} &= B_\nu(T_\mathrm{gas})(1 - e^{-\tau_\mathrm{line}}) + I_{\nu, \mathrm{dust}}e^{-\tau_\mathrm{line}} - I_{\nu, \mathrm{dust}} \notag \\
+    &= (B_\nu(T_\mathrm{gas}) - I_{\nu, \mathrm{dust}})(1 - e^{-\tau_\mathrm{line}}),
+\end{align}
+where $B_\nu$ is the Planck function for blackbody radiation, $T_\mathrm{gas}$ is the gas temperature representing the temperature of the line emitting region, $\tau_\mathrm{line}$ is the optical depth of the line emission at the line center, and $I_{\nu, \mathrm{dust}} = \chi B_\nu(T_\mathrm{dust})(1 - e^{-\tau_\mathrm{dust}})$ is the intensity of the dust continuum emission. Here $\chi$ is the intensity reduction factor owing to the scattering effect \citep[e.g.,][]{Bosman2021}, $T_\mathrm{dust}$ is the dust temperature, and $\tau_\mathrm{dust}$ is the optical depth of the dust continuum emission. If we assume that the dust continuum emission is optically thick (i.e., $1 - e^{\tau_\mathrm{dust}} \sim 1$) and the temperature of the line and dust emitting region is the same (i.e., $T_\mathrm{gas} = T_\mathrm{dust}$, vertically isothermal disk), Equation (\ref{equation:line_intensity_separated}) will be reduced to the case discussed in \citet{Bosman2021}.
+
+In archetypal disks where the temperature structure is determined mostly by the passive irradiation from the central star, the temperature in the line emitting region ($T_\mathrm{gas}$) is usually higher than the temperature in the disk midplane from which the dust emission is mostly originating ($T_\mathrm{dust}$), allowing us to observe the line emission originating from the disk surface. However, in the case of the V883 Ori disk, where the disk temperature is expected to be elevated due to the accretion outburst, the viscous heating can be efficient in the midplane, which could make the temperature in the disk midplane ($T_\mathrm{dust}$) higher than that in the archetypal disk. Indeed, \citet{Lee2019} suggests that the intensity depression of the COM emission can be reproduced by the presence of the additional heating in the midplane. This warmer temperature in the midplane makes it further challenging to detect the line emission originating from its emitting layer closer to the observer, even if the optical depth of the dust continuum emission is not so high, although the intensity of the dust emission also depends on the scattering effect ($\chi$). 
+
+Although the picture that the line emitting layer is separated and elevated from the dust emitting layer in the disk midplane is supported by the emission surface analysis of the Band 6 data (Leemker et al. in prep.), the bulk of the line emission in the innermost region ($\lesssim$ 40 au radius) can be well mixed with the dust emission and originating from the disk midplane, since the high emission surface of COM emission derived from the analysis of Band 6 data (Leemker et al. in prep.) is based on the emission from the outer region ($\gtrsim$ 40 au radius). In this case, the observed line intensity after the continuum subtraction will completely disappear when the line opacity is negligible compared to the dust opacity (see \citealt{Bosman2021}, Equation (4)). 
+
+\textcolor{red}{Should we show the comparison of dust continuum brightness temperature in Band 3 and Band 6 at higher resolution?}
+
+Another possible explanation for the inner depression of the COM emission is that the molecules inside 40 au are destroyed by the strong UV/X-ray radiation. The UV radiation from the central protostar can destroy COMs via photodissociation \citep[e.g.,][]{Garrod2006, Oberg2009}. Recently, \citet{Notsu2021} modeled the effect of the X-ray radiation from the central protostar on the chemistry of the protostellar envelopes, and found that the gas-phase fractional abundance of \methanol and other COMs decreases within their snowlines as the X-ray luminosity of the central protostar increases. In the presence of the strong X-ray radiation, COMs are mainly destroyed by the X-ray-induced photodissociation \citep[e.g.,][]{Garrod2006, Taquet2016, Notsu2021}. While the efficiency of the destruction of the molecules could be lower for higher gas density than the lower-density envelopes \citep{Notsu2021}, a similar mechanism may work in the innermost region of the V883 Ori disk, where the UV/X-ray luminosity can also be increased due to the outburst of the central star, in particular in the low-density disk surface.
+
+\textcolor{red}{Any comments/additional discussions? Are there any references that should be cited here? Feel free to edit the sentences in the paragraph just above... $\to$ Notsu-san}
+
+In summary, we suggest that the apparent absorption of the molecular line emission by the bright dust continuum emission, or the chemical destruction of the molecules, or combination of them, can explain the inner depression of the COMs emission in Band 3. Our ALMA Band 3 observations suggest that the observations at further longer wavelengths, where the dust continuum emission should be fainter, with ALMA Band 1, Jansky Very Large Array (VLA), and future ngVLA, are essential to directly probe the chemistry of the innermost region of the V883 Ori disk.
 
 \subsection{Chemical abundance ratios of COMs}
 \subsection{Isotopic ratios of COMs}
+\subsection{Implications for nitrogen and Sulfur chemistry}
 
 
 \section{Summary} \label{sec:summary}
