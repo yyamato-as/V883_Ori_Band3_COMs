@@ -589,11 +589,27 @@ The rotation diagram and the estimated column density and excitation temperature
 
 
 \subsection{Line Profile analysis}
-As the disk emission is only marginally spatially resolved, it is difficult to directly infer the distribution of emission in the inner region, particularly the cavity region seen in sub-mm observations \citep{vantHoff2018, Lee2019, Tobin2023}. Alternatively, we can indirectly probe the emission in the inner region which is not spatially resolved in the velocity-integrated intensity maps from the line profile assuming gas kinematics. If we assume that the observed gas follows the Keplerian rotation, the high-velocity components with respect to the systemic velocity contains the information about the emission from the inner region. The maximum velocity of Keplerian rotation as a function of disk radius ($v_\mathrm{max}(r)$) can be written as 
-\begin{equation}
+As the disk emission is only marginally spatially resolved, it is difficult to directly infer the distribution of emission in the inner region, particularly the cavity region seen in sub-mm observations \citep{vantHoff2018, Lee2019, Tobin2023}. Alternatively, we can indirectly probe the emission in the inner region which is not spatially resolved in the velocity-integrated intensity maps from the line profile assuming gas kinematics. If we assume that the observed gas follows the Keplerian rotation, the high-velocity components with respect to the systemic velocity, or the line wings, purely contains information about the emission from the inner region. The maximum velocity of Keplerian rotation as a function of disk radius ($v_\mathrm{max}(r)$) can be written as 
+\begin{equation}\label{eq:Keplerian_rotation}
     v_\mathrm{max}(r) = \sqrt{\frac{GM_\star}{r}}\sin i,
 \end{equation}
-where $G$ is the gravitational constant, $M_\star$ is the central stellar mass, and $i$ is the inclination of the disk. Using this relation, the radial intensity profile (as a function of radius) can be reconstructed from the line profile (as a function of velocity) as demonstrated by \citet{Bosman2021}. Based on the forward modeling described in \citet{Bosman2021}, we employed a similar approach to construct the radial intensity profiles of three bright transitions of \methanol, \acetaldehyde, and \methylformate from their line profile. The details of fitting can be found in Appendix \ref{}.
+where $G$ is the gravitational constant, $M_\star$ is the central stellar mass, and $i$ is the inclination of the disk. We inspected the line profile of three bright transitions of \methanol, \acetaldehyde, and \methylformate, which have enough sensitivity to the line wings, and compared them with the maximum velocity of Keplerian rotation in Figure \ref{fig:line_profile}. As seen in the line wings of each line profile, no significant emission is detected in the velocity channels which corresponds to inside $\sim$ 40 au radius. The channel maps (Figure) also show that there are no significant emission inside $\lesssim$ 40 au radius. 
+
+\begin{figure*}
+\epsscale{1.15}
+\plotone{line_profile_comparison.pdf}
+\caption{Line profiles of \methanol $2_{-1,1}$ -- $1_{-1,0}$ E $v_t=0$, \acetaldehyde $5_{2,3}$ -- $4_{2,2}$ E $v_t=0$, and \methylformate $7_{6,1}$ -- $6_{6,0}$ E $v_t=0$. The vertical dotted line marks the systemic velocity (4.25 km s$^{-1}$). The vertical blue-ish dashed lines indicates the corresponding disk radii at each channel based on the maximum velocity of Keplerian rotation in Equation (\ref{eq:Keplerian_rotation}). The horizontal dashed line indicates the zero-flux level. There are no significant detection of emission in the channels which corresponds to inside $\sim$ 40\,au radius.}
+\label{fig:line_profile}
+\end{figure*}
+
+To evaluate the contribution from the emission at each radius more quantitatively, we employed a forward modeling approach to reconstruct the radial intensity profiles from the line profiles \citep{Bosman2021}. Using the relation in Equation (\ref{eq:Keplerian_rotation}), the radial intensity profile (as a function of radius) can be constructed from the line profile (as a function of velocity) as demonstrated in \citet{Bosman2021}. We employed a similar approach to that used in \citet{Bosman2021} to construct the radial intensity profiles of aforementioned three bright transitions from their line profile. The details of modeling can be found in Appendix \ref{}. Figure \ref{}
+
+\begin{figure*}
+\epsscale{1.15}
+\plotone{radialProfile.pdf}
+\caption{Line profiles of \methanol $2_{-1,1}$ -- $1_{-1,0}$ E $v_t=0$, \acetaldehyde $5_{2,3}$ -- $4_{2,2}$ E $v_t=0$, and \methylformate $7_{6,1}$ -- $6_{6,0}$ E $v_t=0$. The vertical dotted line marks the systemic velocity (4.25 km s$^{-1}$). The vertical blue-ish dashed lines indicates the corresponding disk radii at each channel based on the maximum velocity of Keplerian rotation in Equation (\ref{eq:Keplerian_rotation}). The horizontal dashed line indicates the zero-flux level. There are no significant detection of emission in the channels which corresponds to inside $\sim$ 40\,au radius.}
+\label{fig:line_profile}
+\end{figure*}
 
 
 
