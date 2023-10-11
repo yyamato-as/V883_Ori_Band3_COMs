@@ -412,11 +412,11 @@ As for the line image cubes, each of the SPWs was imaged using the \texttt{tclea
 
 \section{Data Analysis and Result}\label{sec:analysis_result}
 \subsection{Spectrum Extraction and Line Identification}\label{subsec:line_identification}
-Figure \ref{fig:spectra_gallery} shows the spectra integrated over 1\farcs2 aperture and corrected for the line broadening due to the Keplerian rotation of the disk. The original disk-integrated spectra are shown in Figures \ref{fig:disk-integrated_spectra0}--\ref{fig:disk-integrated_spectra3} in Appendix \ref{appendix:spectra}. To obtain the spectra corrected for the Keplerian line broadening, we used the \texttt{integrated\_spectrum()} function implemented in the Python package \texttt{GoFish} \citep{GoFish}. This method first deprojects the disk and then aligns the Dopper-shifted spectra at each position within the disk to a common velocity (the systemic velocity of the source) to recover the single peak spectra for each transition, facilitating the identification of the blended transitions. In this procedure, we assumed a position angle (32\arcdeg) and inclination angle (38.3\arcdeg) of the disk, a central stellar mass of $1.29\,M_\odot$, and a distance of 400\,pc, based on previous works \citep{Cieza2016, Tobin2023}. We also assumed that the emission originates from the midplane of the disk, and did not consider the vertical extent of the emission. The uncertainties of the spectra were calculated per channel basis within the \texttt{integrated\_spectrum()} function taking into account the spectral decorrelation \citep{Yen2016}.
+Figure \ref{fig:spectra_gallery} shows the spectra integrated over 1\farcs2 aperture and corrected for the line broadening due to the Keplerian rotation of the disk. The original disk-integrated spectra are shown in Figures \ref{fig:disk-integrated_spectra0}--\ref{fig:disk-integrated_spectra3} in Appendix \ref{appendix:spectra}. More zoom-in spectra with the Keplerian rotation correction are also shown in Figures \ref{fig:disk-integrated_spectra_fit0}--\ref{fig:disk-integrated_spectra_fit3} in Appendix \ref{appendix:spectra}. To obtain the spectra corrected for the Keplerian line broadening, we used the \texttt{integrated\_spectrum()} function implemented in the Python package \texttt{GoFish} \citep{GoFish}. This method first deprojects the disk and then aligns the Dopper-shifted spectra at each position within the disk to a common velocity (the systemic velocity of the source) to recover the single peak spectra for each transition, facilitating the identification of the blended transitions. In this procedure, we assumed a position angle (32\arcdeg) and inclination angle (38.3\arcdeg) of the disk, a central stellar mass of $1.29\,M_\odot$, and a distance of 400\,pc, based on previous works \citep{Cieza2016, Tobin2023}. We also assumed that the emission originates from the midplane of the disk, and did not consider the vertical extent of the emission. The uncertainties of the spectra were calculated per channel basis within the \texttt{integrated\_spectrum()} function taking into account the spectral decorrelation \citep{Yen2016}.
 
 As shown in Figure \ref{fig:spectra_gallery}, numerous spectral features are detected in the disk-integrated spectra. Since many of the COM transitions exist in narrow frequency ranges and overlap between different molecular species, visual identification of the lines is challenging. Alternatively, we fitted a synthetic spectrum to the observed spectra to identify each of these features. The details of the synthetic spectral model are described in Appendix \ref{appendix:spectral_model}. Briefly, the model used a common emitting region size, a common excitation temperature, and a common line width under the local thermodynamic equilibrium (LTE) conditions. We varied the emitting region size, excitation temperature, line width, and the column density of each species to fit the observed spectra, and test if they could be reproduced with the model. To construct the model, the spectroscopic data of the molecular lines are taken from the Jet Propulsion Spectroscopy \citep[JPL;][]{JPL} and the Cologne Database for Molecular Spectroscopy \citep[CDMS;][]{CDMS1, CDMS2, CDMS3}, as detailed in Appendix \ref{appendix:spectroscopic_data}. Only the transitions with an Einstein A coefficient for spontaneous emission of $\geq10^{-8}$\,s$^{-1}$ and an upper state energy of $\leq1000$\,K are considered in the model.
 
-Following \citet{Jorgensen2020}, we set two criteria for the identification of molecular species. First, the synthetic spectrum of multiple (more than one) transitions of a given species accounts for the observed spectra including at least one detected transitions that is not blended with transitions of other species. Second, no undetected transitions are over-predicted by the synthetic spectrum. Species that fulfill the second criterion but with no unblended transitions detected are considered as tentative identifications. Based on these criteria, we robustly identified 11 species and their isotopologues: \methanol, \acetaldehyde, \methylformate, \dimethylether, \ethyleneoxide, \acetone, \propenal, \propanal, $^{13}$CH$_3$OCHO, CH$_3$O$^{13}$CHO, and CH$_3^{13}$CHO. We also tentatively identified 5 species and isotopologues: $^{13}$CH$_3$OCH$_3$, CH$_2$DOH, CH$_2$DCHO, CH$_3$CDO, and C$_2$H$_3$CN. In addition, one transition of each sulfur-bearing molecule (OCS and SO$_2$) was detected. The detected transitions are listed in Table \ref{tab:transitions} in Appendix \ref{appendix:transitions}.
+Following \citet{Jorgensen2020}, we set two criteria for the identification of molecular species. First, the synthetic spectrum of multiple (more than one) transitions of a given species accounts for the observed spectra including at least one detected transitions that is not blended with transitions of other species. Second, no undetected transitions are over-predicted by the synthetic spectrum. Species that fulfill the second criterion but with no unblended transitions detected are considered as tentative identifications. Based on these criteria, we robustly identified 11 species and their isotopologues: \methanol, \acetaldehyde, \methylformate, \dimethylether, \ethyleneoxide, \acetone, \propenal, \propanal, $^{13}$CH$_3$OCHO, and CH$_3$O$^{13}$CHO. We also tentatively identified 5 species and isotopologues: CH$_3^{13}$CHO, $^{13}$CH$_3$OCH$_3$, CH$_2$DOH, CH$_2$DCHO, CH$_3$CDO, and C$_2$H$_3$CN. In addition, one transition of each sulfur-bearing molecule (OCS and SO$_2$) was detected. The detected transitions are listed in Table \ref{tab:transitions} in Appendix \ref{appendix:transitions}. In addition to the disk-integrated spectra for the full frequency range in Figure \ref{}, We also present the zoom-in spectra of $^{13}$CH$_3$OCHO and CH$_3$O$^{13}$CHO in Figure \ref{fig:13C-methylformate_spectra} in Appendix \ref{appendix:spectra} for the purpose of visually clarity to confirm the detection of these species.
 
 
 
@@ -491,7 +491,7 @@ In addition to the (tentatively) identified transitions in Section \ref{subsec:l
 % In addition, we properly consider the flux calibration uncertainty and the data correlation between spectral channels originating from the Hanning smoothing applied in the correlator and the procedure to correct for the line broadening due to the Kepelerian rotation (Section \ref{subsec:line_identification}). The detailed procedure are described in Appendices. 
 We used the affine-invariant Markov Chain Monte Carlo (MCMC) algorithm implemented in the \texttt{emcee} Python package \citep{emcee} to explore the parameter spaces. We run 100 walkers for 15000 steps, and the initial 12000 steps are discarded as burn-in. Figure \ref{fig:spectral_fit_demo} demonstrates the unique ability of the simultaneous spectral fit to fully exploit the transitions for column density derivation even with a severe spectral blending. 
 
-The results of the fits are summarized in Table \ref{tab:specfit_result}. The derived excitation temperature is $106.7_{-3.8}^{+4.3}$ K, similar to the typical sublimation temperature of COMs ($\sim100$\,K), indicating the thermal sublimation of molecules. The column densities of COMs are $\sim$10$^{15}$--10$^{18}$ cm$^{-2}$, broadly in agreement with previous estimates using Band 7 data \citep{Lee2019}. 
+The results of the fits are summarized in Table \ref{tab:specfit_result}. The derived excitation temperature is $106.7_{-3.8}^{+4.3}$ K, similar to the typical sublimation temperature of COMs ($\sim100$\,K), indicating the thermal sublimation of molecules. The column densities of COMs are $\sim$10$^{15}$--10$^{18}$ cm$^{-2}$, broadly in agreement with previous estimates using Band 7 data \citep{Lee2019}. \textbf{The uncertainties of the derived quantities are 16th and 84th percentiles of the posterior distributions, where only the statistical uncertainty is considered. While the column density itself could have a larger uncertainty due to the absolute flux calibration uncertainty of 2.5\% (1$\sigma$), the column density ratios, from which we discuss the chemistry of COMs in the following sections, are not affected by the absolute flux calibration uncertainty.}
 % While both fits obtained similarly high excitation temperatures of $\sim100$\,K indicative of ice sublimation, the column density of molecules are significantly different between the two fits. In the fit with $R_\mathrm{s}$ being a free parameter, the emitting radius is smaller than that of in Band 6 (0\farcs3) by a factor of $\sim2$, and the column density of molecules are thus higher than that in the fit with a fixed emitting radius by factors of $\sim$ 4--8.
 
 \begin{figure*}
@@ -1059,15 +1059,15 @@ Table \ref{tab:transitions} lists the transitions detected in our observations f
 \hline 
 \multicolumn{7}{c}{Methanol (\methanol)} \\
 \hline 
-CH$_3$OH$^\ddagger$ & $2_{-1,2}$ -- $1_{-1,1}$ E $v_t=1$ & 96.492163 & -5.5963 & 20.0 & 298 & 7 \\
-CH$_3$OH$^\ddagger$ & $2_{0,2}$ -- $1_{0,1}$ E $v_t=1$ & 96.493551 & -5.4706 & 20.0 & 307 & 7 \\
+CH$_3$OH$^{\ddagger\ast}$ & $2_{-1,2}$ -- $1_{-1,1}$ E $v_t=1$ & 96.492163 & -5.5963 & 20.0 & 298 & 7 \\
+CH$_3$OH$^{\ddagger\ast}$ & $2_{0,2}$ -- $1_{0,1}$ E $v_t=1$ & 96.493551 & -5.4706 & 20.0 & 307 & 7 \\
 CH$_3$OH$^\ddagger$ & $2_{1,1}$ -- $1_{1,0}$ E $v_t=1$ & 96.501713 & -5.5967 & 20.0 & 420 & 7 \\
 CH$_3$OH & $2_{0,2}$ -- $1_{0,1}$ A $v_t=1$ & 96.513686 & -5.4709 & 20.0 & 430 & 7 \\
-CH$_3$OH$^\dagger$ & $2_{1,2}$ -- $1_{1,1}$ E $v_t=0$ & 96.739358 & -5.5923 & 20.0 & 12 & 9 \\
-CH$_3$OH$^\dagger$ & $2_{0,2}$ -- $1_{0,1}$ A $v_t=0$ & 96.741371 & -5.4676 & 20.0 & 6 & 9 \\
-CH$_3$OH & $2_{0,2}$ -- $1_{0,1}$ E $v_t=0$ & 96.744545 & -5.4676 & 20.0 & 20 & 9 \\
-CH$_3$OH & $2_{-1,1}$ -- $1_{-1,0}$ E $v_t=0$ & 96.755501 & -5.581 & 20.0 & 28 & 9 \\
-CH$_3$OH & $2_{1,1}$ -- $1_{1,0}$ A $v_t=0$ & 97.582798 & -5.5807 & 20.0 & 21 & 10 \\
+CH$_3$OH$^{\dagger\ast}$ & $2_{1,2}$ -- $1_{1,1}$ E $v_t=0$ & 96.739358 & -5.5923 & 20.0 & 12 & 9 \\
+CH$_3$OH$^{\dagger\ast}$ & $2_{0,2}$ -- $1_{0,1}$ A $v_t=0$ & 96.741371 & -5.4676 & 20.0 & 6 & 9 \\
+CH$_3$OH$^\ast$ & $2_{0,2}$ -- $1_{0,1}$ E $v_t=0$ & 96.744545 & -5.4676 & 20.0 & 20 & 9 \\
+CH$_3$OH$^\ast$ & $2_{-1,1}$ -- $1_{-1,0}$ E $v_t=0$ & 96.755501 & -5.581 & 20.0 & 28 & 9 \\
+CH$_3$OH$^\ast$ & $2_{1,1}$ -- $1_{1,0}$ A $v_t=0$ & 97.582798 & -5.5807 & 20.0 & 21 & 10 \\
 CH$_3$OH$^\dagger$ & $21_{6,16}$ -- $22_{5,17}$ A $v_t=0$ & 97.677684 & -5.8404 & 172.0 & 729 & 10 \\
 CH$_3$OH$^\dagger$ & $21_{6,15}$ -- $22_{5,18}$ A $v_t=0$ & 97.678803 & -5.8403 & 172.0 & 729 & 10 \\
 \hline 
@@ -1085,9 +1085,9 @@ CH$_3$OCHO$^\dagger$ & $7_{5,2}$ -- $6_{5,1}$ A $v_t=1$ & 85.186063 & -5.3602 & 
 CH$_3$OCHO & $7_{4,3}$ -- $6_{4,2}$ E $v_t=1$ & 85.506219 & -5.2142 & 30.0 & 214 & 1 \\
 CH$_3$OCHO & $7_{5,3}$ -- $6_{5,2}$ E $v_t=1$ & 85.55338 & -5.3527 & 30.0 & 220 & 1 \\
 CH$_3$OCHO & $7_{6,1}$ -- $6_{6,0}$ E $v_t=0$ & 85.919209 & -5.6138 & 30.0 & 40 & 2 \\
-CH$_3$OCHO$^\dagger$ & $7_{6,2}$ -- $6_{6,1}$ E $v_t=0$ & 85.926553 & -5.6137 & 30.0 & 40 & 2 \\
-CH$_3$OCHO$^\dagger$ & $7_{6,2}$ -- $6_{6,1}$ A $v_t=0$ & 85.927227 & -5.6136 & 30.0 & 40 & 2 \\
-CH$_3$OCHO$^\dagger$ & $7_{6,1}$ -- $6_{6,0}$ A $v_t=0$ & 85.927227 & -5.6136 & 30.0 & 40 & 2 \\
+CH$_3$OCHO$^{\dagger\ast}$ & $7_{6,2}$ -- $6_{6,1}$ E $v_t=0$ & 85.926553 & -5.6137 & 30.0 & 40 & 2 \\
+CH$_3$OCHO$^{\dagger\ast}$ & $7_{6,2}$ -- $6_{6,1}$ A $v_t=0$ & 85.927227 & -5.6136 & 30.0 & 40 & 2 \\
+CH$_3$OCHO$^{\dagger\ast}$ & $7_{6,1}$ -- $6_{6,0}$ A $v_t=0$ & 85.927227 & -5.6136 & 30.0 & 40 & 2 \\
 CH$_3$OCHO & $7_{4,4}$ -- $7_{3,5}$ E $v_t=0$ & 96.507882 & -6.1542 & 30.0 & 27 & 7 \\
 CH$_3$OCHO & $8_{4,5}$ -- $8_{3,6}$ A $v_t=0$ & 96.709259 & -5.9454 & 34.0 & 31 & 9 \\
 CH$_3$OCHO & $7_{4,3}$ -- $7_{3,5}$ E $v_t=0$ & 96.776715 & -6.4523 & 30.0 & 27 & 9 \\
@@ -1108,45 +1108,54 @@ CH$_3$OCHO & $8_{4,4}$ -- $7_{4,3}$ E $v_t=1$ & 97.897118 & -4.9875 & 34.0 & 219
 CH$_3$OCHO$^\ddagger$ & $21_{4,17}$ -- $21_{3,18}$ A $v_t=1$ & 98.066305 & -5.7833 & 86.0 & 337 & 10 \\
 CH$_3$OCHO$^\ddagger$ & $8_{4,5}$ -- $7_{4,4}$ E $v_t=1$ & 98.176293 & -4.9853 & 34.0 & 218 & 10 \\
 CH$_3$OCHO & $8_{7,1}$ -- $7_{7,0}$ E $v_t=0$ & 98.182336 & -5.4902 & 34.0 & 53 & 10 \\
-CH$_3$OCHO$^\dagger$ & $8_{7,2}$ -- $7_{7,1}$ A $v_t=0$ & 98.190658 & -5.4899 & 34.0 & 53 & 10 \\
-CH$_3$OCHO$^\dagger$ & $8_{7,1}$ -- $7_{7,0}$ A $v_t=0$ & 98.190658 & -5.4899 & 34.0 & 53 & 10 \\
-CH$_3$OCHO$^\dagger$ & $8_{7,2}$ -- $7_{7,1}$ E $v_t=0$ & 98.19146 & -5.49 & 34.0 & 53 & 10 \\
-CH$_3$OCHO & $8_{6,2}$ -- $7_{6,1}$ E $v_t=0$ & 98.270501 & -5.218 & 34.0 & 45 & 10 \\
-CH$_3$OCHO$^\dagger$ & $8_{6,3}$ -- $7_{6,2}$ E $v_t=0$ & 98.278921 & -5.2178 & 34.0 & 45 & 10 \\
-CH$_3$OCHO$^\dagger$ & $8_{6,3}$ -- $7_{6,2}$ A $v_t=0$ & 98.279762 & -5.2178 & 34.0 & 45 & 10 \\
-CH$_3$OCHO$^\dagger$ & $8_{6,2}$ -- $7_{6,1}$ A $v_t=0$ & 98.279762 & -5.2178 & 34.0 & 45 & 10 \\
-CH$_3$OCHO$^\dagger$ & $9_{0,9}$ -- $8_{1,8}$ A $v_t=1$ & 98.423165 & -5.701 & 38.0 & 212 & 10 \\
-CH$_3$OCHO$^\dagger$ & $8_{5,3}$ -- $7_{5,2}$ E $v_t=0$ & 98.424207 & -5.0722 & 34.0 & 37 & 10 \\
-CH$_3$OCHO$^\dagger$ & $8_{5,4}$ -- $7_{5,3}$ E $v_t=0$ & 98.431803 & -5.072 & 34.0 & 37 & 10 \\
-CH$_3$OCHO$^\dagger$ & $8_{5,4}$ -- $7_{5,3}$ A $v_t=0$ & 98.43276 & -5.0719 & 34.0 & 37 & 10 \\
+CH$_3$OCHO$^{\dagger\ast}$ & $8_{7,2}$ -- $7_{7,1}$ A $v_t=0$ & 98.190658 & -5.4899 & 34.0 & 53 & 10 \\
+CH$_3$OCHO$^{\dagger\ast}$ & $8_{7,1}$ -- $7_{7,0}$ A $v_t=0$ & 98.190658 & -5.4899 & 34.0 & 53 & 10 \\
+CH$_3$OCHO$^{\dagger\ast}$ & $8_{7,2}$ -- $7_{7,1}$ E $v_t=0$ & 98.19146 & -5.49 & 34.0 & 53 & 10 \\
+CH$_3$OCHO$\ast$ & $8_{6,2}$ -- $7_{6,1}$ E $v_t=0$ & 98.270501 & -5.218 & 34.0 & 45 & 10 \\
+CH$_3$OCHO$^{\dagger\ast}$ & $8_{6,3}$ -- $7_{6,2}$ E $v_t=0$ & 98.278921 & -5.2178 & 34.0 & 45 & 10 \\
+CH$_3$OCHO$^{\dagger\ast}$ & $8_{6,3}$ -- $7_{6,2}$ A $v_t=0$ & 98.279762 & -5.2178 & 34.0 & 45 & 10 \\
+CH$_3$OCHO$^{\dagger\ast}$ & $8_{6,2}$ -- $7_{6,1}$ A $v_t=0$ & 98.279762 & -5.2178 & 34.0 & 45 & 10 \\
+CH$_3$OCHO$^{\dagger\ast}$ & $9_{0,9}$ -- $8_{1,8}$ A $v_t=1$ & 98.423165 & -5.701 & 38.0 & 212 & 10 \\
+CH$_3$OCHO$^{\dagger\ast}$ & $8_{5,3}$ -- $7_{5,2}$ E $v_t=0$ & 98.424207 & -5.0722 & 34.0 & 37 & 10 \\
+CH$_3$OCHO$^{\dagger\ast}$ & $8_{5,4}$ -- $7_{5,3}$ E $v_t=0$ & 98.431803 & -5.072 & 34.0 & 37 & 10 \\
+CH$_3$OCHO$^{\dagger\ast}$ & $8_{5,4}$ -- $7_{5,3}$ A $v_t=0$ & 98.43276 & -5.0719 & 34.0 & 37 & 10 \\
 CH$_3$OCHO & $8_{5,3}$ -- $7_{5,2}$ A $v_t=0$ & 98.435802 & -5.0719 & 34.0 & 37 & 10 \\
 CH$_3$OCHO & $8_{4,5}$ -- $7_{4,3}$ E $v_t=0$ & 98.443186 & -6.4657 & 34.0 & 31 & 10 \\
 \hline 
 \multicolumn{7}{c}{Methyl Formate (CH$_3$O$^{13}$CHO)} \\
 \hline 
-CH$_3$O$^{13}$CHO$^\dagger$ & $8_{6,2}$ -- $7_{6,1}$ E $v_t=0$ & 97.541168 & -5.2186 & 34.0 & 44 & 10 \\
 CH$_3$O$^{13}$CHO$^\dagger$ & $8_{-6,3}$ -- $7_{-6,2}$ E $v_t=0$ & 97.549352 & -5.2185 & 34.0 & 44 & 10 \\
 CH$_3$O$^{13}$CHO$^\dagger$ & $8_{6,3}$ -- $7_{6,2}$ A $v_t=0$ & 97.55014 & -5.2185 & 34.0 & 44 & 10 \\
 CH$_3$O$^{13}$CHO$^\dagger$ & $8_{6,2}$ -- $7_{6,1}$ A $v_t=0$ & 97.550183 & -5.2185 & 34.0 & 44 & 10 \\
 CH$_3$O$^{13}$CHO$^\ddagger$ & $8_{-5,4}$ -- $7_{-5,3}$ E $v_t=0$ & 97.702479 & -5.0727 & 34.0 & 37 & 10 \\
 CH$_3$O$^{13}$CHO$^\ddagger$ & $8_{5,4}$ -- $7_{5,3}$ A $v_t=0$ & 97.703323 & -5.0726 & 34.0 & 37 & 10 \\
-CH$_3$O$^{13}$CHO$^\dagger$ & $8_{5,3}$ -- $7_{5,2}$ A $v_t=0$ & 97.706423 & -5.0726 & 34.0 & 37 & 10 \\
 CH$_3$O$^{13}$CHO & $8_{-3,6}$ -- $7_{-3,5}$ E $v_t=0$ & 97.874331 & -4.9221 & 34.0 & 27 & 10 \\
 CH$_3$O$^{13}$CHO$^\ddagger$ & $8_{3,6}$ -- $7_{3,5}$ A $v_t=0$ & 97.878443 & -4.9215 & 34.0 & 27 & 10 \\
 CH$_3$O$^{13}$CHO$^\ddagger$ & $8_{4,4}$ -- $7_{4,3}$ E $v_t=0$ & 98.019644 & -4.9931 & 34.0 & 31 & 10 \\
+\hline 
+\multicolumn{7}{c}{Methyl Formate ($^{13}$CH$_3$OCHO)} \\
+\hline
+$^{13}$CH$_3$OCHO$^\ddagger$ & $8_{3,5}$ -- $7_{3,4}$ E $v_t=0$ & 97.816488 & -5.2344 & 34.0 & 22 & 10 \\
+$^{13}$CH$_3$OCHO$^\ddagger$ & $8_{-3,5}$ -- $7_{-3,4}$ E $v_t=0$ & 97.816489 & -5.2237 & 34.0 & 26 & 10 \\
+$^{13}$CH$_3$OCHO$^\ddagger$ & $8_{3,5}$ -- $7_{3,4}$ A $v_t=0$ & 97.829563 & -5.2228 & 34.0 & 26 & 10 \\
+$^{13}$CH$_3$OCHO$^\ddagger$ & $9_{1,9}$ -- $8_{1,8}$ E $v_t=0$ & 97.871736 & -5.1613 & 38.0 & 24 & 10 \\
+$^{13}$CH$_3$OCHO$^\ddagger$ & $9_{1,9}$ -- $8_{1,8}$ A $v_t=0$ & 97.873563 & -5.1612 & 38.0 & 24 & 10 \\
+$^{13}$CH$_3$OCHO$^\dagger$ & $8_{-1,7}$ -- $7_{-1,6}$ E $v_t=0$ & 98.207248 & -5.1648 & 34.0 & 22 & 10 \\
+$^{13}$CH$_3$OCHO$^\dagger$ & $8_{1,7}$ -- $7_{1,6}$ E $v_t=0$ & 98.207251 & -5.1756 & 34.0 & 17 & 10 \\
+$^{13}$CH$_3$OCHO$^\dagger$ & $8_{1,7}$ -- $7_{1,6}$ A $v_t=0$ & 98.215266 & -5.1647 & 34.0 & 22 & 10 \\
 \hline 
 \multicolumn{7}{c}{Acetaldehyde (\acetaldehyde)} \\
 \hline 
 CH$_3$CHO & $9_{1,8}$ -- $9_{0,9}$ E $v_t=1$ & 85.947624 & -5.559 & 38.0 & 249 & 2 \\
 CH$_3$CHO$^\dagger$ & $12_{2,11}$ -- $12_{1,11}$ E $v_t=1$ & 87.303557 & -6.1944 & 50.0 & 285 & 6 \\
 CH$_3$CHO$^\dagger$ & $11_{4,7}$ -- $12_{3,9}$ E $v_t=1$ & 87.303714 & -6.2602 & 46.0 & 303 & 6 \\
-CH$_3$CHO & $5_{2,3}$ -- $4_{2,2}$ E $v_t=0$ & 96.475524 & -4.6168 & 22.0 & 23 & 7 \\
+CH$_3$CHO$\ast$ & $5_{2,3}$ -- $4_{2,2}$ E $v_t=0$ & 96.475524 & -4.6168 & 22.0 & 23 & 7 \\
 CH$_3$CHO & $11_{4,8}$ -- $12_{3,10}$ E $v_t=0$ & 96.48895 & -6.1541 & 46.0 & 97 & 7 \\
-CH$_3$CHO$^\dagger$ & $5_{3,3}$ -- $4_{3,2}$ A $v_t=2$ & 96.716114 & -4.7374 & 22.0 & 420 & 9 \\
-CH$_3$CHO$^\dagger$ & $5_{3,2}$ -- $4_{3,1}$ A $v_t=2$ & 96.717473 & -4.7374 & 22.0 & 420 & 9 \\
-CH$_3$CHO$^\dagger$ & $5_{2,3}$ -- $4_{2,2}$ A $v_t=1$ & 96.718409 & -4.6093 & 22.0 & 228 & 9 \\
-CH$_3$CHO & $7_{0,7}$ -- $6_{1,6}$ A $v_t=0$ & 96.765371 & -5.5556 & 30.0 & 25 & 9 \\
-CH$_3$CHO & $5_{2,4}$ -- $4_{2,3}$ E $v_t=1$ & 96.800291 & -4.613 & 22.0 & 226 & 9 \\
+CH$_3$CHO$^{\dagger\ast}$ & $5_{3,3}$ -- $4_{3,2}$ A $v_t=2$ & 96.716114 & -4.7374 & 22.0 & 420 & 9 \\
+CH$_3$CHO$^{\dagger\ast}$ & $5_{3,2}$ -- $4_{3,1}$ A $v_t=2$ & 96.717473 & -4.7374 & 22.0 & 420 & 9 \\
+CH$_3$CHO$^{\dagger\ast}$ & $5_{2,3}$ -- $4_{2,2}$ A $v_t=1$ & 96.718409 & -4.6093 & 22.0 & 228 & 9 \\
+CH$_3$CHO$^\ast$ & $7_{0,7}$ -- $6_{1,6}$ A $v_t=0$ & 96.765371 & -5.5556 & 30.0 & 25 & 9 \\
+CH$_3$CHO$^\ast$ & $5_{2,4}$ -- $4_{2,3}$ E $v_t=1$ & 96.800291 & -4.613 & 22.0 & 226 & 9 \\
 CH$_3$CHO & $5_{3,2}$ -- $4_{3,1}$ E $v_t=2$ & 97.612131 & -4.9808 & 22.0 & 419 & 10 \\
 CH$_3$CHO & $19_{2,18}$ -- $18_{3,15}$ E $v_t=0$ & 97.796104 & -6.1248 & 78.0 & 183 & 10 \\
 CH$_3$CHO & $10_{4,7}$ -- $11_{3,8}$ A $v_t=1$ & 97.941422 & -6.1583 & 42.0 & 290 & 10 \\
@@ -1155,7 +1164,7 @@ CH$_3$CHO & $6_{3,3}$ -- $7_{2,5}$ E $v_t=0$ & 98.368631 & -6.245 & 26.0 & 39 & 
 \hline 
 \multicolumn{7}{c}{Acetaldehyde (CH$_3^{13}$CHO)} \\
 \hline 
-CH$_3^{13}$CHO$^\ddagger$ & $5_{2,3}$ -- $4_{2,2}$ A $v_t=0$ & 96.494465 & -4.5971 & 11.0 & 22 & 7 \\
+CH$_3^{13}$CHO$^{\ddagger\ast}$ & $5_{2,3}$ -- $4_{2,2}$ A $v_t=0$ & 96.494465 & -4.5971 & 11.0 & 22 & 7 \\
 \hline 
 \multicolumn{7}{c}{Acetaldehyde (CH$_3$CDO)} \\
 \hline 
@@ -1226,7 +1235,10 @@ OCS & $7$ -- $6$ & 85.139103 & -5.7658 & 15.0 & 16 & 3
 \enddata
 \tablenotetext{\dagger}{Blended with the other transitions of the same species.}
 \tablenotetext{\ddagger}{Blended with transitions of other species.}
+\tablenotetext{\ast}{Transitions excluded from the fit.}
 \end{deluxetable*}
+
+
 
 
 
@@ -1417,6 +1429,8 @@ OCS & $7$ -- $6$ & 85.139103 & -5.7658 & 15.0 & 16 & 3
 \section{Disk-integrated Spectra}\label{appendix:spectra}
 Figure \ref{fig:disk-integrated_spectra0}--\ref{fig:disk-integrated_spectra3} show the disk-integrated spectra for all SPWs. The line profile of each transition exhibits the double-peaked feature, which is typical for Keplerian rotation, with some spectral blending. Figure \ref{fig:disk-integrated_spectra_fit0}--\ref{fig:disk-integrated_spectra_fit3} shows the disk-integrated spectra with spectral alignment, overlaid by the best-fit model of the spectral fit (Section \ref{subsec:spectral_fit}). The double-peaked profiles are aligned and appeared to be single-peaked, which are well reproduced with the best-fit model including spectral blending. 
 
+\textbf{We additionally present the zoom-in spectra of $^{13}$CH$_3$O$^{13}$CHO $^{13}$CH$_3$OCHO transitions detected with no blending from other molecular species in Figure \ref{fig:13C-methylformate_spectra} to confirm the detection of these species, which is critical for the robust measurement of $^{12}$C/$^{13}$C ratios in COMs (Section \ref{subsubsec:12C/13C}).}
+
 \begin{figure*}
 \epsscale{1.15}
 \plotone{disk-integrated_spectra_0.pdf}
@@ -1494,8 +1508,21 @@ Figure \ref{fig:disk-integrated_spectra0}--\ref{fig:disk-integrated_spectra3} sh
 % \label{fig:CH3CHO_spectra}
 % \end{figure*}
 
+
+
+\begin{figure*}
+\epsscale{0.9}
+\plotone{13-methylformate_spectra.pdf}
+\caption{Zoom-in spectra of CH$_3$O$^{13}$CHO (left) and $^{13}$CH$_3$OCHO (right) transitions detected with no blending from other molecular species. The gray lines with error bars are the observed spectra, and the black solid lines indicate the best-fit model (see Section \ref{subsec:spectral_fit}). The central frequency of transitions are marked by the vertical dotted lines.}
+\label{fig:13C-methylformate_spectra}
+\end{figure*}
+
+
+
 \section{LTE spectral model}\label{appendix:spectral_model}
-Here we describe the details of the spectral model which is fitted to the spectra corrected for Keplerian rotation for column density derivation. We assume that the excitation condition of observed COM emission is well approximated by local thermodynamic equilibrium (LTE), where the gas temperature is equal to the excitation temperature ($T_\mathrm{ex}$) of the emitting molecules. This assumption should be reasonable as the typical gas density in protoplanetary disks () is higher than the typical critical density of the COM transitions. For example, the critical density of xx-yy transition of \methanol is calculated to be zzz cm-3 at a gas kinetic temperature of 100 K \citep[ref][]{}. We further assume that different species are sufficiently cospatial to share the same emitting region size and excitation temperature. This assumption is also broadly supported by the similar emission extent of different COMs shown in Figure \ref{fig:moment_zero_gallery}. 
+Here we describe the details of the spectral model which is fitted to the spectra corrected for Keplerian rotation for column density derivation. We assume that the excitation condition of observed COM emission is well approximated by local thermodynamic equilibrium (LTE), where the gas temperature is equal to the excitation temperature ($T_\mathrm{ex}$) of the emitting molecules. This assumption should be reasonable as the typical gas density in protoplanetary disks ($\gtrsim10^8$\, cm$^{-3}$) is high enough to thermalize the excitation condition. 
+% For example, the critical density of xx-yy transition of \methanol is calculated to be zzz cm-3 at a gas kinetic temperature of 100 K \citep[ref][]{}. 
+We further assume that different species are sufficiently cospatial to share the same emitting region size and excitation temperature. This assumption is also broadly supported by the similar emission extent of different COMs shown in Figure \ref{fig:moment_zero_gallery}. 
 
 The model intensity $I_\nu$ are computed based on a solution of the basic radiative transfer equations for an isothermal, uniform slab:
 \begin{equation}
